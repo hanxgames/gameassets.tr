@@ -2,9 +2,8 @@
 import Base from '../../layouts/Base.astro';
 import BundleCard from '../../components/BundleCard.astro';
 import ListingHero from '../../components/ListingHero.astro';
-import { bundles, membersOf, bundleSavings, bundleName, absolute, assets } from '../../data/site';
+import { bundles, bundleSavings, bundleName, absolute } from '../../data/site';
 const maxSave = Math.max(0, ...bundles.map(bundleSavings));
-const covers = bundles.flatMap((b) => membersOf(b).slice(0, 2));
 const jsonld = [
   {
     '@context': 'https://schema.org',
@@ -15,15 +14,15 @@ const jsonld = [
 ];
 ---
 <Base
-  title={`Game Asset Bundles — Save up to ${maxSave}% on Low Poly & 3D Pixel Packs`}
-  description={`${bundles.length} limited-time game asset bundles: get every low poly, 3D pixel, Halloween or Christmas pack in one click and save up to ${maxSave}%. Unity, Godot, Unreal ready.`}
+  title={`Game Asset Bundles: Save up to ${maxSave}% on Low Poly & 3D Pixel Packs`}
+  description={`${bundles.length} game asset bundles: get every low poly, 3D pixel, Halloween or Christmas pack in one checkout and save up to ${maxSave}%. Unity, Godot and Unreal ready.`}
   image={bundles[0]?.og}
   jsonld={jsonld}
 >
-  <ListingHero eyebrow="🔥 Limited-time deals" title={`Asset bundles — save up to <em>${maxSave}%</em>`} covers={covers.length ? covers : assets} accent="#ff8a1f" crumbs={[{ href: '/', label: 'Home' }, { label: 'Bundles' }]}>
-    <p>Why buy one when you can own the whole series? Each bundle groups an entire HanX collection into a single checkout on itch.io — same palette, same grid, all compatible, for a fraction of the price.</p>
+  <ListingHero title={`Bundles. Save up to ${maxSave}%.`} crumbs={[{ href: '/', label: 'Home' }, { label: 'Bundles' }]}>
+    <p>Each bundle is a whole collection in one itch.io checkout, for a fraction of the pack prices.</p>
   </ListingHero>
-  <div class="wrap" style="display:grid;gap:24px;padding-bottom:90px">
-    {bundles.map((b) => <BundleCard bundle={b} />)}
+  <div class="container">
+    {bundles.map((b, i) => <BundleCard bundle={b} eager={i === 0} />)}
   </div>
 </Base>

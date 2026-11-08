@@ -1,101 +1,102 @@
 ---
 import Base from '../../layouts/Base.astro';
-import ShaderBG from '../../components/ShaderBG.astro';
 import AssetCard from '../../components/AssetCard.astro';
-import BundleCard from '../../components/BundleCard.astro';
-import { SERIES, seriesOrder, assets, bundles, bySeries, totalModels, minPrice, bundleSavings } from '../../data/site';
+import { seriesOrder, assets, bundles, bySeries, totalModels, minPrice, bundleName, bundleSavings, assetBySlug } from '../../data/site';
 
 const modelsRounded = Math.floor(totalModels / 100) * 100;
-const maxSave = Math.max(0, ...bundles.map(bundleSavings));
+const heroPack = assetBySlug('low-poly-christmas-village-pack') ?? assets[0];
+const heroImage = heroPack.screenshots[0] ?? heroPack.cover;
 const trSeries: Record<string, { t: string; d: string }> = {
-  'low-poly': { t: 'Low Poly 3D Asset Paketleri', d: 'Şehir, trafik, köy, okul, inşaat, benzinlik ve SWAT — hepsi tek doku ve tek ölçekte.' },
-  '3d-pixel': { t: '3D Pixel Art Asset Paketleri', d: 'Zindanlar, ortaçağ kasabaları, çiftlikler, ev içi ve RPG eşyaları — retro pixel dokulu 3D modeller.' },
-  halloween: { t: 'Cadılar Bayramı (Halloween) Paketleri', d: 'Balkabakları, perili evler ve ürkütücü sokaklar ile sezonluk güncellemeni dakikalar içinde hazırla.' },
-  christmas: { t: 'Yılbaşı (Christmas) Paketleri', d: 'Karlı çatılar, ışıklar, yılbaşı ağaçları ve kış dekorları ile sıcacık bayram sahneleri.' },
+  'low-poly': { t: 'Low poly 3D paketler', d: 'Şehir, trafik, köy, okul, inşaat, benzinlik ve SWAT. Tek doku, tek ölçek.' },
+  '3d-pixel': { t: '3D pixel art paketler', d: 'Zindanlar, ortaçağ kasabaları, çiftlikler, ev içi ve RPG eşyaları.' },
+  halloween: { t: 'Cadılar Bayramı paketleri', d: 'Balkabakları, perili evler ve ürkütücü sokaklar.' },
+  christmas: { t: 'Yılbaşı paketleri', d: 'Karlı çatılar, ışıklar, yılbaşı ağaçları ve kış dekoru.' },
 };
 const faq = [
-  { q: 'Assetleri ticari oyunlarımda kullanabilir miyim?', a: 'Evet. Tüm paketler sınırsız kişisel ve ticari projede (oyun, uygulama, video, müşteri işleri) kullanılabilir. İsim/atıf zorunlu değildir; yalnızca ham dosyaları yeniden satmak veya dağıtmak yasaktır.' },
-  { q: 'Hangi oyun motorlarıyla uyumlu?', a: 'Unity, Godot 4, Unreal Engine 5, Blender ve three.js. Her pakette GLB, FBX, OBJ ve Blender .blend dosyaları bulunur.' },
-  { q: 'Nasıl satın alırım?', a: 'Herhangi bir “Satın Al” butonuna tıkladığında itch.io’nun güvenli ödeme ekranı açılır. Kredi kartı veya PayPal ile ödeyip dosyaları anında indirebilirsin; paket itch.io kütüphanende kalıcı olarak durur.' },
-  { q: 'Mobil oyunlar için optimize mi?', a: 'Evet. Modeller düşük poligonludur ve tüm paketler tek materyal + tek palet dokusu kullanır; tüm sahne tek draw call ile çizilebilir.' },
+  { q: 'Ticari oyunlarda kullanabilir miyim?', a: 'Evet. Sınırsız kişisel ve ticari projede kullanılabilir, isim vermek zorunlu değildir. Yalnızca ham dosyaları yeniden satmak yasaktır.' },
+  { q: 'Hangi motorlarla uyumlu?', a: 'Unity, Godot 4, Unreal Engine 5, Blender ve three.js. Her pakette GLB, FBX, OBJ ve .blend dosyaları var.' },
+  { q: 'Nasıl satın alırım?', a: 'Satın Al butonu itch.io ödeme ekranını açar. Kart veya PayPal ile ödersin, dosyalar hemen iner ve itch.io kütüphanende kalır.' },
+  { q: 'Mobil için uygun mu?', a: 'Evet. Modeller düşük poligonlu ve hepsi tek materyal ile tek palet dokusu kullanır, sahne çok az draw call ile çizilir.' },
 ];
 const faqLd = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) };
 ---
 <Base
   lang="tr"
-  title="Oyun Asset Paketleri — Low Poly & 3D Pixel Modeller | Unity, Godot, Unreal"
+  title="Oyun Asset Paketleri: Low Poly ve 3D Pixel Modeller | Unity, Godot, Unreal"
   description={`${assets.length} hazır oyun asset paketi, ${modelsRounded}+ low poly ve 3D pixel model. Unity, Godot, Unreal ve Blender uyumlu, ticari lisanslı. $${minPrice.toFixed(2)}’dan başlayan fiyatlar.`}
   jsonld={[faqLd]}
   alternates={[{ lang: 'en', href: '/' }, { lang: 'tr', href: '/tr/' }, { lang: 'x-default', href: '/' }]}
 >
   <section class="hero">
-    <ShaderBG />
-    <div class="wrap">
-      <span class="eyebrow">{assets.length} paket · {modelsRounded}+ model · ${minPrice.toFixed(2)}’dan başlayan fiyatlar</span>
-      <h1>Oyun geliştiriciler için <span class="grad-text">hazır 3D asset paketleri</span></h1>
-      <p class="lead">Unity, Godot, Unreal ve Blender için el yapımı <strong>low poly</strong> ve <strong>3D pixel art</strong> modeller. Tek doku, tek ölçek, tek draw call — sürükle bırak, oyununu bu hafta sonu yayınla.</p>
-      <div class="cta">
-        <a class="btn btn-primary btn-lg" href="/assets/">Tüm paketleri incele →</a>
-        <a class="btn btn-lg" href="/bundles/">🔥 Bundle’larda %{maxSave}’e varan indirim</a>
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <h1>Oyun asset paketleri ${minPrice.toFixed(2)}’dan.</h1>
+        <p class="lead">Unity, Godot, Unreal ve Blender için {assets.length} el yapımı 3D paket.</p>
+        <div class="actions">
+          <a class="btn btn--primary" href="/assets/">{assets.length} paketi incele</a>
+          <a class="btn" href="/bundles/">Bundle fırsatları</a>
+        </div>
       </div>
-      <ul class="trust"><li>✓ Ticari lisans</li><li>✓ GLB · FBX · OBJ · .blend</li><li>✓ Yapay zekâ kullanılmadı</li><li>✓ itch.io ile anında indirme</li></ul>
+      <div class="frame hero-frame tilt-r"><img src={heroImage.src} alt={`${heroPack.title} sahnesi`} width="1600" height="1000" fetchpriority="high" decoding="async" /></div>
     </div>
   </section>
 
   <section class="section">
-    <div class="wrap">
-      <span class="eyebrow">Koleksiyonlar</span>
-      <h2>Dört stil, <span class="grad-text">tek uyumlu dünya</span></h2>
-      <div class="tr-coll">
+    <div class="container">
+      <div class="section-head"><h2>Dört koleksiyon. Tek dünya.</h2></div>
+      <dl class="rows">
         {seriesOrder.map((s) => (
-          <a href={`/collections/${s}/`} class="tc reveal" style={`--accent:${SERIES[s].accent}`}>
-            <img src={bySeries(s)[0]?.cover.sm} alt={trSeries[s].t} loading="lazy" width="315" height="250" />
-            <div><b>{SERIES[s].emoji} {trSeries[s].t}</b><p>{trSeries[s].d}</p><em class="pixel">{bySeries(s).length} paket →</em></div>
-          </a>
+          <div><dt><a class="link" href={`/collections/${s}/`}>{trSeries[s].t}</a></dt><dd>{trSeries[s].d} {bySeries(s).length} paket.</dd></div>
         ))}
-      </div>
+      </dl>
     </div>
   </section>
 
-  <section class="section" style="padding-top:0">
-    <div class="wrap">
-      <span class="eyebrow">Öne çıkanlar</span>
-      <h2>Popüler asset paketleri</h2>
-      <div class="grid">{assets.slice(0, 8).map((a) => <AssetCard asset={a} />)}</div>
-      <p style="text-align:center;margin-top:30px"><a class="btn" href="/assets/">Tüm {assets.length} paketi gör →</a></p>
+  <section class="section">
+    <div class="container">
+      <div class="section-head"><h2>Öne çıkan paketler.</h2><p><a class="link" href="/assets/">Tüm {assets.length} paketi gör</a></p></div>
+      <div class="pack-grid">{assets.slice(0, 8).map((a) => <AssetCard asset={a} />)}</div>
     </div>
   </section>
 
   {bundles.length > 0 && (
-    <section class="section" style="padding-top:0">
-      <div class="wrap">
-        <span class="eyebrow">Bundle fırsatları</span>
-        <h2>Tüm seriyi <span class="grad-text">bir kahve fiyatına</span> al</h2>
-        <div style="display:grid;gap:22px">{bundles.map((b) => <BundleCard bundle={b} compact />)}</div>
+    <section class="band-paper">
+      <div class="container">
+        <div class="section-head"><h2>Tüm seri, tek ödeme.</h2></div>
+        <div class="table-wrap">
+          <table class="price-table">
+            <thead><tr><th scope="col">Bundle</th><th scope="col">Paket</th><th scope="col">Tek tek</th><th scope="col">Bundle fiyatı</th><th scope="col"><span class="visually-hidden">Satın al</span></th></tr></thead>
+            <tbody>
+              {bundles.map((b) => (
+                <tr>
+                  <td class="name"><a href={`/bundles/${b.slug}/`}>{bundleName(b)}</a></td>
+                  <td>{b.members.length}</td>
+                  <td class="was">{b.regularPrice}</td>
+                  <td class="big">{b.bundlePrice} <span class="small">%{bundleSavings(b)} tasarruf</span></td>
+                  <td><a class="btn btn--sm" href={b.url} target="_blank" rel="noopener">Satın al</a></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
   )}
 
   <section class="section">
-    <div class="wrap" style="max-width:860px">
-      <span class="eyebrow">Sık sorulan sorular</span>
-      <h2>Merak ettiklerin</h2>
+    <div class="container">
+      <div class="section-head"><h2>Sık sorulanlar.</h2></div>
       <div class="faq">{faq.map((f, i) => <details open={i === 0}><summary>{f.q}</summary><div class="answer">{f.a}</div></details>)}</div>
-      <p class="muted" style="margin-top:30px">Ürün sayfaları ve açıklamalar uluslararası oyun geliştirici kitlesi için İngilizcedir. <a href="/" hreflang="en" style="color:var(--cyan)">English version →</a></p>
+      <p class="note small">Paket sayfaları uluslararası kitle için İngilizcedir. <a class="link" href="/" hreflang="en">English version</a></p>
     </div>
   </section>
 </Base>
 <style>
-  .hero { position: relative; isolation: isolate; overflow: hidden; padding: 90px 0 70px; }
-  .hero h1 { max-width: 900px; font-weight: 900; }
-  .lead { font-size: 1.2rem; color: #cdd2f5; max-width: 680px; margin: 20px 0 30px; }
-  .cta { display: flex; gap: 14px; flex-wrap: wrap; }
-  .trust { list-style: none; padding: 0; margin: 28px 0 0; display: flex; gap: 10px 22px; flex-wrap: wrap; color: var(--muted); font-weight: 600; font-size: 0.9rem; }
-  .tr-coll { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 30px; }
-  .tc { display: grid; grid-template-columns: 140px 1fr; gap: 18px; align-items: center; padding: 14px; border-radius: 20px; border: 1px solid var(--line); background: var(--panel); transition: border-color 0.3s; }
-  .tc:hover { border-color: var(--accent); }
-  .tc img { border-radius: 12px; aspect-ratio: 315 / 250; object-fit: cover; }
-  .tc p { color: var(--muted); font-size: 0.9rem; margin: 6px 0; }
-  .tc em { font-style: normal; color: var(--accent); font-size: 0.75rem; }
-  @media (max-width: 800px) { .tr-coll { grid-template-columns: 1fr; } .tc { grid-template-columns: 100px 1fr; } }
+  .hero { padding-block: var(--space-2xl) var(--space-3xl); }
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-3xl); align-items: center; }
+  .hero-copy { display: grid; gap: var(--space-lg); justify-items: start; }
+  .hero-copy h1 { font-size: clamp(3rem, 5.2vw, 6rem); max-width: 11ch; overflow-wrap: break-word; min-width: 0; text-wrap: balance; }
+  .hero-frame { aspect-ratio: 16 / 10; }
+  .note { margin-top: var(--space-xl); }
+  @media (max-width: 60rem) { .hero-grid { grid-template-columns: minmax(0, 1fr); gap: var(--space-xl); } }
 </style>

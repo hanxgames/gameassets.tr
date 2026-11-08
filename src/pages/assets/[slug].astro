@@ -22,6 +22,9 @@ const related = [
 const engines = (a.engines as string[]).filter((e) => e in ENGINES) as EngineKey[];
 const formats = (a.formats as string[]).filter((f) => f !== 'PNG');
 const published = a.published ? new Date(a.published) : null;
+// Presentation only: drop the leading emoji itch.io puts on headings; the words stay as the owner wrote them.
+const descHtml = a.descriptionHtml.replace(/(<h[2-4][^>]*>)\s*(?:\p{Extended_Pictographic}|\uFE0F|\u200D)+\s*/gu, '$1');
+const headline = a.headline.replace(/^(?:\p{Extended_Pictographic}|\uFE0F|\u200D)+\s*/u, '').replace(a.title, '').replace(/^\s*[\u2014-]\s*/, '') || '';
 
 const productLd = {
   '@context': 'https://schema.org',
@@ -68,178 +71,154 @@ const breadcrumb = {
   jsonld={[productLd, breadcrumb]}
 >
   <Fragment slot="head"><link rel="preload" as="image" href={a.cover.src} fetchpriority="high" /></Fragment>
-  <div class="wrap">
+  <div class="container">
     <nav class="crumbs" aria-label="Breadcrumb">
-      <a href="/">Home</a><span aria-hidden="true">/</span>
-      <a href={`/collections/${a.series}/`}>{series.title}</a><span aria-hidden="true">/</span>
-      <span>{a.title}</span>
+      <ol>
+        <li><a href="/">Home</a></li>
+        <li><a href={`/collections/${a.series}/`}>{series.title}</a></li>
+        <li><span aria-current="page">{a.title}</span></li>
+      </ol>
     </nav>
 
-    <div class="pdp" style={`--accent:${series.accent}`}>
-      <!-- Gallery -->
-      <section class="gallery" aria-label={`${a.title} screenshots`}>
-        <button class="main-shot" id="main-shot" data-index="0" aria-label="Open full-size gallery">
-          <img id="main-img" src={a.cover.src} width={a.cover.width} height={a.cover.height} alt={`${a.title} — ${a.shortDescription}`} fetchpriority="high" decoding="async" style={`view-transition-name: cover-${a.slug}`} />
-          <span class="zoom pixel">⤢ Zoom</span>
+    <section class="pdp">
+      <div class="gallery">
+        <button class="frame main-shot" id="main-shot" type="button" aria-label="Open the full-size gallery">
+          <img id="main-img" src={a.cover.src} width={a.cover.width} height={a.cover.height} alt={`${a.title}: ${a.shortDescription}`} fetchpriority="high" decoding="async" />
         </button>
         {gallery.length > 1 && (
-          <div class="thumbs" role="list">
+          <ul class="thumbs" aria-label={`${a.title} screenshots`}>
             {gallery.map((g, i) => (
-              <button class={`thumb ${i === 0 ? 'active' : ''}`} role="listitem" data-index={i} data-src={g.src} aria-label={`Show image ${i + 1}`}>
-                <img src={g.sm} alt={`${a.title} screenshot ${i + 1}`} loading="lazy" decoding="async" width="160" height="120" />
-              </button>
+              <li><button class={`thumb ${i === 0 ? 'active' : ''}`} type="button" data-index={i} data-src={g.src} aria-label={`Show image ${i + 1} of ${gallery.length}`}>
+                <img src={g.sm} alt="" loading="lazy" decoding="async" width="160" height="120" />
+              </button></li>
             ))}
-          </div>
+          </ul>
         )}
-      </section>
+      </div>
 
-      <!-- Buy panel -->
-      <aside class="buy" aria-label="Purchase">
-        <div class="buy-inner">
-          <a class="chip" href={`/collections/${a.series}/`}>{series.emoji} {series.title}</a>
-          <h1>{a.title}</h1>
-          {a.headline && <p class="headline">{a.headline.replace(/^\p{Extended_Pictographic}️?\s*/u, '').replace(a.title, '').replace(/^\s*[—-]\s*/, '') || a.shortDescription}</p>}
-          <p class="muted short">{a.shortDescription}</p>
+      <div class="buy">
+        <h1>{a.title}</h1>
+        {headline && <p class="lead">{headline}.</p>}
+        <p class="buy-price"><span class="price-figure">{a.price}</span>{onSale && <span class="was">{a.originalPrice}</span>}</p>
+        {onSale && a.sale && <Countdown ends={a.sale.ends} label={`${a.sale.rate}% off until`} />}
+        <BuyButton asset={a} variant="primary" block label="Buy on itch.io" />
+        <p class="small">Secure checkout by itch.io, card or PayPal. Download straight after paying.</p>
+        <dl class="specs">
+          {a.modelCount && <div><dt>Models</dt><dd>{a.modelCount}</dd></div>}
+          {a.triangles && <div><dt>Triangles</dt><dd>{a.triangles.min.toLocaleString('en-US')} to {a.triangles.max.toLocaleString('en-US')} per model</dd></div>}
+          {formats.length > 0 && <div><dt>Formats</dt><dd>{formats.map((f) => (f === 'BLEND' ? '.blend' : f)).join(', ')}</dd></div>}
+          {engines.length > 0 && <div><dt>Engines</dt><dd>{engines.map((e, i) => <>{i > 0 && ', '}<a class="link" href={`/engines/${e}/`}>{ENGINES[e].name}</a></>)}</dd></div>}
+          <div><dt>License</dt><dd><a class="link" href="/license/">Commercial, royalty-free</a></dd></div>
+          {published && <div><dt>Released</dt><dd><time datetime={a.published}>{published.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })}</time></dd></div>}
+        </dl>
+        {myBundles.map((b) => (
+          <a class="upsell" href={b.url} target="_blank" rel="noopener">
+            <span class="upsell-title">This pack and {b.members.length - 1} more for {b.bundlePrice}</span>
+            <span class="small">{bundleName(b)}, save {bundleSavings(b)}%</span>
+          </a>
+        ))}
+        <a class="link small" href={a.url} target="_blank" rel="noopener">Open the itch.io page</a>
+      </div>
+    </section>
 
-          <div class="price-box">
-            <div class="big-price">
-              <strong>{a.price}</strong>
-              {onSale && <s>{a.originalPrice}</s>}
-              {onSale && <span class="badge-sale">-{a.sale?.rate}%</span>}
-            </div>
-            {onSale && a.sale && <Countdown ends={a.sale.ends} />}
-          </div>
-
-          <BuyButton asset={a} size="lg" full label={`Buy now — ${a.price}`} />
-          <p class="secure"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="4" y="10" width="16" height="11" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3" /></svg> Secure checkout by itch.io · Card & PayPal · Instant download</p>
-
-          {myBundles.map((b) => (
-            <a class="upsell" href={b.url} target="_blank" rel="noopener">
-              <span class="pixel">Bundle deal · save {bundleSavings(b)}%</span>
-              <b>Get this + {b.members.length - 1} more packs for {b.bundlePrice}</b>
-              <em>{bundleName(b)} →</em>
-            </a>
-          ))}
-
-          <dl class="specs">
-            {a.modelCount && <><dt>Models</dt><dd>{a.modelCount}</dd></>}
-            {a.triangles && <><dt>Triangles</dt><dd>{a.triangles.min.toLocaleString('en-US')}–{a.triangles.max.toLocaleString('en-US')} / model</dd></>}
-            {formats.length > 0 && <><dt>Formats</dt><dd>{formats.map((f) => (f === 'BLEND' ? '.blend' : f)).join(' · ')}</dd></>}
-            {engines.length > 0 && <><dt>Engines</dt><dd>{engines.map((e, i) => <>{i > 0 && ' · '}<a href={`/engines/${e}/`}>{ENGINES[e].name}</a></>)}</dd></>}
-            <dt>License</dt><dd><a href="/license/">Commercial, royalty-free</a></dd>
-            {published && <><dt>Released</dt><dd><time datetime={a.published}>{published.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time></dd></>}
-          </dl>
-          <a class="itch-link" href={a.url} target="_blank" rel="noopener">View this pack on itch.io ↗</a>
-        </div>
-      </aside>
-    </div>
-
-    <!-- Description -->
-    <div class="details">
-      <article class="prose reveal">
+    <section class="details">
+      <article class="prose">
         <h2>About the {a.title}</h2>
-        <Fragment set:html={a.descriptionHtml} />
+        <Fragment set:html={descHtml} />
       </article>
-      <aside class="side reveal">
-        <h2 class="side-title">Tags</h2>
-        <ul class="tags">{(a.tags as string[]).map((t) => <li><a href={`/assets/?q=${encodeURIComponent(t.replace(/-/g, ' '))}`}>#{t}</a></li>)}</ul>
-        <div class="howto">
-          <h2 class="side-title">Quick start</h2>
-          {engines.slice(0, 3).map((e) => <p><b>{ENGINES[e].name}:</b> {ENGINES[e].how}</p>)}
-        </div>
-        <BuyButton asset={a} full label={`Get it for ${a.price}`} />
+      <aside class="side">
+        <h2>Tags</h2>
+        <ul class="tags">{(a.tags as string[]).map((t) => <li><a href={`/assets/?q=${encodeURIComponent(t.replace(/-/g, ' '))}`}>{t.replace(/-/g, ' ')}</a></li>)}</ul>
+        <h2>Quick start</h2>
+        {engines.slice(0, 3).map((e) => <p><strong>{ENGINES[e].name}.</strong> {ENGINES[e].how}</p>)}
+        <BuyButton asset={a} block label={`Get it for ${a.price}`} />
       </aside>
-    </div>
+    </section>
 
     {related.length > 0 && (
-      <section class="section" style="padding-top:40px">
-        <div class="section-head reveal"><div><span class="eyebrow">Same palette, same grid</span><h2>Works great with</h2></div><a class="btn" href="/assets/">All packs →</a></div>
-        <div class="grid">{related.map((r) => <AssetCard asset={r} />)}</div>
+      <section class="section">
+        <div class="section-head"><h2>Works with these packs.</h2><p><a class="link" href="/assets/">See all packs</a></p></div>
+        <div class="pack-grid">{related.map((r) => <AssetCard asset={r} />)}</div>
       </section>
     )}
   </div>
 
-  <!-- Mobile sticky buy bar -->
   <div class="sticky-buy" id="sticky-buy">
-    <div><b>{a.title}</b><span>{a.price}{onSale && <s>{a.originalPrice}</s>}</span></div>
-    <BuyButton asset={a} label="Buy now" />
+    <p><strong>{a.title}</strong><span class="price-figure">{a.price}</span></p>
+    <BuyButton asset={a} variant="primary" size="sm" label="Buy" />
   </div>
 
-  <dialog class="lightbox" id="lightbox" aria-label="Gallery">
-    <img id="lb-img" alt={a.title} />
-    <button class="lb-btn lb-prev" id="lb-prev" aria-label="Previous image">‹</button>
-    <button class="lb-btn lb-next" id="lb-next" aria-label="Next image">›</button>
-    <button class="lb-btn lb-close" id="lb-close" aria-label="Close">✕</button>
-    <span class="lb-count pixel" id="lb-count"></span>
+  <dialog class="lightbox" id="lightbox" aria-label={`${a.title} gallery`}>
+    <img id="lb-img" alt={`${a.title} screenshot`} />
+    <button class="btn btn--sm lb-prev" id="lb-prev" type="button" aria-label="Previous image">Prev</button>
+    <button class="btn btn--sm lb-next" id="lb-next" type="button" aria-label="Next image">Next</button>
+    <button class="btn btn--sm lb-close" id="lb-close" type="button">Close</button>
+    <p class="lb-count small" id="lb-count"></p>
   </dialog>
   <script is:inline type="application/json" id="gallery-data" set:html={JSON.stringify(gallery.map((g) => g.src))} />
 </Base>
 
 <style>
-  .pdp { display: grid; grid-template-columns: 1.35fr 1fr; gap: 36px; align-items: start; }
-  .gallery { display: grid; gap: 12px; min-width: 0; }
-  .main-shot { position: relative; padding: 0; border: 1px solid var(--line); border-radius: 22px; overflow: hidden; background: var(--bg-3); cursor: zoom-in; display: block; width: 100%; }
-  .main-shot img { width: 100%; aspect-ratio: 315 / 250; object-fit: cover; transition: opacity 0.25s; }
-  .zoom { position: absolute; right: 12px; bottom: 12px; padding: 7px 10px; border-radius: 9px; background: rgba(4, 6, 26, 0.75); font-size: 0.7rem; color: var(--text); }
-  .thumbs { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: thin; }
-  .thumb { flex: none; width: 112px; padding: 0; border: 2px solid transparent; border-radius: 12px; overflow: hidden; cursor: pointer; background: var(--bg-3); opacity: 0.6; transition: opacity 0.2s, border-color 0.2s; }
+  .pdp { display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: var(--space-3xl); align-items: start; padding-block: var(--space-lg); }
+  .gallery { display: grid; gap: var(--space-lg); min-width: 0; }
+  .main-shot { display: block; width: 100%; padding: 0; cursor: zoom-in; aspect-ratio: 315 / 250; }
+  .main-shot img { transition: opacity var(--dur-short) var(--ease-out); }
+  .main-shot:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
+  .thumbs { list-style: none; margin: 0; padding: 0 0 var(--space-xs); display: flex; gap: var(--space-sm); overflow-x: auto; }
+  .thumb { display: block; width: 104px; padding: 0; border: var(--rule-bar) solid var(--color-paper-3); background: var(--color-paper-2); cursor: pointer; transition: border-color var(--dur-micro) var(--ease-out); }
   .thumb img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
-  .thumb:hover, .thumb.active { opacity: 1; border-color: var(--accent); }
+  .thumb:hover { border-color: var(--color-ink-2); }
+  .thumb.active { border-color: var(--color-ink); }
+  .thumb:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
+  .thumb:active { border-color: var(--color-accent-2); }
 
-  .buy { position: sticky; top: 88px; }
-  .buy-inner { display: grid; gap: 14px; padding: 26px; border-radius: 24px; border: 1px solid var(--line-2); background: radial-gradient(100% 60% at 100% 0%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 70%), var(--bg-2); box-shadow: var(--shadow); justify-items: start; }
-  .buy-inner > :global(.btn) { justify-self: stretch; }
-  .buy h1 { font-size: clamp(1.7rem, 3vw, 2.4rem); margin: 4px 0 0; }
-  .headline { margin: 0; font-weight: 700; color: var(--accent); }
-  .short { margin: 0; }
-  .price-box { display: grid; gap: 12px; padding: 14px 0; border-block: 1px solid var(--line); width: 100%; }
-  .big-price { display: flex; align-items: baseline; gap: 12px; }
-  .big-price strong { font: 900 2.6rem/1 var(--font-display); }
-  .big-price s { color: var(--dim); font-size: 1.2rem; }
-  .secure { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--muted); margin: -4px 0 0; justify-self: center; text-align: center; }
-  .upsell { display: grid; gap: 3px; width: 100%; padding: 14px 16px; border-radius: 14px; border: 1px dashed rgba(255, 138, 31, 0.5); background: rgba(255, 138, 31, 0.07); transition: background 0.2s, transform 0.3s var(--ease); }
-  .upsell:hover { background: rgba(255, 138, 31, 0.14); transform: translateY(-2px); }
-  .upsell span { font-size: 0.68rem; color: var(--orange); }
-  .upsell em { font-style: normal; color: var(--muted); font-size: 0.85rem; }
-  .specs { display: grid; grid-template-columns: auto 1fr; gap: 8px 18px; margin: 4px 0 0; font-size: 0.9rem; width: 100%; }
-  .specs dt { color: var(--dim); font: 400 0.7rem/1.9 var(--font-pixel); text-transform: uppercase; letter-spacing: 0.06em; }
-  .specs dd { margin: 0; font-weight: 600; }
-  .specs a { color: var(--cyan); }
-  .itch-link { font-size: 0.85rem; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+  .buy { position: sticky; top: calc(var(--nav-height) + var(--space-lg)); display: grid; gap: var(--space-md); justify-items: start; }
+  .buy h1 { font-size: var(--text-display); max-width: 12ch; text-wrap: balance; }
+  .buy-price { display: flex; align-items: baseline; gap: var(--space-md); padding-top: var(--space-md); border-top: var(--rule-bar) solid var(--color-ink); width: 100%; }
+  .buy-price .price-figure { font-size: var(--text-price); }
+  .buy-price .was { font-size: var(--text-xl); }
+  .specs { width: 100%; margin: var(--space-xs) 0 0; display: grid; }
+  .specs div { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 5fr); gap: var(--space-md); padding-block: var(--space-xs); border-top: var(--rule-hair) solid var(--color-ink); }
+  .specs dt { font-size: var(--text-sm); font-weight: 500; color: var(--color-muted); }
+  .specs dd { margin: 0; font-size: var(--text-sm); }
+  .upsell { width: 100%; display: grid; gap: var(--space-2xs); padding: var(--space-md); background: var(--color-accent); color: var(--color-accent-ink); border: var(--rule-bar) solid var(--color-ink); box-shadow: var(--shadow-card); text-decoration: none; transition: background-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out); }
+  .upsell .small { color: inherit; }
+  .upsell-title { font: var(--display-weight) var(--text-xl)/1.1 var(--font-display); text-transform: uppercase; letter-spacing: var(--tracking-display); }
+  .upsell:hover { background: var(--color-ink); color: var(--color-accent); }
+  .upsell:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
+  .upsell:active { box-shadow: var(--shadow-press); }
 
-  .details { display: grid; grid-template-columns: 1.35fr 1fr; gap: 36px; margin-top: 56px; align-items: start; }
-  .details .prose { padding: 32px; border-radius: 24px; border: 1px solid var(--line); background: var(--panel); min-width: 0; }
-  .details .prose > h2:first-child { margin-top: 0; font-size: 1.6rem; }
-  .side { display: grid; gap: 22px; position: sticky; top: 88px; }
-  .side-title { font: 400 0.75rem/1 var(--font-pixel); letter-spacing: 0.12em; color: var(--cyan); text-transform: uppercase; margin: 0 0 12px; }
-  .tags { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px; }
-  .tags a { display: inline-block; padding: 6px 11px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); font-size: 0.85rem; font-weight: 600; }
-  .tags a:hover { color: var(--text); border-color: var(--accent); }
-  .howto p { color: var(--muted); font-size: 0.9rem; }
-  .howto b { color: var(--text); }
+  .details { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-3xl); padding-top: var(--space-xl); border-top: var(--rule-bar) solid var(--color-ink); align-items: start; }
+  .details .prose > h2:first-child { font-size: var(--text-section); margin-top: 0; }
+  .side { display: grid; gap: var(--space-md); justify-items: start; position: sticky; top: calc(var(--nav-height) + var(--space-lg)); }
+  .side h2 { font-size: var(--text-xl); }
+  .side p { font-size: var(--text-sm); color: var(--color-ink-2); }
+  .tags { list-style: none; margin: 0 0 var(--space-md); padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-xs); }
+  .tags a { display: inline-block; padding: var(--space-2xs) var(--space-sm); border: var(--rule-bar) solid var(--color-ink); font-size: var(--text-sm); text-decoration: none; transition: background-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out); }
+  .tags a:hover { background: var(--color-ink); color: var(--color-paper); }
+  .tags a:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+  .tags a:active { background: var(--color-ink-2); color: var(--color-paper); }
 
   .sticky-buy { display: none; }
-  @media (max-width: 960px) {
-    .pdp, .details { grid-template-columns: 1fr; }
+  @media (max-width: 60rem) {
+    .pdp, .details { grid-template-columns: minmax(0, 1fr); gap: var(--space-xl); }
     .buy, .side { position: static; }
-    .sticky-buy { display: flex; position: fixed; left: 10px; right: 10px; bottom: 10px; z-index: 60; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 10px 10px 16px; border-radius: 18px; background: rgba(8, 11, 43, 0.92); backdrop-filter: blur(14px); border: 1px solid var(--line-2); box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6); transform: translateY(140%); transition: transform 0.4s var(--ease); }
-    .sticky-buy.show { transform: none; }
-    .sticky-buy div { display: grid; min-width: 0; }
-    .sticky-buy b { font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .sticky-buy span { font-weight: 800; color: var(--green); }
-    .sticky-buy s { color: var(--dim); margin-left: 6px; font-weight: 500; }
-    .details .prose { padding: 22px; }
+    .sticky-buy { display: flex; position: fixed; inset: auto 0 0 0; z-index: var(--z-sticky); align-items: center; justify-content: space-between; gap: var(--space-md); padding: var(--space-sm) var(--gutter); background: var(--color-paper); border-top: var(--rule-bar) solid var(--color-ink); opacity: 0; pointer-events: none; transition: opacity var(--dur-short) var(--ease-out); }
+    .sticky-buy.show { opacity: 1; pointer-events: auto; }
+    .sticky-buy p { display: grid; min-width: 0; }
+    .sticky-buy strong { font-size: var(--text-sm); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sticky-buy .price-figure { font-size: var(--text-xl); }
   }
 
-  .lightbox { width: 100vw; height: 100vh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: rgba(2, 3, 14, 0.94); color: var(--text); }
+  .lightbox { width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: var(--space-xl); border: 0; background: var(--color-scrim); color: var(--color-paper); }
   .lightbox[open] { display: grid; place-items: center; }
-  .lightbox::backdrop { background: rgba(2, 3, 14, 0.8); backdrop-filter: blur(6px); }
-  .lightbox img { max-width: 92vw; max-height: 86vh; border-radius: 14px; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8); }
-  .lb-btn { position: fixed; top: 50%; translate: 0 -50%; width: 52px; height: 52px; border-radius: 50%; border: 1px solid var(--line-2); background: rgba(8, 11, 43, 0.8); color: var(--text); font-size: 1.8rem; cursor: pointer; display: grid; place-items: center; }
-  .lb-btn:hover { border-color: var(--cyan); }
-  .lb-prev { left: 18px; } .lb-next { right: 18px; }
-  .lb-close { top: 34px; right: 18px; translate: none; font-size: 1.1rem; }
-  .lb-count { position: fixed; bottom: 20px; left: 50%; translate: -50% 0; font-size: 0.75rem; color: var(--muted); }
+  .lightbox::backdrop { background: var(--color-scrim); }
+  .lightbox img { max-width: 100%; max-height: 82dvh; border: var(--rule-bar) solid var(--color-paper); }
+  .lb-prev, .lb-next, .lb-close { position: fixed; }
+  .lb-prev { left: var(--space-lg); top: 50%; }
+  .lb-next { right: var(--space-lg); top: 50%; }
+  .lb-close { right: var(--space-lg); top: var(--space-lg); }
+  .lb-count { position: fixed; bottom: var(--space-lg); left: 0; right: 0; text-align: center; color: var(--color-paper-3); }
 </style>
 
 <script>
@@ -280,6 +259,6 @@ const breadcrumb = {
 
   // Mobile sticky buy bar appears once the main buy button scrolls out of view
   const bar = document.getElementById('sticky-buy');
-  const mainBuy = document.querySelector('.buy-inner a[data-buy]');
+  const mainBuy = document.querySelector('.buy a[data-buy]');
   if (bar && mainBuy) new IntersectionObserver(([e]) => bar.classList.toggle('show', !e.isIntersecting && e.boundingClientRect.top < 0)).observe(mainBuy);
 </script>

@@ -36,39 +36,51 @@ const jsonld = [
 ---
 <Base
   title={S.seoTitle}
-  description={`${list.length} ${S.title.toLowerCase()} with ${models}+ game-ready models for Unity, Godot & Unreal. ${S.blurb.split('—')[0].trim()} From $${Math.min(...prices).toFixed(2)}.`.slice(0, 165)}
+  description={`${list.length} ${S.title.toLowerCase()} with ${models}+ game-ready models for Unity, Godot and Unreal. From $${Math.min(...prices).toFixed(2)}.`}
   image={myBundles[0]?.og || list[0]?.cover.src}
   jsonld={jsonld}
 >
-  <ListingHero eyebrow={`${S.emoji} ${list.length} packs · ${models}+ models`} title={`${S.title.replace(S.name, `<em>${S.name}</em>`)}`} accent={S.accent} covers={list} crumbs={[{ href: '/', label: 'Home' }, { href: '/assets/', label: 'Assets' }, { label: S.title }]}>
-    <p>{S.long}</p>
+  <ListingHero title={`${S.title}.`} crumbs={[{ href: '/', label: 'Home' }, { href: '/assets/', label: 'All packs' }, { label: S.title }]}>
+    <p>{list.length} packs, {models}+ models. {S.blurb}</p>
   </ListingHero>
-  <div class="wrap">
+  <div class="container">
+    <section class="section--s">
+      <div class="pack-grid">{list.map((a, i) => <AssetCard asset={a} eager={i < 4} />)}</div>
+    </section>
+
     {myBundles.length > 0 && (
-      <div class="b-list">{myBundles.map((b) => <BundleCard bundle={b} />)}</div>
+      <section class="section">
+        <h2 class="block-head">All {list.length} in one bundle.</h2>
+        {myBundles.map((b) => <BundleCard bundle={b} />)}
+      </section>
     )}
-    <h2 class="list-title">{list.length} {S.title}</h2>
-    <div class="grid">{list.map((a, i) => <AssetCard asset={a} eager={i < 3} />)}</div>
+
+    <section class="section about-series">
+      <h2>About this collection.</h2>
+      <p class="lead">{S.long}</p>
+    </section>
 
     <section class="section">
-      <h2>Explore other collections</h2>
-      <div class="others">
+      <h2 class="block-head">Other collections.</h2>
+      <ul class="others">
         {others.map((o) => (
-          <a href={`/collections/${o}/`} class="other" style={`--accent:${SERIES[o].accent}`}>
-            <span>{SERIES[o].emoji}</span><b>{SERIES[o].title}</b><em>{bySeries(o).length} packs →</em>
-          </a>
+          <li><a href={`/collections/${o}/`}><span>{SERIES[o].title}</span><span class="small">{bySeries(o).length} packs</span></a></li>
         ))}
-      </div>
+      </ul>
     </section>
   </div>
 </Base>
 <style>
-  .b-list { display: grid; gap: 20px; margin-bottom: 50px; }
-  .list-title { font-size: 1.4rem; margin-bottom: 22px; }
-  .others { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-  .other { display: grid; gap: 4px; padding: 22px; border-radius: 18px; border: 1px solid var(--line); background: var(--panel); transition: border-color 0.3s, transform 0.3s var(--ease); }
-  .other:hover { border-color: var(--accent); transform: translateY(-3px); }
-  .other span { font-size: 1.6rem; }
-  .other em { font-style: normal; color: var(--accent); font-size: 0.88rem; font-weight: 700; }
-  @media (max-width: 760px) { .others { grid-template-columns: 1fr; } }
+  .block-head { margin-bottom: var(--space-xl); }
+  .about-series { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gap-columns); }
+  .about-series h2 { grid-column: 1 / span 5; text-wrap: balance; }
+  .about-series .lead { grid-column: 6 / span 7; max-width: 60ch; }
+  .others { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap-columns); }
+  .others a { display: grid; gap: var(--space-xs); padding: var(--space-lg); border: var(--rule-bar) solid var(--color-ink); box-shadow: var(--shadow-card); text-decoration: none; background: var(--color-paper); transition: background-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out); }
+  .others a span:first-child { font: var(--display-weight) var(--text-xl)/1.1 var(--font-display); text-transform: uppercase; letter-spacing: var(--tracking-display); }
+  .others a:hover { background: var(--color-ink); color: var(--color-paper); }
+  .others a:hover .small { color: var(--color-paper-3); }
+  .others a:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
+  .others a:active { box-shadow: var(--shadow-press); }
+  @media (max-width: 60rem) { .about-series h2, .about-series .lead { grid-column: 1 / -1; } .others { grid-template-columns: minmax(0, 1fr); } }
 </style>

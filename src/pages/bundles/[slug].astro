@@ -18,7 +18,7 @@ const jsonld = [
   {
     '@context': 'https://schema.org',
     '@type': 'Product',
-    name: `${name} — ${members.length} ${S.name} asset packs`,
+    name: `${name}: ${members.length} ${S.name} asset packs`,
     description: b.description || `${members.length} ${S.title.toLowerCase()} in one bundle.`,
     image: [absolute(b.og)],
     brand: { '@type': 'Brand', name: SITE.brand },
@@ -48,31 +48,21 @@ const jsonld = [
 ---
 <Base
   title={`${name}: ${members.length} ${S.name} Asset Packs for ${b.bundlePrice}${save ? ` (Save ${save}%)` : ''}`}
-  description={`Get all ${members.length} ${S.title.toLowerCase()} (${b.modelCount}+ models) for just ${b.bundlePrice} instead of ${fmtUSD(sumFull)}. Unity, Godot, Unreal & Blender ready. Limited-time deal.`}
+  description={`Get all ${members.length} ${S.title.toLowerCase()} (${b.modelCount}+ models) for ${b.bundlePrice} instead of ${fmtUSD(sumFull)}. Unity, Godot, Unreal and Blender ready.`}
   image={b.og}
   type="product"
   price={{ amount: b.bundlePriceValue, currency: 'USD' }}
   jsonld={jsonld}
 >
-  <ListingHero eyebrow={`${S.emoji} ${members.length} packs · ${b.modelCount}+ models`} title={`${name.replace(/Bundle$/, '<em>Bundle</em>')}`} accent={S.accent} covers={members} crumbs={[{ href: '/', label: 'Home' }, { href: '/bundles/', label: 'Bundles' }, { label: name }]}>
-    {b.description && <p>{b.description}</p>}
+  <ListingHero title={`${name}.`} crumbs={[{ href: '/', label: 'Home' }, { href: '/bundles/', label: 'Bundles' }, { label: name }]}>
+    {b.description && <p>{b.description.replace(/\s+[—–]\s+/g, ', ')}</p>}
   </ListingHero>
-  <div class="wrap">
-    <BundleCard bundle={b} />
-    <h2 style="margin:60px 0 22px;font-size:1.5rem">Everything included in this bundle</h2>
-    <div class="grid">{members.map((a) => <AssetCard asset={a} />)}</div>
-    <div class="value reveal">
-      <div><span class="pixel">Bought separately</span><s>{fmtUSD(sumFull)}</s></div>
-      <div><span class="pixel">Bundle price</span><strong>{b.bundlePrice}</strong></div>
-      <a class="btn btn-buy btn-lg" href={b.url} target="_blank" rel="noopener">Get all {members.length} packs on itch.io</a>
-    </div>
+  <div class="container">
+    <BundleCard bundle={b} eager />
+    <section class="section">
+      <h2 class="block-head">What is inside.</h2>
+      <div class="pack-grid">{members.map((a) => <AssetCard asset={a} />)}</div>
+    </section>
   </div>
-  <div style="height:80px"></div>
 </Base>
-<style>
-  .value { margin-top: 50px; display: flex; align-items: center; justify-content: center; gap: 40px; flex-wrap: wrap; padding: 32px; border-radius: 24px; border: 1px dashed rgba(255, 138, 31, 0.5); background: rgba(255, 138, 31, 0.06); text-align: center; }
-  .value div { display: grid; gap: 6px; }
-  .value span { font-size: 0.72rem; color: var(--muted); }
-  .value s { font: 700 1.6rem/1 var(--font-display); color: var(--dim); }
-  .value strong { font: 900 2.4rem/1 var(--font-display); color: var(--green); }
-</style>
+<style>.block-head { margin-bottom: var(--space-xl); }</style>

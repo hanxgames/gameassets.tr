@@ -9,14 +9,14 @@ export function getStaticPaths() {
 }
 const key = Astro.params.engine as EngineKey;
 const E = ENGINES[key];
-// Every pack ships GLB/FBX/OBJ/.blend, so all packs work everywhere; list explicitly-mentioned ones first.
+// Every pack ships GLB, FBX, OBJ and .blend, so all packs work everywhere; packs that name the engine come first.
 const explicit = byEngine(key);
 const list = [...explicit, ...assets.filter((a) => !explicit.includes(a))];
 const models = list.reduce((n, a) => n + (a.modelCount || 0), 0);
 const faq = [
-  { q: `Do HanX Assets work in ${E.name}?`, a: `Yes. Every pack includes GLB, FBX and OBJ files plus a native .blend, so all ${assets.length} packs import cleanly into ${E.name}. ${E.how}` },
-  { q: `Are these ${E.name} assets free for commercial use?`, a: 'Yes — after purchase you can use them in unlimited commercial games and apps with no royalties and no attribution required. You just can’t resell the raw files.' },
-  { q: `Will they run well on mobile with ${E.name}?`, a: 'Yes. All models share one material and one small palette texture, so scenes batch into very few draw calls, and triangle counts are low enough for budget phones and WebGL builds.' },
+  { q: `Do HanX Assets work in ${E.name}?`, a: `Yes. Every pack includes GLB, FBX and OBJ files plus a native .blend, so all ${assets.length} packs import into ${E.name}. ${E.how}` },
+  { q: `Can I use these ${E.name} assets commercially?`, a: 'Yes. After purchase you can use them in unlimited commercial games and apps with no royalties and no attribution. Only reselling the raw files is not allowed.' },
+  { q: `Do they run well on mobile with ${E.name}?`, a: 'Yes. The models share one material and one small palette texture, so scenes batch into very few draw calls, and triangle counts stay low enough for budget phones and WebGL builds.' },
 ];
 const jsonld = [
   {
@@ -38,22 +38,35 @@ const jsonld = [
 ];
 ---
 <Base
-  title={`${E.title} — ${list.length} Game-Ready Packs`}
-  description={`${list.length} low poly & 3D pixel asset packs (${models}+ models) ready for ${E.name}: cities, cars, SWAT, dungeons and more. One material, commercial license, from $${minPrice.toFixed(2)}.`}
+  title={`${E.title}: ${list.length} Game-Ready Packs`}
+  description={`${list.length} low poly and 3D pixel asset packs (${models}+ models) ready for ${E.name}: cities, cars, SWAT, dungeons and more. One material, commercial license, from $${minPrice.toFixed(2)}.`}
   jsonld={jsonld}
 >
-  <ListingHero eyebrow={`${E.name} ready · ${models}+ models`} title={E.title.replace(E.name, `<em>${E.name}</em>`)} covers={list} crumbs={[{ href: '/', label: 'Home' }, { label: E.title }]}>
-    <p>Looking for stylized, performance-friendly 3D assets for {E.name}? Every HanX Assets pack is built for real-time engines: clean low poly meshes, real-world scale, pivots at the base and a single shared palette material.</p>
-    <p><strong>How to use them in {E.name}:</strong> {E.how}</p>
+  <ListingHero title={`${E.title}.`} crumbs={[{ href: '/', label: 'Home' }, { label: E.title }]}>
+    <p>{list.length} packs and {models}+ models with clean low poly meshes, real-world scale and one shared material.</p>
   </ListingHero>
-  <div class="wrap">
-    <div class="grid">{list.map((a, i) => <AssetCard asset={a} eager={i < 3} />)}</div>
+  <div class="container">
+    <section class="section--s">
+      <div class="pack-grid">{list.map((a, i) => <AssetCard asset={a} eager={i < 4} />)}</div>
+    </section>
+    <section class="section how">
+      <h2>Into {E.name} in a minute.</h2>
+      <p class="lead">{E.how}</p>
+    </section>
     <section class="section">
-      <h2>{E.name} FAQ</h2>
+      <h2 class="block-head">{E.name} questions.</h2>
       <div class="faq">{faq.map((f) => <details><summary>{f.q}</summary><div class="answer">{f.a}</div></details>)}</div>
-      <p style="margin-top:30px" class="muted">
-        Other engines: {(Object.keys(ENGINES) as EngineKey[]).filter((e) => e !== key).map((e, i) => <>{i > 0 && ' · '}<a href={`/engines/${e}/`} style="color:var(--cyan)">{ENGINES[e].title}</a></>)}
+      <p class="other">
+        Other engines: {(Object.keys(ENGINES) as EngineKey[]).filter((e) => e !== key).map((e, i) => <>{i > 0 && ', '}<a class="link" href={`/engines/${e}/`}>{ENGINES[e].title}</a></>)}
       </p>
     </section>
   </div>
 </Base>
+<style>
+  .block-head { margin-bottom: var(--space-xl); }
+  .how { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gap-columns); }
+  .how h2 { grid-column: 1 / span 5; text-wrap: balance; }
+  .how .lead { grid-column: 6 / span 7; max-width: 60ch; }
+  .other { margin-top: var(--space-xl); }
+  @media (max-width: 60rem) { .how h2, .how .lead { grid-column: 1 / -1; } }
+</style>

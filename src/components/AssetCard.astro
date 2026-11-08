@@ -1,17 +1,15 @@
 ---
-import { SERIES, type Asset, type SeriesKey } from '../data/site';
+import type { Asset } from '../data/site';
 import BuyButton from './BuyButton.astro';
 interface Props { asset: Asset; eager?: boolean; headingLevel?: 'h2' | 'h3' }
 const { asset: a, eager = false, headingLevel = 'h3' } = Astro.props;
 const H = headingLevel;
-const series = SERIES[a.series as SeriesKey];
 const onSale = a.originalPrice && a.originalPriceValue > a.priceValue;
-const peek = a.screenshots.slice(0, 5).map((s) => s.sm).join('|');
 const engines = (a.engines as string[]).filter((e) => e !== 'threejs').slice(0, 3);
 const search = [a.title, a.shortDescription, a.series, ...(a.tags as string[]), ...engines].join(' ').toLowerCase();
 ---
 <article
-  class="card-wrap reveal"
+  class="pack"
   data-series={a.series}
   data-engines={engines.join(' ')}
   data-price={a.priceValue}
@@ -19,36 +17,14 @@ const search = [a.title, a.shortDescription, a.series, ...(a.tags as string[]), 
   data-date={a.published}
   data-search={search}
 >
-<div class="card" data-tilt data-peek={peek} style={`--accent:${series.accent}`}>
-  <div class="card-media">
-    <img
-      src={a.cover.sm}
-      width="630"
-      height="500"
-      alt={`${a.title} — ${a.shortDescription}`}
-      loading={eager ? 'eager' : 'lazy'}
-      decoding="async"
-      fetchpriority={eager ? 'high' : 'auto'}
-      style={`view-transition-name: cover-${a.slug}`}
-    />
-    <img class="peek" alt="" aria-hidden="true" decoding="async" />
-    <span class="glare"></span>
-    <div class="card-flags">
-      <span class="chip">{series.emoji} {series.name}</span>
-      {onSale && <span class="badge-sale">-{a.sale?.rate ?? Math.round((1 - a.priceValue / a.originalPriceValue) * 100)}%</span>}
-    </div>
+  <div class="frame frame--cover">
+    <img src={a.cover.sm} width="630" height="500" alt={`${a.title} cover`} loading={eager ? 'eager' : 'lazy'} decoding="async" fetchpriority={eager ? 'high' : 'auto'} />
+    {onSale && <span class="stamp">-{a.sale?.rate ?? Math.round((1 - a.priceValue / a.originalPriceValue) * 100)}%</span>}
   </div>
-  <div class="card-body">
-    <H class="card-title"><a href={`/assets/${a.slug}/`}>{a.title}</a></H>
-    <p class="card-desc">{a.shortDescription}</p>
-    <div class="card-meta">
-      {a.modelCount && <span>{a.modelCount} models</span>}
-      {engines.map((e) => <span>{e}</span>)}
-    </div>
-    <div class="card-foot">
-      <div class="price">{a.price}{onSale && <s>{a.originalPrice}</s>}</div>
-      <BuyButton asset={a} size="sm" label="Buy" />
-    </div>
+  <H><a href={`/assets/${a.slug}/`}>{a.title}</a></H>
+  <p>{a.shortDescription}</p>
+  <div class="pack-foot">
+    <span class="price"><span class="price-figure">{a.price}</span>{onSale && <span class="was small">{a.originalPrice}</span>}</span>
+    <BuyButton asset={a} size="sm" label="Buy" />
   </div>
-</div>
 </article>

@@ -1,0 +1,33 @@
+[
+ {
+  "mode": "redesign",
+  "depth": "full",
+  "scope": "site",
+  "shape": "Bento Grid",
+  "theme": "carnival",
+  "axes": "light/display-heavy/chromatic-yellow",
+  "hero": "Counter",
+  "nav": "masthead",
+  "footer": "mast",
+  "imagery": "user pack covers and renders",
+  "photos": [],
+  "entry": "/",
+  "fingerprint": "carnival-citrus-riot-counter-bento",
+  "sections": [
+   "Counter hero",
+   "Bento collections",
+   "Rows facts",
+   "Rail newest",
+   "Pinned build",
+   "Table bundles",
+   "Footer mast"
+  ],
+  "signature": "bundle price set poster-large on a stamped offer",
+  "waived": [
+   "49b",
+   "23"
+  ],
+  "prompt": "storefront for an indie studio low poly and 3D pixel game asset packs",
+  "date": "2026-11-08"
+ }
+]

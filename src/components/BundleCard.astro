@@ -1,48 +1,39 @@
 ---
-import { SERIES, bundleName, bundleSeries, bundleSavings, membersOf, type Bundle } from '../data/site';
+import { bundleName, bundleSavings, membersOf, type Bundle } from '../data/site';
 import Countdown from './Countdown.astro';
-interface Props { bundle: Bundle; compact?: boolean }
-const { bundle: b, compact = false } = Astro.props;
+interface Props { bundle: Bundle; compact?: boolean; eager?: boolean }
+const { bundle: b, compact = false, eager = false } = Astro.props;
 const members = membersOf(b);
-const s = SERIES[bundleSeries(b)];
 const save = bundleSavings(b);
 ---
-<article class="bundle reveal" style={`--accent:${s.accent}`}>
-  <div class="bundle-stack" aria-hidden="true">
-    {members.slice(0, 5).map((m, i) => (
-      <img src={m.cover.sm} alt="" loading="lazy" decoding="async" width="630" height="500" style={`--i:${i}`} />
-    ))}
+<article class="offer">
+  <div class="offer-media">
+    <div class="frame frame--cover tilt-l"><img src={members[0]?.cover.src} alt={`${bundleName(b)}: ${members[0]?.title} and ${members.length - 1} more packs`} width="1200" height="952" loading={eager ? 'eager' : 'lazy'} fetchpriority={eager ? 'high' : 'auto'} decoding="async" /></div>
+    <span class="stamp offer-stamp">{members.length} packs</span>
   </div>
-  <div class="bundle-body">
-    <span class="chip">{s.emoji} {members.length} packs · {b.modelCount}+ models</span>
+  <div class="offer-body">
     <h3><a href={`/bundles/${b.slug}/`}>{bundleName(b)}</a></h3>
-    {!compact && <p class="muted">{members.map((m) => m.title.replace(/^(Low Poly|3D Pixel) (Halloween |Christmas )?/, '').replace(/ Pack$/, '')).join(' · ')}</p>}
-    <div class="bundle-price">
-      <strong>{b.bundlePrice}</strong>
-      {b.regularPrice && <s>{b.regularPrice}</s>}
-      {save > 0 && <span class="badge-sale">Save {save}%</span>}
-    </div>
-    {!compact && <Countdown ends={b.ends} label="Deal ends in" />}
-    <div class="bundle-cta">
-      <a class="btn btn-buy" href={b.url} target="_blank" rel="noopener" aria-label={`Get the ${bundleName(b)} on itch.io for ${b.bundlePrice}`}>
-        Get all {members.length} for {b.bundlePrice}
-      </a>
-      <a class="btn btn-ghost" href={`/bundles/${b.slug}/`}>Details</a>
+    {!compact && <p class="small">{members.map((m) => m.title.replace(/^(Low Poly|3D Pixel) (Halloween |Christmas )?/, '').replace(/ Pack$/, '')).join(', ')}.</p>}
+    <p class="offer-price"><span class="price-figure">{b.bundlePrice}</span>{b.regularPrice && <span class="was">{b.regularPrice}</span>}</p>
+    {save > 0 && <p class="small">Save {save}% against buying the {members.length} packs one by one. {b.modelCount}+ models.</p>}
+    {!compact && <Countdown ends={b.ends} label="Bundle price until" />}
+    <div class="actions">
+      <a class="btn btn--primary" href={b.url} target="_blank" rel="noopener" aria-label={`Get the ${bundleName(b)} on itch.io for ${b.bundlePrice}`}>Get all {members.length}</a>
+      <a class="btn" href={`/bundles/${b.slug}/`}>See the packs</a>
     </div>
   </div>
 </article>
 <style>
-  .bundle { position: relative; display: grid; grid-template-columns: minmax(220px, 0.9fr) 1.1fr; gap: 28px; align-items: center; padding: 26px; border-radius: 24px; border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent); background: radial-gradient(120% 90% at 0% 0%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 60%), var(--panel); overflow: hidden; }
-  .bundle-stack { position: relative; aspect-ratio: 5 / 4; perspective: 900px; }
-  .bundle-stack img { position: absolute; width: 74%; left: calc(var(--i) * 6.5%); top: calc(var(--i) * 6%); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.12); box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.8); transform: rotateY(-14deg) rotateX(6deg) translateZ(calc(var(--i) * 18px)); transition: transform 0.6s var(--ease); }
-  .bundle:hover .bundle-stack img { transform: rotateY(-4deg) rotateX(2deg) translateX(calc(var(--i) * 10px)) translateZ(calc(var(--i) * 24px)); }
-  .bundle-body { display: grid; gap: 12px; justify-items: start; }
-  .bundle h3 { font-size: clamp(1.3rem, 2.4vw, 1.8rem); margin: 0; }
-  .bundle h3 a:hover { color: var(--accent); }
-  .bundle p { margin: 0; font-size: 0.92rem; }
-  .bundle-price { display: flex; align-items: baseline; gap: 12px; }
-  .bundle-price strong { font: 800 2rem/1 var(--font-display); }
-  .bundle-price s { color: var(--dim); font-size: 1.05rem; }
-  .bundle-cta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
-  @media (max-width: 720px) { .bundle { grid-template-columns: 1fr; padding: 18px; } }
+  .offer { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-2xl); align-items: center; padding-block: var(--space-2xl); border-top: var(--rule-bar) solid var(--color-accent-2); }
+  .offer-media { position: relative; }
+  .offer-stamp { left: calc(-1 * var(--space-sm)); bottom: calc(-1 * var(--space-sm)); }
+  .offer-body { display: grid; gap: var(--space-md); justify-items: start; }
+  .offer h3 { font-size: var(--text-section); }
+  .offer h3 a { text-decoration: none; }
+  .offer h3 a:hover { color: var(--color-accent-2); }
+  .offer h3 a:focus-visible { outline: 2px solid var(--color-focus); }
+  .offer-price { display: flex; align-items: baseline; gap: var(--space-md); }
+  .offer-price .price-figure { font-size: var(--text-price); }
+  .offer-price .was { font-size: var(--text-xl); }
+  @media (max-width: 60rem) { .offer { grid-template-columns: minmax(0, 1fr); } }
 </style>

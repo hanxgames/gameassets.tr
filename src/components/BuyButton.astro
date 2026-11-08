@@ -1,20 +1,7 @@
 ---
 import type { Asset } from '../data/site';
-interface Props { asset: Asset; size?: 'sm' | 'md' | 'lg'; label?: string; full?: boolean }
-const { asset, size = 'md', label, full = false } = Astro.props;
-const text = label ?? `Buy now — ${asset.price}`;
-const cls = ['btn', 'btn-buy', size === 'sm' ? 'btn-sm' : size === 'lg' ? 'btn-lg' : ''].join(' ');
+interface Props { asset: Asset; variant?: 'primary' | 'outline'; size?: 'sm' | 'md'; label?: string; block?: boolean }
+const { asset, variant = 'outline', size = 'md', label = 'Buy on itch.io', block = false } = Astro.props;
+const cls = ['btn', variant === 'primary' && 'btn--primary', size === 'sm' && 'btn--sm', block && 'btn--block'].filter(Boolean).join(' ');
 ---
-<a
-  class={cls}
-  href={asset.buyUrl}
-  data-buy
-  data-popup={`${asset.buyUrl}?popup=1`}
-  target="_blank"
-  rel="noopener"
-  style={full ? 'width:100%' : undefined}
-  aria-label={`Buy ${asset.title} on itch.io for ${asset.price}`}
->
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6h15l-1.5 9h-12z" /><path d="M6 6 5 3H2" /><circle cx="9" cy="20" r="1.4" /><circle cx="18" cy="20" r="1.4" /></svg>
-  {text}
-</a>
+<a class={cls} href={asset.buyUrl} data-buy data-popup={`${asset.buyUrl}?popup=1`} target="_blank" rel="noopener" aria-label={`Buy ${asset.title} on itch.io for ${asset.price}`}>{label}</a>

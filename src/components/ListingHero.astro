@@ -1,28 +1,14 @@
 ---
 import type { Asset } from '../data/site';
-interface Props { eyebrow: string; title: string; accent?: string; covers: Asset[]; crumbs: { href?: string; label: string }[] }
-const { eyebrow, title, accent = '#67fb60', covers, crumbs } = Astro.props;
+interface Props { eyebrow?: string; title: string; accent?: string; covers?: Asset[]; crumbs: { href?: string; label: string }[] }
+const { title, crumbs } = Astro.props;
 ---
-<section class="lhero" style={`--accent:${accent}`}>
-  <div class="lhero-bg" aria-hidden="true">
-    {covers.slice(0, 6).map((c, i) => <img src={c.cover.sm} alt="" loading={i < 3 ? 'eager' : 'lazy'} decoding="async" width="315" height="250" style={`--i:${i}`} />)}
-  </div>
-  <div class="wrap">
+<header class="listing-head">
+  <div class="container">
     <nav class="crumbs" aria-label="Breadcrumb">
-      {crumbs.map((c, i) => <>{i > 0 && <span aria-hidden="true">/</span>}{c.href ? <a href={c.href}>{c.label}</a> : <span>{c.label}</span>}</>)}
+      <ol>{crumbs.map((c) => <li>{c.href ? <a href={c.href}>{c.label}</a> : <span aria-current="page">{c.label}</span>}</li>)}</ol>
     </nav>
-    <span class="eyebrow">{eyebrow}</span>
-    <h1 set:html={title} />
-    <div class="lhero-copy"><slot /></div>
+    <h1>{title}</h1>
+    <div class="lead"><slot /></div>
   </div>
-</section>
-<style>
-  .lhero { position: relative; isolation: isolate; overflow: hidden; padding: 10px 0 60px; border-bottom: 1px solid var(--line); margin-bottom: 50px; }
-  .lhero h1 { max-width: 900px; font-size: clamp(2rem, 5vw, 3.8rem); text-wrap: balance; }
-  .lhero h1 :global(em) { font-style: normal; color: var(--accent); }
-  .lhero-copy { max-width: 760px; color: #cdd2f5; font-size: 1.08rem; }
-  .lhero-bg { position: absolute; inset: 0; z-index: -1; display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; opacity: 0.22; transform: rotate(-6deg) scale(1.3); filter: saturate(1.2); mask-image: linear-gradient(90deg, transparent 20%, #000 70%); }
-  .lhero-bg img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; animation: drift 18s ease-in-out infinite alternate; animation-delay: calc(var(--i) * -3s); }
-  .lhero::after { content: ''; position: absolute; inset: 0; z-index: -1; background: radial-gradient(60% 80% at 0% 0%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 70%), linear-gradient(180deg, transparent 60%, var(--bg)); }
-  @keyframes drift { to { transform: translateY(-30px); } }
-</style>
+</header>
