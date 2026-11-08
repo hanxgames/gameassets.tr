@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Asset License — Royalty-Free Commercial Use" description="The HanX Assets license in plain English: use our low poly & 3D pixel models in unlimited commercial games, apps and videos. No royalties, no attribution required.">
+  <div class="wrap narrow">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span>License</span></nav>
+    <span class="eyebrow">Plain-English license</span>
+    <h1>Use it. Ship it. <span class="grad-text">Sell your game.</span></h1>
+    <div class="prose">
+      <p>Every HanX Assets pack includes a <strong>royalty-free commercial license</strong>. The full legal text ships as <code>LICENSE.txt</code> inside each download and is the authoritative version; here is the short summary.</p>
+      <div class="cols">
+        <div class="yes"><h2>✅ You can</h2><ul>
+          <li>Use the assets in unlimited personal and commercial projects</li>
+          <li>Use them in games, apps, videos and client work</li>
+          <li>Use them in game jams and prototypes</li>
+          <li>Modify, recolor, combine and kitbash them freely</li>
+          <li>Ship them inside compiled/packaged games on any store</li>
+          <li>Skip attribution (credit is appreciated, never required)</li>
+        </ul></div>
+        <div class="no"><h2>⛔ You can’t</h2><ul>
+          <li>Resell or redistribute the raw asset files, alone or in another asset pack</li>
+          <li>Upload them to free model libraries or marketplaces</li>
+          <li>Claim the original models as your own artwork</li>
+        </ul></div>
+      </div>
+      <p>Questions about a specific use case? Leave a comment on the pack’s itch.io page — we’re happy to help.</p>
+    </div>
+  </div>
+</Base>
+<style>
+  .narrow { max-width: 900px; padding-bottom: 90px; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 30px 0; }
+  .cols > div { padding: 24px; border-radius: 20px; border: 1px solid var(--line); background: var(--panel); }
+  .cols h2 { margin-top: 0 !important; }
+  .no li::marker { color: var(--hot); }
+  code { font-family: var(--font-pixel); font-size: 0.85em; color: var(--cyan); }
+  @media (max-width: 700px) { .cols { grid-template-columns: 1fr; } }
+</style>

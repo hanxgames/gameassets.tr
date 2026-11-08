@@ -1,0 +1,22 @@
+{
+  "name": "gameassets-tr",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "HanX Assets showcase — low poly & 3D pixel game asset packs (gameassets.tr)",
+  "scripts": {
+    "sync": "node scripts/sync-itch.mjs",
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/rss": "4.0.19",
+    "@astrojs/sitemap": "3.7.4",
+    "astro": "5.18.2",
+    "sharp": "0.34.5"
+  },
+  "overrides": {
+    "@rollup/pluginutils": "5.4.0"
+  }
+}

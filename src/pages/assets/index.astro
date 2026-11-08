@@ -1,0 +1,160 @@
+---
+import Base from '../../layouts/Base.astro';
+import AssetCard from '../../components/AssetCard.astro';
+import { SITE, SERIES, ENGINES, seriesOrder, assets, bySeries, totalModels, minPrice, absolute } from '../../data/site';
+
+const list = assets;
+const modelsRounded = Math.floor(totalModels / 100) * 100;
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: absolute('/') },
+    { '@type': 'ListItem', position: 2, name: 'All Assets', item: absolute('/assets/') },
+  ],
+};
+const collection = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'All low poly & 3D pixel asset packs',
+  url: absolute('/assets/'),
+  isPartOf: { '@id': `${SITE.url}/#website` },
+  mainEntity: {
+    '@type': 'ItemList',
+    numberOfItems: list.length,
+    itemListElement: list.map((a, i) => ({ '@type': 'ListItem', position: i + 1, url: absolute(`/assets/${a.slug}/`), name: a.title })),
+  },
+};
+---
+<Base
+  title={`All ${assets.length} Low Poly & 3D Pixel Asset Packs — Unity, Godot, Unreal`}
+  description={`Browse ${assets.length} game-ready 3D asset packs with ${modelsRounded}+ low poly and 3D pixel models: cities, traffic, SWAT, dungeons, Halloween & Christmas. From $${minPrice.toFixed(2)}.`}
+  jsonld={[breadcrumb, collection]}
+>
+  <section class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span>All Assets</span></nav>
+    <header class="cat-head">
+      <span class="eyebrow">The full catalog</span>
+      <h1>All <span class="grad-text">{assets.length}</span> game asset packs</h1>
+      <p class="muted">Low poly and 3D pixel art 3D models for Unity, Godot, Unreal Engine and Blender. Filter by collection or engine, then buy instantly through itch.io’s secure checkout.</p>
+    </header>
+
+    <div class="filters" role="search">
+      <label class="search">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
+        <span class="sr-only">Search asset packs</span>
+        <input id="q" type="search" placeholder="Search: city, swat, dungeon, car, tree…" autocomplete="off" />
+      </label>
+      <div class="chips" role="group" aria-label="Collection">
+        <button class="fchip active" data-series="">All <i>{assets.length}</i></button>
+        {seriesOrder.map((s) => <button class="fchip" data-series={s}>{SERIES[s].emoji} {SERIES[s].name} <i>{bySeries(s).length}</i></button>)}
+      </div>
+      <div class="selects">
+        <label><span class="sr-only">Engine</span>
+          <select id="engine">
+            <option value="">Any engine</option>
+            {Object.values(ENGINES).map((e) => <option value={e.slug}>{e.name}</option>)}
+          </select>
+        </label>
+        <label><span class="sr-only">Sort</span>
+          <select id="sort">
+            <option value="featured">Featured</option>
+            <option value="new">Newest</option>
+            <option value="price-asc">Price: low → high</option>
+            <option value="price-desc">Price: high → low</option>
+            <option value="models">Most models</option>
+          </select>
+        </label>
+      </div>
+    </div>
+    <p class="result-count pixel" id="count" aria-live="polite">{assets.length} packs</p>
+
+    <div class="grid" id="grid">
+      {list.map((a, i) => <AssetCard asset={a} eager={i < 3} headingLevel="h2" />)}
+    </div>
+    <p class="empty" id="empty" hidden>No packs match that search. <button class="btn btn-sm" id="reset">Reset filters</button></p>
+  </section>
+  <div style="height:80px"></div>
+</Base>
+
+<style>
+  .cat-head { max-width: 760px; margin-bottom: 30px; }
+  .cat-head h1 { font-size: clamp(2rem, 5vw, 3.6rem); }
+  .filters { position: sticky; top: 76px; z-index: 20; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; padding: 12px; border-radius: 18px; border: 1px solid var(--line); background: color-mix(in srgb, var(--bg-2) 86%, transparent); backdrop-filter: blur(14px); }
+  .search { display: flex; align-items: center; gap: 8px; flex: 1 1 260px; padding: 0 14px; border-radius: 12px; background: var(--panel-2); border: 1px solid var(--line); color: var(--muted); }
+  .search:focus-within { border-color: var(--cyan); }
+  .search input { flex: 1; background: none; border: 0; outline: 0; color: var(--text); font: 600 0.95rem var(--font-body); padding: 12px 0; min-width: 0; }
+  .chips { display: flex; gap: 6px; flex-wrap: wrap; }
+  .fchip { border: 1px solid var(--line); background: transparent; color: var(--muted); padding: 9px 13px; border-radius: 999px; font: 700 0.85rem var(--font-body); cursor: pointer; transition: all 0.2s; }
+  .fchip i { font-style: normal; opacity: 0.6; margin-left: 2px; }
+  .fchip:hover { color: var(--text); border-color: var(--line-2); }
+  .fchip.active { background: var(--grad); color: #03051a; border-color: transparent; }
+  .selects { display: flex; gap: 8px; }
+  select { appearance: none; background: var(--panel-2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23a1a8d8' stroke-width='2' fill='none'/%3E%3C/svg%3E") no-repeat right 12px center; border: 1px solid var(--line); color: var(--text); font: 600 0.88rem var(--font-body); padding: 11px 34px 11px 13px; border-radius: 12px; cursor: pointer; }
+  select option { background: var(--bg-2); }
+  .result-count { color: var(--dim); font-size: 0.72rem; margin: 18px 0; }
+  .empty { text-align: center; color: var(--muted); padding: 60px 0; }
+  .card-wrap[hidden] { display: none; }
+  @media (max-width: 700px) { .filters { position: static; } .selects { width: 100%; } .selects label, .selects select { flex: 1; width: 100%; } }
+</style>
+
+<script>
+  const grid = document.getElementById('grid')!;
+  const cards = [...grid.querySelectorAll<HTMLElement>('.card-wrap')];
+  const original = [...cards];
+  const q = document.getElementById('q') as HTMLInputElement;
+  const engine = document.getElementById('engine') as HTMLSelectElement;
+  const sort = document.getElementById('sort') as HTMLSelectElement;
+  const chips = [...document.querySelectorAll<HTMLButtonElement>('.fchip')];
+  const count = document.getElementById('count')!;
+  const empty = document.getElementById('empty')!;
+  let series = '';
+
+  const params = new URLSearchParams(location.search);
+  q.value = params.get('q') || '';
+  engine.value = params.get('engine') || '';
+  sort.value = params.get('sort') || 'featured';
+  series = params.get('series') || '';
+  chips.forEach((c) => c.classList.toggle('active', c.dataset.series === series));
+
+  function apply() {
+    const terms = q.value.toLowerCase().trim().split(/\s+/).filter(Boolean);
+    let shown = 0;
+    for (const c of cards) {
+      const ok = (!series || c.dataset.series === series) &&
+        (!engine.value || (c.dataset.engines || '').split(' ').includes(engine.value)) &&
+        terms.every((t) => (c.dataset.search || '').includes(t));
+      c.hidden = !ok;
+      if (ok) shown++;
+    }
+    const sorted = [...original];
+    const num = (c: HTMLElement, k: string) => Number(c.dataset[k] || 0);
+    if (sort.value === 'new') sorted.sort((a, b) => +new Date(b.dataset.date || 0) - +new Date(a.dataset.date || 0));
+    if (sort.value === 'price-asc') sorted.sort((a, b) => num(a, 'price') - num(b, 'price'));
+    if (sort.value === 'price-desc') sorted.sort((a, b) => num(b, 'price') - num(a, 'price'));
+    if (sort.value === 'models') sorted.sort((a, b) => num(b, 'models') - num(a, 'models'));
+    sorted.forEach((c) => grid.appendChild(c));
+    count.textContent = `${shown} pack${shown === 1 ? '' : 's'}`;
+    empty.hidden = shown > 0;
+    const p = new URLSearchParams();
+    if (q.value) p.set('q', q.value);
+    if (series) p.set('series', series);
+    if (engine.value) p.set('engine', engine.value);
+    if (sort.value !== 'featured') p.set('sort', sort.value);
+    history.replaceState(null, '', `${location.pathname}${p.toString() ? '?' + p : ''}`);
+  }
+  q.addEventListener('input', apply);
+  engine.addEventListener('change', apply);
+  sort.addEventListener('change', apply);
+  chips.forEach((c) => c.addEventListener('click', () => {
+    series = c.dataset.series || '';
+    chips.forEach((x) => x.classList.toggle('active', x === c));
+    apply();
+  }));
+  document.getElementById('reset')!.addEventListener('click', () => {
+    q.value = ''; engine.value = ''; sort.value = 'featured'; series = '';
+    chips.forEach((x) => x.classList.toggle('active', x.dataset.series === ''));
+    apply();
+  });
+  apply();
+</script>

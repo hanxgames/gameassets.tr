@@ -1,0 +1,339 @@
+---
+import Base from '../layouts/Base.astro';
+import ShaderBG from '../components/ShaderBG.astro';
+import AssetCard from '../components/AssetCard.astro';
+import BundleCard from '../components/BundleCard.astro';
+import { SITE, SERIES, ENGINES, seriesOrder, assets, bundles, bySeries, totalModels, minPrice, absolute, bundleSavings } from '../data/site';
+import { FAQ, faqJsonLd } from '../data/faq';
+
+const newest = [...assets].sort((a, b) => +new Date(b.published ?? 0) - +new Date(a.published ?? 0));
+const featured = ['low-poly-swat-pack', 'low-poly-city-pack', '3d-pixel-dungeon-pack', 'low-poly-traffic-pack', '3d-pixel-medieval-town-pack', 'low-poly-halloween-city-pack', 'low-poly-christmas-village-pack', '3d-pixel-rpg-items-pack']
+  .map((s) => assets.find((a) => a.slug === s))
+  .filter(Boolean) as typeof assets;
+for (const a of newest) if (featured.length < 8 && !featured.includes(a)) featured.push(a);
+const heroCards = [featured[0], featured[2], featured[1]].filter(Boolean);
+const row1 = assets.filter((_, i) => i % 2 === 0);
+const row2 = assets.filter((_, i) => i % 2 === 1);
+const maxSave = Math.max(0, ...bundles.map(bundleSavings));
+const modelsRounded = Math.floor(totalModels / 100) * 100;
+
+const itemList = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'HanX Assets — low poly & 3D pixel asset packs',
+  numberOfItems: assets.length,
+  itemListElement: assets.map((a, i) => ({ '@type': 'ListItem', position: i + 1, url: absolute(`/assets/${a.slug}/`), name: a.title })),
+};
+---
+<Base
+  title={`Low Poly & 3D Pixel Game Assets for Unity, Godot & Unreal — ${SITE.brand}`}
+  description={`${assets.length} game-ready low poly & 3D pixel asset packs (${modelsRounded}+ models) for Unity, Godot, Unreal & Blender. One texture, one draw call, commercial license. From $${minPrice.toFixed(2)}.`}
+  jsonld={[itemList, faqJsonLd(FAQ.slice(0, 6))]}
+  alternates={[{ lang: 'en', href: '/' }, { lang: 'tr', href: '/tr/' }, { lang: 'x-default', href: '/' }]}
+>
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <ShaderBG />
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow">{assets.length} packs · {modelsRounded}+ models · from ${minPrice.toFixed(2)}</span>
+        <h1>
+          Build worlds <span class="grad-text">faster</span> with game-ready
+          <span class="rotator" aria-hidden="true"><span>low poly</span><span>3D pixel</span><span>Halloween</span><span>Christmas</span><span>low poly</span></span>
+          <span class="sr-only">low poly and 3D pixel</span> assets
+        </h1>
+        <p class="lead">
+          Modular 3D asset packs for <strong>Unity</strong>, <strong>Godot</strong>, <strong>Unreal</strong> & <strong>Blender</strong>.
+          One palette texture, one scale, one draw call — drop them in and ship your game this weekend.
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn-primary btn-lg" href="/assets/">
+            Browse all {assets.length} packs
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+          </a>
+          <a class="btn btn-lg" href="/bundles/">🔥 Bundles — save up to {maxSave}%</a>
+        </div>
+        <ul class="trust">
+          <li><span>✓</span> Commercial license</li>
+          <li><span>✓</span> GLB · FBX · OBJ · .blend</li>
+          <li><span>✓</span> No generative AI</li>
+          <li><span>✓</span> Instant download via itch.io</li>
+        </ul>
+      </div>
+      <div class="hero-stage" id="hero-stage" aria-hidden="true">
+        {heroCards.map((a, i) => (
+          <a href={`/assets/${a.slug}/`} class={`float-card fc-${i}`} tabindex="-1">
+            <img src={a.cover.src} alt="" width="1200" height="952" loading="eager" fetchpriority={i === 0 ? 'high' : 'auto'} decoding="async" />
+            <span class="fc-label"><b>{a.title}</b><em>{a.price}</em></span>
+          </a>
+        ))}
+        <div class="orbit"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MARQUEE ============ -->
+  <section class="marquee-sec" aria-label="All asset packs">
+    {[row1, row2].map((row, r) => (
+      <div class={`marquee ${r ? 'rev' : ''}`}>
+        <div class="track">
+          {[...row, ...row].map((a, i) => (
+            <a href={`/assets/${a.slug}/`} class="m-item" tabindex={i >= row.length ? -1 : undefined} aria-hidden={i >= row.length ? 'true' : undefined}>
+              <img src={a.cover.sm} alt={i < row.length ? a.title : ''} width="315" height="250" loading="lazy" decoding="async" />
+            </a>
+          ))}
+        </div>
+      </div>
+    ))}
+  </section>
+
+  <!-- ============ STATS ============ -->
+  <section class="wrap stats reveal" aria-label="Catalog in numbers">
+    <div><b data-count={assets.length}>{assets.length}</b><span>asset packs</span></div>
+    <div><b data-count={totalModels}>{totalModels}</b><span>game-ready models</span></div>
+    <div><b>1</b><span>draw call per scene</span></div>
+    <div><b>5</b><span>engines supported</span></div>
+  </section>
+
+  <!-- ============ COLLECTIONS ============ -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div>
+          <span class="eyebrow">Collections</span>
+          <h2>Four art styles. <span class="grad-text">One seamless world.</span></h2>
+        </div>
+        <p>Every collection shares the same scale and grid, so you can drop a Halloween street next to a 3D pixel dungeon — or reskin your whole game for the holidays in minutes.</p>
+      </div>
+      <div class="collections">
+        {seriesOrder.map((s) => {
+          const list = bySeries(s);
+          const S = SERIES[s];
+          return (
+            <a class="coll reveal" href={`/collections/${s}/`} style={`--accent:${S.accent}`}>
+              <div class="coll-bg">
+                {list.slice(0, 4).map((a) => <img src={a.cover.sm} alt="" loading="lazy" decoding="async" width="315" height="250" />)}
+              </div>
+              <div class="coll-body">
+                <span class="coll-emoji">{S.emoji}</span>
+                <h3>{S.title}</h3>
+                <p>{S.blurb}</p>
+                <span class="coll-count pixel">{list.length} packs →</span>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FEATURED ============ -->
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div>
+          <span class="eyebrow">Best sellers & new drops</span>
+          <h2>Featured asset packs</h2>
+        </div>
+        <a class="btn" href="/assets/">See all {assets.length} packs →</a>
+      </div>
+      <div class="grid">
+        {featured.map((a, i) => <AssetCard asset={a} eager={i < 2} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BUNDLES ============ -->
+  {bundles.length > 0 && (
+    <section class="section bundles-sec">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div>
+            <span class="eyebrow">Limited-time bundles</span>
+            <h2>Get the whole series for <span class="grad-text">less than a coffee</span></h2>
+          </div>
+          <p>Bundle every pack in a collection with one click on itch.io and save up to {maxSave}%.</p>
+        </div>
+        <div class="bundle-list">
+          {bundles.map((b) => <BundleCard bundle={b} />)}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- ============ WHY ============ -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div>
+          <span class="eyebrow">Why HanX Assets</span>
+          <h2>Made by game devs, <span class="grad-text">for game devs</span></h2>
+        </div>
+      </div>
+      <div class="features">
+        <div class="feat reveal"><span class="ico">🎨</span><h3>One texture. One draw call.</h3><p>Every model in every pack uses a single 1024×1024 palette texture and one material. Batch an entire city into one draw call — perfect for mobile and WebGL.</p></div>
+        <div class="feat reveal"><span class="ico">📐</span><h3>Modular 8 m grid</h3><p>Real-world scale in meters, pivots at the base, consistent 8 m lots. Roads, buildings and props snap together without fiddling.</p></div>
+        <div class="feat reveal"><span class="ico">⚡</span><h3>Ridiculously light</h3><p>Typically 150–2,500 triangles per model. Hundreds of buildings on screen, steady 60 fps on low-end phones.</p></div>
+        <div class="feat reveal"><span class="ico">🧩</span><h3>Every format you need</h3><p>GLB, FBX, OBJ and a native .blend with Asset Browser tags. Preview renders and a README with triangle counts included.</p></div>
+        <div class="feat reveal"><span class="ico">📜</span><h3>Simple commercial license</h3><p>Use in unlimited commercial games, apps and videos. No royalties, no attribution required.</p></div>
+        <div class="feat reveal"><span class="ico">✋</span><h3>Handmade, no AI</h3><p>Every mesh is modeled by hand at HanX Games. Clean topology, clean English names, zero surprises.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ENGINES ============ -->
+  <section class="wrap engines reveal" aria-label="Supported engines">
+    {Object.values(ENGINES).map((e) => (
+      <a href={`/engines/${e.slug}/`} class="engine"><b>{e.name}</b><span>{e.title.replace('Low Poly 3D ', '')} →</span></a>
+    ))}
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="section">
+    <div class="wrap faq-wrap">
+      <div class="reveal">
+        <span class="eyebrow">FAQ</span>
+        <h2>Questions? Answered.</h2>
+        <p class="muted">Everything you need to know about licensing, engines and checkout.</p>
+        <a class="btn" href="/faq/">All questions →</a>
+      </div>
+      <div class="faq">
+        {FAQ.slice(0, 6).map((f, i) => (
+          <details class="reveal" open={i === 0}><summary>{f.q}</summary><div class="answer">{f.a}</div></details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FINAL CTA ============ -->
+  <section class="section final">
+    <div class="wrap final-box reveal">
+      <h2>Your next game starts <span class="grad-text">here.</span></h2>
+      <p class="muted">{assets.length} packs. {modelsRounded}+ models. Instant download.</p>
+      <div class="hero-cta" style="justify-content:center">
+        <a class="btn btn-primary btn-lg" href="/assets/">Browse the catalog</a>
+        <a class="btn btn-lg" href={SITE.itch} target="_blank" rel="noopener">Follow us on itch.io ↗</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero { position: relative; isolation: isolate; min-height: min(92vh, 900px); display: grid; align-items: center; padding: 60px 0 40px; overflow: hidden; }
+  .hero-grid { display: grid; grid-template-columns: 1.08fr 0.92fr; gap: 40px; align-items: center; }
+  .hero h1 { font-weight: 900; text-wrap: balance; }
+  .lead { font-size: clamp(1.05rem, 1.6vw, 1.25rem); color: #cdd2f5; max-width: 600px; margin: 20px 0 30px; }
+  .lead strong { color: var(--text); }
+  .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
+  .trust { list-style: none; padding: 0; margin: 30px 0 0; display: flex; flex-wrap: wrap; gap: 10px 22px; color: var(--muted); font-size: 0.9rem; font-weight: 600; }
+  .trust span { color: var(--green); margin-right: 4px; }
+
+  .rotator { display: inline-grid; height: 1.12em; overflow: hidden; vertical-align: bottom; color: var(--green); }
+  .rotator span { grid-area: 1 / 1; display: block; transform: translateY(110%); animation: rot 10s infinite var(--ease) both; }
+  .rotator span:nth-child(1) { animation-delay: 0s; } .rotator span:nth-child(2) { animation-delay: 2.5s; color: var(--violet); }
+  .rotator span:nth-child(3) { animation-delay: 5s; color: var(--orange); } .rotator span:nth-child(4) { animation-delay: 7.5s; color: var(--hot); }
+  .rotator span:nth-child(5) { display: none; }
+  @keyframes rot { 0% { transform: translateY(110%); } 3%, 22% { transform: none; } 25%, 100% { transform: translateY(-110%); } }
+  @media (prefers-reduced-motion: reduce) { .rotator span:not(:first-child) { display: none; } .rotator span:first-child { transform: none; } }
+
+  .hero-stage { position: relative; aspect-ratio: 1 / 1; perspective: 1200px; transform-style: preserve-3d; }
+  .float-card { position: absolute; width: 66%; border-radius: 18px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.16); box-shadow: 0 40px 80px -24px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(37, 250, 245, 0.08); transform-style: preserve-3d; animation: bob 7s ease-in-out infinite; transition: transform 0.3s ease-out; background: var(--bg-3); }
+  .float-card img { width: 100%; }
+  .fc-0 { left: 4%; top: 6%; z-index: 3; --rz: -4deg; }
+  .fc-1 { right: 0; top: 30%; z-index: 2; width: 56%; --rz: 6deg; animation-delay: -2.4s; }
+  .fc-2 { left: 14%; bottom: 0; z-index: 1; width: 52%; --rz: -8deg; animation-delay: -4.6s; opacity: 0.9; }
+  .fc-label { position: absolute; left: 10px; right: 10px; bottom: 10px; display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 10px; background: rgba(4, 6, 26, 0.75); backdrop-filter: blur(10px); font-size: 0.8rem; }
+  .fc-label b { font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .fc-label em { font-style: normal; color: var(--green); font-weight: 800; }
+  @keyframes bob { 0%, 100% { translate: 0 0; rotate: var(--rz); } 50% { translate: 0 -16px; rotate: calc(var(--rz) * 0.6); } }
+  .orbit { position: absolute; inset: 8%; border-radius: 50%; border: 1px dashed rgba(37, 250, 245, 0.2); animation: spin 40s linear infinite; z-index: 0; }
+  @keyframes spin { to { rotate: 360deg; } }
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-stage { max-width: 460px; width: 100%; margin: 10px auto 0; }
+  }
+
+  .marquee-sec { padding: 20px 0 10px; display: grid; gap: 14px; transform: rotate(-2deg); margin: 10px -20px; mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+  .marquee { overflow: hidden; }
+  .track { display: flex; gap: 14px; width: max-content; animation: scroll 80s linear infinite; }
+  .marquee.rev .track { animation-direction: reverse; animation-duration: 95s; }
+  .marquee:hover .track { animation-play-state: paused; }
+  .m-item { width: 220px; flex: none; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); transition: transform 0.3s var(--ease), border-color 0.3s; }
+  .m-item:hover { transform: scale(1.06); border-color: var(--cyan); }
+  @keyframes scroll { to { transform: translateX(-50%); } }
+
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin-top: 60px; border-radius: 22px; overflow: hidden; border: 1px solid var(--line); background: var(--line); }
+  .stats div { background: var(--bg-2); padding: 28px 20px; text-align: center; display: grid; gap: 6px; }
+  .stats b { font: 900 clamp(2rem, 4vw, 3rem)/1 var(--font-display); background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; font-variant-numeric: tabular-nums; }
+  .stats span { color: var(--muted); font: 400 0.72rem/1.3 var(--font-pixel); text-transform: uppercase; letter-spacing: 0.08em; }
+  @media (max-width: 700px) { .stats { grid-template-columns: 1fr 1fr; } }
+
+  .collections { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .coll { position: relative; border-radius: 24px; overflow: hidden; display: flex; flex-direction: column; border: 1px solid var(--line); isolation: isolate; background: radial-gradient(90% 70% at 0% 100%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 70%), var(--bg-2); transition: transform 0.5s var(--ease), border-color 0.3s; }
+  .coll:hover { transform: translateY(-6px); border-color: var(--accent); }
+  .coll-bg { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; height: 190px; overflow: hidden; mask-image: linear-gradient(180deg, #000 55%, transparent); }
+  .coll-bg img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
+  .coll:hover .coll-bg img { transform: scale(1.08); }
+  .coll-body { padding: 0 28px 28px; margin-top: -24px; position: relative; }
+  .coll-emoji { font-size: 2rem; }
+  .coll h3 { font-size: 1.5rem; margin: 8px 0; }
+  .coll p { color: #c8cdf0; margin: 0 0 14px; max-width: 460px; }
+  .coll-count { color: var(--accent); font-size: 0.8rem; }
+  @media (max-width: 800px) { .collections { grid-template-columns: 1fr; } }
+
+  .bundles-sec { background: linear-gradient(180deg, transparent, rgba(13, 17, 64, 0.6), transparent); }
+  .bundle-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 560px), 1fr)); gap: 22px; }
+
+  .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .feat { padding: 28px; border-radius: 20px; background: var(--panel); border: 1px solid var(--line); transition: border-color 0.3s, transform 0.4s var(--ease); }
+  .feat:hover { border-color: var(--line-2); transform: translateY(-4px); }
+  .feat .ico { font-size: 1.8rem; display: inline-grid; place-items: center; width: 56px; height: 56px; border-radius: 16px; background: rgba(103, 251, 96, 0.08); border: 1px solid rgba(103, 251, 96, 0.25); margin-bottom: 16px; }
+  .feat p { color: var(--muted); margin: 0; }
+  @media (max-width: 900px) { .features { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 600px) { .features { grid-template-columns: 1fr; } }
+
+  .engines { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .engine { padding: 22px; border-radius: 18px; border: 1px solid var(--line); background: var(--panel); display: grid; gap: 4px; transition: border-color 0.3s, background 0.3s; }
+  .engine:hover { border-color: var(--cyan); background: rgba(37, 250, 245, 0.06); }
+  .engine b { font: 700 1.2rem/1.2 var(--font-display); }
+  .engine span { color: var(--muted); font-size: 0.88rem; }
+  @media (max-width: 800px) { .engines { grid-template-columns: 1fr 1fr; } }
+
+  .faq-wrap { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 48px; align-items: start; }
+  @media (max-width: 900px) { .faq-wrap { grid-template-columns: 1fr; } }
+
+  .final-box { text-align: center; padding: clamp(40px, 7vw, 90px) 24px; border-radius: 32px; border: 1px solid var(--line-2); background: radial-gradient(60% 80% at 50% 0%, rgba(103, 251, 96, 0.18), transparent 70%), radial-gradient(60% 80% at 50% 100%, rgba(37, 250, 245, 0.14), transparent 70%), var(--bg-2); }
+  .final-box h2 { font-size: clamp(2rem, 5vw, 3.6rem); }
+</style>
+
+<script>
+  // Mouse parallax for the floating hero cards
+  const stage = document.getElementById('hero-stage');
+  if (stage && matchMedia('(pointer: fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const cards = [...stage.querySelectorAll<HTMLElement>('.float-card')];
+    addEventListener('pointermove', (e) => {
+      const x = e.clientX / innerWidth - 0.5, y = e.clientY / innerHeight - 0.5;
+      cards.forEach((c, i) => {
+        const d = (i + 1) * 10;
+        c.style.transform = `translate3d(${x * d}px, ${y * d}px, 0) rotateY(${x * 14}deg) rotateX(${-y * 10}deg)`;
+      });
+    });
+  }
+  // Count-up stats
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((en) => {
+      if (!en.isIntersecting) return;
+      const el = en.target as HTMLElement;
+      const target = Number(el.dataset.count);
+      const t0 = performance.now();
+      const run = (now: number) => {
+        const p = Math.min(1, (now - t0) / 1600);
+        el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3))).toLocaleString('en-US');
+        if (p < 1) requestAnimationFrame(run);
+      };
+      requestAnimationFrame(run);
+      io.unobserve(el);
+    });
+  }, { threshold: 0.6 });
+  document.querySelectorAll('[data-count]').forEach((el) => io.observe(el));
+</script>

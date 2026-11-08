@@ -1,0 +1,29 @@
+---
+import Base from '../../layouts/Base.astro';
+import BundleCard from '../../components/BundleCard.astro';
+import ListingHero from '../../components/ListingHero.astro';
+import { bundles, membersOf, bundleSavings, bundleName, absolute, assets } from '../../data/site';
+const maxSave = Math.max(0, ...bundles.map(bundleSavings));
+const covers = bundles.flatMap((b) => membersOf(b).slice(0, 2));
+const jsonld = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'HanX Assets bundle deals',
+    itemListElement: bundles.map((b, i) => ({ '@type': 'ListItem', position: i + 1, url: absolute(`/bundles/${b.slug}/`), name: bundleName(b) })),
+  },
+];
+---
+<Base
+  title={`Game Asset Bundles — Save up to ${maxSave}% on Low Poly & 3D Pixel Packs`}
+  description={`${bundles.length} limited-time game asset bundles: get every low poly, 3D pixel, Halloween or Christmas pack in one click and save up to ${maxSave}%. Unity, Godot, Unreal ready.`}
+  image={bundles[0]?.og}
+  jsonld={jsonld}
+>
+  <ListingHero eyebrow="🔥 Limited-time deals" title={`Asset bundles — save up to <em>${maxSave}%</em>`} covers={covers.length ? covers : assets} accent="#ff8a1f" crumbs={[{ href: '/', label: 'Home' }, { label: 'Bundles' }]}>
+    <p>Why buy one when you can own the whole series? Each bundle groups an entire HanX collection into a single checkout on itch.io — same palette, same grid, all compatible, for a fraction of the price.</p>
+  </ListingHero>
+  <div class="wrap" style="display:grid;gap:24px;padding-bottom:90px">
+    {bundles.map((b) => <BundleCard bundle={b} />)}
+  </div>
+</Base>

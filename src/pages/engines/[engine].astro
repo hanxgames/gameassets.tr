@@ -1,0 +1,59 @@
+---
+import Base from '../../layouts/Base.astro';
+import AssetCard from '../../components/AssetCard.astro';
+import ListingHero from '../../components/ListingHero.astro';
+import { ENGINES, byEngine, assets, absolute, minPrice, type EngineKey } from '../../data/site';
+
+export function getStaticPaths() {
+  return (Object.keys(ENGINES) as EngineKey[]).map((e) => ({ params: { engine: e } }));
+}
+const key = Astro.params.engine as EngineKey;
+const E = ENGINES[key];
+// Every pack ships GLB/FBX/OBJ/.blend, so all packs work everywhere; list explicitly-mentioned ones first.
+const explicit = byEngine(key);
+const list = [...explicit, ...assets.filter((a) => !explicit.includes(a))];
+const models = list.reduce((n, a) => n + (a.modelCount || 0), 0);
+const faq = [
+  { q: `Do HanX Assets work in ${E.name}?`, a: `Yes. Every pack includes GLB, FBX and OBJ files plus a native .blend, so all ${assets.length} packs import cleanly into ${E.name}. ${E.how}` },
+  { q: `Are these ${E.name} assets free for commercial use?`, a: 'Yes — after purchase you can use them in unlimited commercial games and apps with no royalties and no attribution required. You just can’t resell the raw files.' },
+  { q: `Will they run well on mobile with ${E.name}?`, a: 'Yes. All models share one material and one small palette texture, so scenes batch into very few draw calls, and triangle counts are low enough for budget phones and WebGL builds.' },
+];
+const jsonld = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: E.title,
+    url: absolute(`/engines/${key}/`),
+    mainEntity: { '@type': 'ItemList', numberOfItems: list.length, itemListElement: list.map((a, i) => ({ '@type': 'ListItem', position: i + 1, url: absolute(`/assets/${a.slug}/`), name: a.title })) },
+  },
+  { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: absolute('/') },
+      { '@type': 'ListItem', position: 2, name: E.title, item: absolute(`/engines/${key}/`) },
+    ],
+  },
+];
+---
+<Base
+  title={`${E.title} — ${list.length} Game-Ready Packs`}
+  description={`${list.length} low poly & 3D pixel asset packs (${models}+ models) ready for ${E.name}: cities, cars, SWAT, dungeons and more. One material, commercial license, from $${minPrice.toFixed(2)}.`}
+  jsonld={jsonld}
+>
+  <ListingHero eyebrow={`${E.name} ready · ${models}+ models`} title={E.title.replace(E.name, `<em>${E.name}</em>`)} covers={list} crumbs={[{ href: '/', label: 'Home' }, { label: E.title }]}>
+    <p>Looking for stylized, performance-friendly 3D assets for {E.name}? Every HanX Assets pack is built for real-time engines: clean low poly meshes, real-world scale, pivots at the base and a single shared palette material.</p>
+    <p><strong>How to use them in {E.name}:</strong> {E.how}</p>
+  </ListingHero>
+  <div class="wrap">
+    <div class="grid">{list.map((a, i) => <AssetCard asset={a} eager={i < 3} />)}</div>
+    <section class="section">
+      <h2>{E.name} FAQ</h2>
+      <div class="faq">{faq.map((f) => <details><summary>{f.q}</summary><div class="answer">{f.a}</div></details>)}</div>
+      <p style="margin-top:30px" class="muted">
+        Other engines: {(Object.keys(ENGINES) as EngineKey[]).filter((e) => e !== key).map((e, i) => <>{i > 0 && ' · '}<a href={`/engines/${e}/`} style="color:var(--cyan)">{ENGINES[e].title}</a></>)}
+      </p>
+    </section>
+  </div>
+</Base>

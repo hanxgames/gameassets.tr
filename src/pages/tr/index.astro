@@ -1,0 +1,101 @@
+---
+import Base from '../../layouts/Base.astro';
+import ShaderBG from '../../components/ShaderBG.astro';
+import AssetCard from '../../components/AssetCard.astro';
+import BundleCard from '../../components/BundleCard.astro';
+import { SERIES, seriesOrder, assets, bundles, bySeries, totalModels, minPrice, bundleSavings } from '../../data/site';
+
+const modelsRounded = Math.floor(totalModels / 100) * 100;
+const maxSave = Math.max(0, ...bundles.map(bundleSavings));
+const trSeries: Record<string, { t: string; d: string }> = {
+  'low-poly': { t: 'Low Poly 3D Asset Paketleri', d: 'Şehir, trafik, köy, okul, inşaat, benzinlik ve SWAT — hepsi tek doku ve tek ölçekte.' },
+  '3d-pixel': { t: '3D Pixel Art Asset Paketleri', d: 'Zindanlar, ortaçağ kasabaları, çiftlikler, ev içi ve RPG eşyaları — retro pixel dokulu 3D modeller.' },
+  halloween: { t: 'Cadılar Bayramı (Halloween) Paketleri', d: 'Balkabakları, perili evler ve ürkütücü sokaklar ile sezonluk güncellemeni dakikalar içinde hazırla.' },
+  christmas: { t: 'Yılbaşı (Christmas) Paketleri', d: 'Karlı çatılar, ışıklar, yılbaşı ağaçları ve kış dekorları ile sıcacık bayram sahneleri.' },
+};
+const faq = [
+  { q: 'Assetleri ticari oyunlarımda kullanabilir miyim?', a: 'Evet. Tüm paketler sınırsız kişisel ve ticari projede (oyun, uygulama, video, müşteri işleri) kullanılabilir. İsim/atıf zorunlu değildir; yalnızca ham dosyaları yeniden satmak veya dağıtmak yasaktır.' },
+  { q: 'Hangi oyun motorlarıyla uyumlu?', a: 'Unity, Godot 4, Unreal Engine 5, Blender ve three.js. Her pakette GLB, FBX, OBJ ve Blender .blend dosyaları bulunur.' },
+  { q: 'Nasıl satın alırım?', a: 'Herhangi bir “Satın Al” butonuna tıkladığında itch.io’nun güvenli ödeme ekranı açılır. Kredi kartı veya PayPal ile ödeyip dosyaları anında indirebilirsin; paket itch.io kütüphanende kalıcı olarak durur.' },
+  { q: 'Mobil oyunlar için optimize mi?', a: 'Evet. Modeller düşük poligonludur ve tüm paketler tek materyal + tek palet dokusu kullanır; tüm sahne tek draw call ile çizilebilir.' },
+];
+const faqLd = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) };
+---
+<Base
+  lang="tr"
+  title="Oyun Asset Paketleri — Low Poly & 3D Pixel Modeller | Unity, Godot, Unreal"
+  description={`${assets.length} hazır oyun asset paketi, ${modelsRounded}+ low poly ve 3D pixel model. Unity, Godot, Unreal ve Blender uyumlu, ticari lisanslı. $${minPrice.toFixed(2)}’dan başlayan fiyatlar.`}
+  jsonld={[faqLd]}
+  alternates={[{ lang: 'en', href: '/' }, { lang: 'tr', href: '/tr/' }, { lang: 'x-default', href: '/' }]}
+>
+  <section class="hero">
+    <ShaderBG />
+    <div class="wrap">
+      <span class="eyebrow">{assets.length} paket · {modelsRounded}+ model · ${minPrice.toFixed(2)}’dan başlayan fiyatlar</span>
+      <h1>Oyun geliştiriciler için <span class="grad-text">hazır 3D asset paketleri</span></h1>
+      <p class="lead">Unity, Godot, Unreal ve Blender için el yapımı <strong>low poly</strong> ve <strong>3D pixel art</strong> modeller. Tek doku, tek ölçek, tek draw call — sürükle bırak, oyununu bu hafta sonu yayınla.</p>
+      <div class="cta">
+        <a class="btn btn-primary btn-lg" href="/assets/">Tüm paketleri incele →</a>
+        <a class="btn btn-lg" href="/bundles/">🔥 Bundle’larda %{maxSave}’e varan indirim</a>
+      </div>
+      <ul class="trust"><li>✓ Ticari lisans</li><li>✓ GLB · FBX · OBJ · .blend</li><li>✓ Yapay zekâ kullanılmadı</li><li>✓ itch.io ile anında indirme</li></ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <span class="eyebrow">Koleksiyonlar</span>
+      <h2>Dört stil, <span class="grad-text">tek uyumlu dünya</span></h2>
+      <div class="tr-coll">
+        {seriesOrder.map((s) => (
+          <a href={`/collections/${s}/`} class="tc reveal" style={`--accent:${SERIES[s].accent}`}>
+            <img src={bySeries(s)[0]?.cover.sm} alt={trSeries[s].t} loading="lazy" width="315" height="250" />
+            <div><b>{SERIES[s].emoji} {trSeries[s].t}</b><p>{trSeries[s].d}</p><em class="pixel">{bySeries(s).length} paket →</em></div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <span class="eyebrow">Öne çıkanlar</span>
+      <h2>Popüler asset paketleri</h2>
+      <div class="grid">{assets.slice(0, 8).map((a) => <AssetCard asset={a} />)}</div>
+      <p style="text-align:center;margin-top:30px"><a class="btn" href="/assets/">Tüm {assets.length} paketi gör →</a></p>
+    </div>
+  </section>
+
+  {bundles.length > 0 && (
+    <section class="section" style="padding-top:0">
+      <div class="wrap">
+        <span class="eyebrow">Bundle fırsatları</span>
+        <h2>Tüm seriyi <span class="grad-text">bir kahve fiyatına</span> al</h2>
+        <div style="display:grid;gap:22px">{bundles.map((b) => <BundleCard bundle={b} compact />)}</div>
+      </div>
+    </section>
+  )}
+
+  <section class="section">
+    <div class="wrap" style="max-width:860px">
+      <span class="eyebrow">Sık sorulan sorular</span>
+      <h2>Merak ettiklerin</h2>
+      <div class="faq">{faq.map((f, i) => <details open={i === 0}><summary>{f.q}</summary><div class="answer">{f.a}</div></details>)}</div>
+      <p class="muted" style="margin-top:30px">Ürün sayfaları ve açıklamalar uluslararası oyun geliştirici kitlesi için İngilizcedir. <a href="/" hreflang="en" style="color:var(--cyan)">English version →</a></p>
+    </div>
+  </section>
+</Base>
+<style>
+  .hero { position: relative; isolation: isolate; overflow: hidden; padding: 90px 0 70px; }
+  .hero h1 { max-width: 900px; font-weight: 900; }
+  .lead { font-size: 1.2rem; color: #cdd2f5; max-width: 680px; margin: 20px 0 30px; }
+  .cta { display: flex; gap: 14px; flex-wrap: wrap; }
+  .trust { list-style: none; padding: 0; margin: 28px 0 0; display: flex; gap: 10px 22px; flex-wrap: wrap; color: var(--muted); font-weight: 600; font-size: 0.9rem; }
+  .tr-coll { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 30px; }
+  .tc { display: grid; grid-template-columns: 140px 1fr; gap: 18px; align-items: center; padding: 14px; border-radius: 20px; border: 1px solid var(--line); background: var(--panel); transition: border-color 0.3s; }
+  .tc:hover { border-color: var(--accent); }
+  .tc img { border-radius: 12px; aspect-ratio: 315 / 250; object-fit: cover; }
+  .tc p { color: var(--muted); font-size: 0.9rem; margin: 6px 0; }
+  .tc em { font-style: normal; color: var(--accent); font-size: 0.75rem; }
+  @media (max-width: 800px) { .tr-coll { grid-template-columns: 1fr; } .tc { grid-template-columns: 100px 1fr; } }
+</style>

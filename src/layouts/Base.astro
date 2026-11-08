@@ -1,0 +1,234 @@
+---
+import '../styles/global.css';
+import Logo from '../components/Logo.astro';
+import { SITE, SERIES, seriesOrder, absolute, assets, bundles } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  imageAlt?: string;
+  type?: 'website' | 'product' | 'article';
+  jsonld?: object[];
+  noindex?: boolean;
+  lang?: 'en' | 'tr';
+  alternates?: { lang: string; href: string }[];
+  /** Product-specific OG price tags */
+  price?: { amount: number; currency: string };
+}
+const { title, description, image = '/og/home.jpg', imageAlt, type = 'website', jsonld = [], noindex = false, lang = 'en', alternates = [], price } = Astro.props;
+const canonical = absolute(Astro.url.pathname);
+const ogImage = absolute(image);
+const fullTitle = title.includes(SITE.brand) || title.includes(SITE.name) ? title : `${title} | ${SITE.brand}`;
+const path = Astro.url.pathname;
+const nav = [
+  { href: '/assets/', label: lang === 'tr' ? 'Tüm Assetler' : 'All Assets' },
+  { href: '/bundles/', label: lang === 'tr' ? 'Bundle Fırsatları' : 'Bundles' },
+  { href: '/collections/low-poly/', label: 'Low Poly' },
+  { href: '/collections/3d-pixel/', label: '3D Pixel' },
+  { href: '/faq/', label: 'FAQ' },
+];
+const org = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': `${SITE.url}/#org`,
+  name: SITE.studio,
+  alternateName: [SITE.brand, SITE.name],
+  url: SITE.url,
+  logo: absolute('/icon-512.png'),
+  sameAs: [SITE.itch, SITE.twitterUrl],
+};
+const website = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${SITE.url}/#website`,
+  name: SITE.name,
+  alternateName: SITE.brand,
+  url: SITE.url,
+  inLanguage: lang,
+  publisher: { '@id': `${SITE.url}/#org` },
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: { '@type': 'EntryPoint', urlTemplate: `${SITE.url}/assets/?q={search_term_string}` },
+    'query-input': 'required name=search_term_string',
+  },
+};
+const year = new Date().getFullYear();
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex ? <meta name="robots" content="noindex, follow" /> : <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />}
+    {alternates.map((a) => <link rel="alternate" hreflang={a.lang} href={absolute(a.href)} />)}
+    <meta name="theme-color" content="#04061a" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="author" content={SITE.studio} />
+    <meta name="generator" content={Astro.generator} />
+
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:type" content={type === 'product' ? 'product' : type} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content={imageAlt || title} />
+    <meta property="og:locale" content={lang === 'tr' ? 'tr_TR' : 'en_US'} />
+    {price && <meta property="product:price:amount" content={price.amount.toFixed(2)} />}
+    {price && <meta property="product:price:currency" content={price.currency} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content={SITE.twitter} />
+    <meta name="twitter:creator" content={SITE.twitter} />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="alternate" type="application/rss+xml" title="HanX Assets — new asset packs" href="/rss.xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Silkscreen&family=Unbounded:wght@500;700;800;900&display=swap" />
+    <slot name="head" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(org)} />
+    <script type="application/ld+json" set:html={JSON.stringify(website)} />
+    {jsonld.map((j) => <script type="application/ld+json" set:html={JSON.stringify(j)} />)}
+  </head>
+  <body>
+    <a class="sr-only" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="logo" href={lang === 'tr' ? '/tr/' : '/'} aria-label={`${SITE.brand} — home`}>
+          <Logo />
+          <span>HanX Assets<small>gameassets.tr</small></span>
+        </a>
+        <nav class="nav" id="nav" aria-label="Main">
+          {nav.map((n) => <a href={n.href} aria-current={path.startsWith(n.href) ? 'page' : undefined}>{n.label}</a>)}
+        </nav>
+        <div class="header-cta">
+          <a class="btn btn-sm btn-primary" href={SITE.itch} target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3.13 1.338C2.08 1.96.02 4.328 0 4.95v1.03c0 1.303 1.22 2.45 2.325 2.45 1.33 0 2.436-1.102 2.436-2.41 0 1.308 1.07 2.41 2.4 2.41 1.328 0 2.362-1.102 2.362-2.41 0 1.308 1.137 2.41 2.466 2.41h.024c1.33 0 2.466-1.102 2.466-2.41 0 1.308 1.034 2.41 2.363 2.41 1.33 0 2.4-1.102 2.4-2.41 0 1.308 1.106 2.41 2.435 2.41C22.78 8.43 24 7.282 24 5.98V4.95c-.02-.62-2.082-2.99-3.13-3.612-3.253-.114-5.508-.134-8.87-.133-3.362 0-7.945.053-8.87.133zm6.376 6.477a2.74 2.74 0 0 1-.468.602c-.5.49-1.19.795-1.947.795a2.786 2.786 0 0 1-1.95-.795c-.182-.178-.32-.37-.446-.59-.127.222-.303.412-.486.59a2.788 2.788 0 0 1-1.95.795c-.092 0-.187-.025-.264-.052-.107 1.113-.152 2.176-.168 2.95v.005l-.006 1.167c.02 2.334-.23 7.564 1.03 8.85 1.952.454 5.545.662 9.15.663 3.605 0 7.198-.21 9.15-.664 1.26-1.284 1.01-6.514 1.03-8.848l-.006-1.167v-.004c-.016-.775-.06-1.838-.168-2.95-.077.026-.172.052-.263.052a2.788 2.788 0 0 1-1.95-.795c-.184-.178-.36-.368-.486-.59-.127.22-.265.412-.447.59a2.786 2.786 0 0 1-1.95.794c-.76 0-1.446-.303-1.948-.793a2.74 2.74 0 0 1-.468-.602 2.738 2.738 0 0 1-.463.602 2.787 2.787 0 0 1-1.95.794h-.16a2.787 2.787 0 0 1-1.95-.794 2.73 2.73 0 0 1-.464-.602zm-2.004 2.59v.002c.795.002 1.5.002 2.373.953.687-.072 1.406-.108 2.125-.107.72 0 1.438.035 2.126.107.873-.95 1.578-.95 2.372-.953.375 0 1.876 0 2.92 2.934l1.123 4.028c.832 2.995-.266 3.068-1.636 3.07-2.03-.075-3.156-1.55-3.156-3.025-1.124.184-2.436.276-3.75.276-1.312 0-2.624-.092-3.748-.276 0 1.475-1.125 2.95-3.156 3.026-1.37-.004-2.468-.077-1.636-3.072l1.122-4.027c1.045-2.934 2.546-2.934 2.92-2.934zM12 12.714c-.002.002-2.14 1.964-2.523 2.662l1.4-.056v1.22c0 .056.56.033 1.123.007.562.026 1.124.05 1.124-.008v-1.22l1.4.057C14.138 14.678 12 12.715 12 12.715z"/></svg>
+            itch.io
+          </a>
+          <button class="menu-btn" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="nav">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10" /></svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main"><slot /></main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <div class="footer-grid">
+          <div>
+            <a class="logo" href="/"><Logo /><span>HanX Assets<small>gameassets.tr</small></span></a>
+            <p class="muted" style="margin-top:16px;max-width:360px">
+              {lang === 'tr'
+                ? 'Unity, Godot, Unreal ve Blender için oyuna hazır low poly ve 3D pixel art asset paketleri. Tek doku, tek ölçek, ticari lisans.'
+                : 'Game-ready low poly & 3D pixel art asset packs for Unity, Godot, Unreal and Blender. One palette, one scale, commercial license.'}
+            </p>
+            <p class="pixel" style="font-size:.7rem;color:var(--dim)">{assets.length} packs · {bundles.length} bundles · secure checkout on itch.io</p>
+          </div>
+          <div>
+            <h4>Collections</h4>
+            <ul>{seriesOrder.map((s) => <li><a href={`/collections/${s}/`}>{SERIES[s].title}</a></li>)}</ul>
+          </div>
+          <div>
+            <h4>By engine</h4>
+            <ul>
+              <li><a href="/engines/unity/">Unity assets</a></li>
+              <li><a href="/engines/godot/">Godot 4 assets</a></li>
+              <li><a href="/engines/unreal/">Unreal Engine assets</a></li>
+              <li><a href="/engines/blender/">Blender models</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>HanX Assets</h4>
+            <ul>
+              <li><a href="/bundles/">Bundle deals</a></li>
+              <li><a href="/faq/">FAQ</a></li>
+              <li><a href="/license/">License</a></li>
+              <li><a href="/about/">About</a></li>
+              <li><a href="/tr/" hreflang="tr">Türkçe</a></li>
+              <li><a href={SITE.itch} target="_blank" rel="noopener">itch.io store ↗</a></li>
+              <li><a href={SITE.twitterUrl} target="_blank" rel="noopener">X / Twitter ↗</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>© {year} {SITE.studio}. All asset packs are sold and delivered securely via itch.io.</span>
+          <span class="pixel" style="font-size:.7rem">Made with ♥ in Türkiye</span>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Mobile menu
+      const btn = document.getElementById('menu-btn');
+      const nav = document.getElementById('nav');
+      btn?.addEventListener('click', () => {
+        const open = nav!.classList.toggle('open');
+        btn.setAttribute('aria-expanded', String(open));
+      });
+
+      // Reveal fallback for browsers without scroll-driven animations
+      if (!CSS.supports('animation-timeline: view()')) {
+        const io = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && (e.target.classList.add('in'), io.unobserve(e.target))), { rootMargin: '0px 0px -8% 0px' });
+        document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+      }
+
+      // Buy buttons: open itch.io checkout in a centered popup on desktop (keeps the visitor here),
+      // normal navigation on mobile / if popups are blocked.
+      document.addEventListener('click', (ev) => {
+        const a = (ev.target as HTMLElement).closest<HTMLAnchorElement>('a[data-buy]');
+        if (!a || ev.metaKey || ev.ctrlKey || ev.shiftKey || window.innerWidth < 900) return;
+        const w = 720, h = 760;
+        const left = window.screenX + (window.outerWidth - w) / 2;
+        const top = window.screenY + (window.outerHeight - h) / 2;
+        const url = a.dataset.popup || a.href;
+        const win = window.open(url, 'itch_purchase', `width=${w},height=${h},left=${left},top=${top},resizable=yes,scrollbars=yes`);
+        if (win) { ev.preventDefault(); win.focus(); }
+      });
+
+      // 3D tilt + glare on cards
+      const fine = matchMedia('(hover: hover) and (pointer: fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (fine) {
+        document.addEventListener('pointermove', (e) => {
+          const card = (e.target as HTMLElement).closest<HTMLElement>('[data-tilt]');
+          document.querySelectorAll<HTMLElement>('[data-tilt].tilting').forEach((c) => {
+            if (c !== card) { c.classList.remove('tilting'); c.style.transform = ''; }
+          });
+          if (!card) return;
+          const r = card.getBoundingClientRect();
+          const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+          card.classList.add('tilting');
+          card.style.transform = `perspective(900px) rotateX(${(0.5 - y) * 7}deg) rotateY(${(x - 0.5) * 9}deg) translateY(-4px)`;
+          card.style.setProperty('--gx', `${x * 100}%`);
+          card.style.setProperty('--gy', `${y * 100}%`);
+        });
+      }
+
+      // Hover preview: cycle through screenshots on asset cards
+      document.querySelectorAll<HTMLElement>('[data-peek]').forEach((card) => {
+        const list = (card.dataset.peek || '').split('|').filter(Boolean);
+        if (!list.length) return;
+        const img = card.querySelector<HTMLImageElement>('img.peek');
+        if (!img) return;
+        let i = 0, t: number | undefined;
+        const step = () => { img.src = list[i++ % list.length]; img.style.opacity = '1'; };
+        card.addEventListener('mouseenter', () => { step(); t = window.setInterval(step, 1100); });
+        card.addEventListener('mouseleave', () => { clearInterval(t); img.style.opacity = '0'; i = 0; });
+      });
+    </script>
+  </body>
+</html>

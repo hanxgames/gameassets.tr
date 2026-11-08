@@ -1,0 +1,40 @@
+---
+interface Props { ends: string | null | undefined; label?: string }
+const { ends, label = 'Sale ends in' } = Astro.props;
+const valid = ends && new Date(ends).getTime() > Date.now();
+---
+{valid && (
+  <div class="countdown" data-ends={ends}>
+    <span class="cd-label pixel">{label}</span>
+    <span class="cd-cells">
+      <span><b data-u="d">--</b><i>days</i></span>
+      <span><b data-u="h">--</b><i>hrs</i></span>
+      <span><b data-u="m">--</b><i>min</i></span>
+      <span><b data-u="s">--</b><i>sec</i></span>
+    </span>
+  </div>
+)}
+<style>
+  .countdown { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .cd-label { font-size: 0.72rem; color: var(--hot); }
+  .cd-cells { display: flex; gap: 6px; }
+  .cd-cells span { display: grid; justify-items: center; min-width: 50px; padding: 7px 6px; border-radius: 10px; background: rgba(255, 79, 139, 0.1); border: 1px solid rgba(255, 79, 139, 0.3); }
+  .cd-cells b { font: 700 1.15rem/1 var(--font-display); font-variant-numeric: tabular-nums; }
+  .cd-cells i { font: 400 0.58rem/1.4 var(--font-pixel); font-style: normal; color: var(--muted); text-transform: uppercase; }
+</style>
+<script>
+  document.querySelectorAll<HTMLElement>('.countdown[data-ends]').forEach((el) => {
+    const end = new Date(el.dataset.ends!).getTime();
+    const u = (k: string) => el.querySelector<HTMLElement>(`[data-u="${k}"]`)!;
+    const tick = () => {
+      let s = Math.max(0, Math.floor((end - Date.now()) / 1000));
+      if (s === 0) { el.remove(); return; }
+      const d = Math.floor(s / 86400); s -= d * 86400;
+      const h = Math.floor(s / 3600); s -= h * 3600;
+      const m = Math.floor(s / 60); s -= m * 60;
+      u('d').textContent = String(d); u('h').textContent = String(h).padStart(2, '0');
+      u('m').textContent = String(m).padStart(2, '0'); u('s').textContent = String(s).padStart(2, '0');
+    };
+    tick(); setInterval(tick, 1000);
+  });
+</script>

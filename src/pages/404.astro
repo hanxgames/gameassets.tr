@@ -1,0 +1,14 @@
+---
+import Base from '../layouts/Base.astro';
+import AssetCard from '../components/AssetCard.astro';
+import { assets } from '../data/site';
+---
+<Base title="Page not found" description="This page doesn’t exist — but 37 asset packs do." noindex>
+  <div class="wrap" style="text-align:center;padding:80px 0 40px">
+    <p class="pixel" style="color:var(--hot);font-size:1rem">Error 404 · Level not found</p>
+    <h1>This level hasn’t been <span class="grad-text">built yet.</span></h1>
+    <p class="muted">But plenty of others have. Try one of these:</p>
+    <p><a class="btn btn-primary" href="/assets/">Browse all packs</a></p>
+  </div>
+  <div class="wrap grid" style="padding-bottom:80px">{assets.slice(0, 4).map((a) => <AssetCard asset={a} />)}</div>
+</Base>
