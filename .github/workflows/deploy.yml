@@ -24,6 +24,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.commit.outputs.changed }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -37,6 +39,7 @@ jobs:
         run: npm run sync
 
       - name: Commit catalog changes
+        id: commit
         if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.sync)
         run: |
           if [ -n "$(git status --porcelain)" ]; then
@@ -45,6 +48,7 @@ jobs:
             git add -A
             git commit -m "chore: sync catalog from itch.io"
             git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "Catalog unchanged."
           fi
@@ -63,3 +67,16 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  indexnow:
+    needs: [build, deploy]
+    if: github.event_name == 'push' || needs.build.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Notify Bing / Yandex via IndexNow
+        run: sleep 60 && node scripts/indexnow.mjs
