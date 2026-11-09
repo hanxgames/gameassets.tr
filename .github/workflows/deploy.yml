@@ -1,5 +1,4 @@
 name: Build & deploy gameassets.tr
-run-name: ${{ github.event_name == 'push' && github.event.head_commit.message || (inputs.reason == 'schedule' && 'Scheduled itch.io sync' || (inputs.sync && 'Panel: itch.io sync' || 'Panel: rebuild')) }}
 
 # The daily itch.io sync is started by scheduler.yml at the hours set in src/data/schedule.json.
 on:
