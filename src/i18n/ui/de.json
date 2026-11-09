@@ -71,7 +71,7 @@
   "home.browse": "{packs} Packs ansehen",
   "home.bundleDeals": "Bundle-Angebote",
   "home.stamp": "{bundle}: alle {n} Packs, statt {was}",
-  "home.collectionsH2": "Vier Kollektionen. Eine Welt.",
+  "home.collectionsH2": "Fünf Kollektionen. Eine Welt.",
   "home.collectionsLead": "Kombinier eine Halloween-Straße mit der Stadt oder steck das ganze Spiel ins Winterkleid.",
   "home.tile": "{n} Packs, ab {min}",
   "home.factsH2": "Einmal zahlen. Heute loslegen.",
@@ -241,5 +241,11 @@
   "about.requests": "Wünsche",
   "about.requestsA": "Kommentiere auf der itch.io-Seite eines beliebigen Packs.",
   "home.pickedH2": "Vom Studio ausgewählt.",
-  "campaign.until": "Bis {date}."
+  "campaign.until": "Bis {date}.",
+  "series.japan.name": "Japan",
+  "series.japan.title": "Japan-Low-Poly-Asset-Packs",
+  "series.japan.seoTitle": "Japan-Low-Poly-3D-Asset-Packs: Tokio, Schreine, Anime-Städte",
+  "series.japan.blurb": "Schreine, Konbini, Neonstraßen in Tokio, Kei-Cars, Anime-Schulen und Reisfelder, alles auf derselben Palette und demselben Raster.",
+  "series.japan.long": "Die Japan-Editionen bauen die HanX-Assets-Welt im japanischen Stil neu: Torii-Tore, Pagoden und Onsen, neonbeleuchtete Spielhallen und Scramble-Kreuzungen, eine Anime-Oberschule, Läden in der Shotengai, Kei-Trucks und Züge, ein Burgpark unter Sakura und ein ruhiges Bauerndorf. Sie teilen sich Palette, Maßstab und Raster mit jedem anderen Low-Poly-Pack.",
+  "bundle.japan": "Japan Mega Bundle"
 }

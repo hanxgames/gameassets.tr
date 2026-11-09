@@ -146,5 +146,49 @@
   "low-poly-christmas-hospital-pack": {
     "short": "로우폴리 크리스마스 병원 모델 35개: St. Nick's Hospital, 순록 구급차, 축제 분위기의 환자, 눈 덮인 타일.",
     "headline": "게임에 바로 쓸 수 있는 모델 35개"
+  },
+  "low-poly-japan-village-pack": {
+    "short": "로우폴리 일본 시골 모델 40개: 논, 곳간, 농가, 물레방아 방앗간, 버스 정류장, 경트럭, 허수아비.",
+    "headline": "게임에 바로 쓸 수 있는 모델 40개"
+  },
+  "low-poly-japan-traffic-pack": {
+    "short": "로우폴리 일본 교통 모델 40개: 경차, 버스, 순찰차, 소방차, 열차, 철도 건널목, 도로 표지판.",
+    "headline": "게임에 바로 쓸 수 있는 모델 40개"
+  },
+  "low-poly-japan-shop-market-pack": {
+    "short": "로우폴리 일본 상점가 모델 38개: 아케이드 게이트, 가족 운영 가게 14곳, 시장 노점, 캡슐 뽑기 기계, 마네키네코.",
+    "headline": "게임에 바로 쓸 수 있는 모델 38개"
+  },
+  "low-poly-japan-school-pack": {
+    "short": "로우폴리 애니메이션 풍 고등학교 모델 39개: 시계탑 학교, 체육관, 수영장, 운동회, 교실 소품, 벚꽃.",
+    "headline": "게임에 바로 쓸 수 있는 모델 39개"
+  },
+  "low-poly-japan-park-nature-pack": {
+    "short": "로우폴리 일본 공원 모델 40개: 천수각, 해자, 꽃놀이 벚나무, 백조 보트, 놀이터, 후지산, 사슴.",
+    "headline": "게임에 바로 쓸 수 있는 모델 40개"
+  },
+  "low-poly-japan-neighborhood-pack": {
+    "short": "애니메이션 풍 일본 교외 주택가: 단독주택, 아파트, 파출소, 대중목욕탕, 막과자 가게, 블록 담, 경차, 고양이.",
+    "headline": "게임에 바로 쓸 수 있는 모델 65개"
+  },
+  "low-poly-japan-hospital-pack": {
+    "short": "로우폴리 일본 병원 모델 37개: 종합병원, 응급실, 의원, 약국, 구급차, 택시, 의료 소품.",
+    "headline": "게임에 바로 쓸 수 있는 모델 37개"
+  },
+  "low-poly-japan-gas-station-pack": {
+    "short": "로우폴리 일본 주유소 모델 39개: 천장 호스 캐노피, 경트럭, 세차장, 탱크로리, 휴게소, 간판.",
+    "headline": "게임에 바로 쓸 수 있는 모델 39개"
+  },
+  "low-poly-japan-construction-pack": {
+    "short": "로우폴리 일본 공사 현장 모델 40개: 동물 바리케이드, 비계, 타워 크레인, 굴착기, 현장 사무소.",
+    "headline": "게임에 바로 쓸 수 있는 모델 40개"
+  },
+  "low-poly-japan-city-pack": {
+    "short": "로우폴리 네온 도쿄 모델 38개: 게임 센터, 노래방, 방송탑, 기차역, 열차, 스크램블 교차로.",
+    "headline": "게임에 바로 쓸 수 있는 모델 38개"
+  },
+  "low-poly-japan-town-pack": {
+    "short": "로우폴리 일본 마을 모델 50개: 도리이, 신사, 탑, 라멘 가게, 온천, 편의점, 벚나무, 등롱.",
+    "headline": "게임에 바로 쓸 수 있는 모델 50개"
   }
 }

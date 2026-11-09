@@ -71,7 +71,7 @@
   "home.browse": "浏览 {packs} 个素材包",
   "home.bundleDeals": "捆绑优惠",
   "home.stamp": "{bundle}：全部 {n} 个素材包，原价 {was}",
-  "home.collectionsH2": "四个系列，一个世界。",
+  "home.collectionsH2": "五个系列，一个世界。",
   "home.collectionsLead": "把万圣节街道和城市混搭，或者把整个游戏换成冬季主题。",
   "home.tile": "{n} 个素材包，{min} 起",
   "home.factsH2": "一次付费，今天开工。",
@@ -241,5 +241,11 @@
   "about.requests": "需求",
   "about.requestsA": "在任意素材包的 itch.io 页面留言。",
   "home.pickedH2": "工作室精选。",
-  "campaign.until": "截至 {date}。"
+  "campaign.until": "截至 {date}。",
+  "series.japan.name": "日本",
+  "series.japan.title": "日本低多边形素材包",
+  "series.japan.seoTitle": "日本低多边形 3D 素材包：东京、神社、动漫风小镇",
+  "series.japan.blurb": "神社、便利店、霓虹闪烁的东京街道、轻型汽车、动漫风校园和稻田，全部采用相同的调色板和网格。",
+  "series.japan.long": "日本版以日式风格重建 HanX Assets 世界：鸟居、佛塔和温泉，霓虹闪烁的游戏厅和全向通行路口，动漫风高中，商店街店铺，轻型卡车和电车，樱花环绕的城堡公园，以及宁静的农村。与其他所有低多边形素材包共用相同的调色板、比例和网格。",
+  "bundle.japan": "Japan Mega Bundle"
 }

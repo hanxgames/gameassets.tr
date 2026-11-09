@@ -71,7 +71,7 @@
   "home.browse": "Ver {packs} packs",
   "home.bundleDeals": "Ofertas en bundle",
   "home.stamp": "{bundle}: los {n} packs, antes {was}",
-  "home.collectionsH2": "Cuatro colecciones. Un mundo.",
+  "home.collectionsH2": "Cinco colecciones. Un mundo.",
   "home.collectionsLead": "Mezcla una calle de Halloween con la ciudad o viste todo el juego de invierno.",
   "home.tile": "{n} packs, desde {min}",
   "home.factsH2": "Paga una vez. Crea hoy.",
@@ -241,5 +241,11 @@
   "about.requests": "Peticiones",
   "about.requestsA": "Comenta en la página de itch.io de cualquier pack.",
   "home.pickedH2": "Elegidos por el estudio.",
-  "campaign.until": "Hasta el {date}."
+  "campaign.until": "Hasta el {date}.",
+  "series.japan.name": "Japón",
+  "series.japan.title": "Packs de assets low poly de Japón",
+  "series.japan.seoTitle": "Assets 3D low poly de Japón: Tokio, santuarios y pueblos anime",
+  "series.japan.blurb": "Santuarios, konbini, calles de Tokio con neón, kei cars, institutos de anime y arrozales, todo con la misma paleta y la misma cuadrícula.",
+  "series.japan.long": "Las ediciones de Japón reconstruyen el mundo de HanX Assets al estilo japonés: puertas torii, pagodas y onsen (baños termales), salones recreativos con neón y cruces scramble, un instituto de anime, tiendas de shotengai (calle comercial), kei trucks y trenes, un parque con castillo bajo los sakura y un tranquilo pueblo agrícola. Comparten la paleta, la escala y la cuadrícula de todos los demás packs low poly.",
+  "bundle.japan": "Japan Mega Bundle"
 }

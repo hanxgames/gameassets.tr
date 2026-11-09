@@ -71,7 +71,7 @@
   "home.browse": "Xem {packs} gói",
   "home.bundleDeals": "Ưu đãi combo",
   "home.stamp": "{bundle}: đủ {n} gói, giá gốc {was}",
-  "home.collectionsH2": "Bốn bộ sưu tập. Một thế giới.",
+  "home.collectionsH2": "Năm bộ sưu tập. Một thế giới.",
   "home.collectionsLead": "Ghép một con phố Halloween vào thành phố, hoặc khoác áo mùa đông cho cả game.",
   "home.tile": "{n} gói, từ {min}",
   "home.factsH2": "Trả một lần. Làm game ngay.",
@@ -241,5 +241,11 @@
   "about.requests": "Yêu cầu",
   "about.requestsA": "Bình luận trên trang itch.io của bất kỳ gói nào.",
   "home.pickedH2": "Studio chọn cho bạn.",
-  "campaign.until": "Đến hết {date}."
+  "campaign.until": "Đến hết {date}.",
+  "series.japan.name": "Nhật Bản",
+  "series.japan.title": "Gói asset low poly Nhật Bản",
+  "series.japan.seoTitle": "Gói asset 3D low poly Nhật Bản: Tokyo, đền thờ, thị trấn anime",
+  "series.japan.blurb": "Đền thờ, konbini (cửa hàng tiện lợi), phố neon Tokyo, kei car, trường học anime và ruộng lúa, tất cả trên cùng bảng màu và lưới.",
+  "series.japan.long": "Các phiên bản Nhật Bản dựng lại thế giới HanX Assets theo phong cách Nhật: cổng torii, chùa tháp và onsen (suối nước nóng), trung tâm game rực đèn neon và giao lộ scramble, một trường trung học kiểu anime, các cửa hàng shotengai (phố mua sắm có mái che), xe tải kei và tàu hỏa, công viên lâu đài dưới tán sakura và một ngôi làng nông nghiệp yên bình. Chúng dùng chung bảng màu, tỷ lệ và lưới với mọi gói low poly khác.",
+  "bundle.japan": "Japan Mega Bundle"
 }

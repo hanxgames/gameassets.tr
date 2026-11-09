@@ -91,6 +91,7 @@ function innerDiv(html, cls) {
 function seriesOf(slug) {
   if (slug.includes('halloween')) return 'halloween';
   if (slug.includes('christmas')) return 'christmas';
+  if (slug.includes('japan')) return 'japan';
   if (slug.startsWith('3d-pixel')) return '3d-pixel';
   return 'low-poly';
 }

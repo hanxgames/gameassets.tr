@@ -66,6 +66,16 @@ export const SERIES = {
     accent: '#ff3b6b',
     emoji: '🎄',
   },
+  japan: {
+    slug: 'japan',
+    name: 'Japan',
+    title: 'Japan Low Poly Asset Packs',
+    seoTitle: 'Japan Low Poly 3D Asset Packs: Tokyo, Shrines, Anime Towns',
+    blurb: 'Shrines, konbini, neon Tokyo streets, kei cars, anime schools and rice paddies on the same palette and grid.',
+    long: 'The Japan editions rebuild the HanX Assets world in Japanese style: torii gates, pagodas and onsen, neon game centers and scramble crossings, an anime high school, shotengai shops, kei trucks and trains, a castle park under sakura and a quiet farming village. They share the palette, scale and grid of every other low poly pack.',
+    accent: '#e8453c',
+    emoji: '🗾',
+  },
 } as const;
 export type SeriesKey = keyof typeof SERIES;
 
@@ -77,7 +87,7 @@ export const ENGINES = {
 } as const;
 export type EngineKey = keyof typeof ENGINES;
 
-export const seriesOrder: SeriesKey[] = ['low-poly', '3d-pixel', 'halloween', 'christmas'];
+export const seriesOrder: SeriesKey[] = ['low-poly', '3d-pixel', 'halloween', 'christmas', 'japan'];
 
 export const totalModels = assets.reduce((n, a) => n + (a.modelCount || 0), 0);
 export const minPrice = Math.min(...assets.map((a) => a.priceValue).filter((v) => v > 0));
@@ -90,20 +100,22 @@ export const membersOf = (b: Bundle) => b.members.map(assetBySlug).filter(Boolea
 
 export const fmtUSD = (v: number) => `$${v.toFixed(2)}`;
 
-export function bundleKey(b: Bundle): 'lowpoly' | 'pixel' | 'halloween' | 'christmas' {
+export function bundleKey(b: Bundle): 'lowpoly' | 'pixel' | 'halloween' | 'christmas' | 'japan' {
   const t = b.title;
+  if (/japan/i.test(t)) return 'japan';
   if (/halloween/i.test(t)) return 'halloween';
   if (/christmas/i.test(t)) return 'christmas';
   if (/pixel/i.test(t)) return 'pixel';
   return 'lowpoly';
 }
-const BUNDLE_NAMES = { lowpoly: 'Low Poly Starter Bundle', pixel: '3D Pixel Mega Bundle', halloween: 'Halloween Mega Bundle', christmas: 'Christmas Mega Bundle' };
+const BUNDLE_NAMES = { lowpoly: 'Low Poly Starter Bundle', pixel: '3D Pixel Mega Bundle', halloween: 'Halloween Mega Bundle', christmas: 'Christmas Mega Bundle', japan: 'Japan Mega Bundle' };
 /** English bundle name (used by RSS, llms.txt and as the fallback). */
 export function bundleName(b: Bundle) {
   return BUNDLE_NAMES[bundleKey(b)];
 }
 export function bundleSeries(b: Bundle): SeriesKey {
   const t = b.title;
+  if (/japan/i.test(t)) return 'japan';
   if (/halloween/i.test(t)) return 'halloween';
   if (/christmas/i.test(t)) return 'christmas';
   if (/pixel/i.test(t)) return '3d-pixel';

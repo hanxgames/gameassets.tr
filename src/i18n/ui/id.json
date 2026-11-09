@@ -71,7 +71,7 @@
   "home.browse": "Lihat {packs} paket",
   "home.bundleDeals": "Promo bundel",
   "home.stamp": "{bundle}: semua {n} paket, sebelumnya {was}",
-  "home.collectionsH2": "Empat koleksi. Satu dunia.",
+  "home.collectionsH2": "Lima koleksi. Satu dunia.",
   "home.collectionsLead": "Padukan jalanan Halloween dengan kota, atau ubah seluruh game Anda ke suasana musim dingin.",
   "home.tile": "{n} paket, mulai {min}",
   "home.factsH2": "Bayar sekali. Langsung berkarya.",
@@ -241,5 +241,11 @@
   "about.requests": "Permintaan",
   "about.requestsA": "Tulis komentar di halaman itch.io paket mana pun.",
   "home.pickedH2": "Pilihan studio.",
-  "campaign.until": "Hingga {date}."
+  "campaign.until": "Hingga {date}.",
+  "series.japan.name": "Jepang",
+  "series.japan.title": "Paket Aset Low Poly Jepang",
+  "series.japan.seoTitle": "Paket Aset 3D Low Poly Jepang: Tokyo, Kuil, Kota Anime",
+  "series.japan.blurb": "Kuil, konbini (minimarket Jepang), jalanan Tokyo bertabur neon, kei car, sekolah anime, dan sawah, semuanya dengan palet dan grid yang sama.",
+  "series.japan.long": "Edisi Jepang membangun ulang dunia HanX Assets dengan gaya Jepang: gerbang torii, pagoda, dan onsen (pemandian air panas), game center bertabur neon dan scramble crossing, SMA ala anime, toko-toko shotengai (jalan belanja beratap), kei truck dan kereta, taman kastel di bawah sakura, serta desa pertanian yang tenang. Semuanya memakai palet, skala, dan grid yang sama dengan setiap paket low poly lainnya.",
+  "bundle.japan": "Japan Mega Bundle"
 }

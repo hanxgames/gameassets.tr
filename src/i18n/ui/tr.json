@@ -71,7 +71,7 @@
   "home.browse": "{packs} paketi incele",
   "home.bundleDeals": "Set fırsatları",
   "home.stamp": "{bundle}: {n} paketin tümü, eskiden {was}",
-  "home.collectionsH2": "Dört koleksiyon. Tek dünya.",
+  "home.collectionsH2": "Beş koleksiyon. Tek dünya.",
   "home.collectionsLead": "Bir Halloween sokağını şehirle karıştır ya da tüm oyunu kış temasına büründür.",
   "home.tile": "{n} paket, başlangıç {min}",
   "home.factsH2": "Bir kez öde. Bugün üret.",
@@ -241,5 +241,11 @@
   "about.requests": "İstekler",
   "about.requestsA": "Herhangi bir paketin itch.io sayfasına yorum yaz.",
   "home.pickedH2": "Stüdyonun seçtikleri.",
-  "campaign.until": "{date} tarihine kadar."
+  "campaign.until": "{date} tarihine kadar.",
+  "series.japan.name": "Japonya",
+  "series.japan.title": "Japonya Low Poly Asset Paketleri",
+  "series.japan.seoTitle": "Japonya Low Poly 3D Asset Paketleri: Tokyo, Tapınaklar, Anime Kasabaları",
+  "series.japan.blurb": "Tapınaklar, konbini marketler, neon ışıklı Tokyo sokakları, kei arabalar, anime okulları ve pirinç tarlaları; hepsi aynı palet ve grid üzerinde.",
+  "series.japan.long": "Japonya sürümleri HanX Assets dünyasını Japon tarzında yeniden kurar: torii kapıları, pagodalar ve onsen kaplıcaları, neon ışıklı oyun salonları ve scramble yaya geçitleri, bir anime lisesi, shotengai çarşı dükkânları, kei kamyonetler ve trenler, sakura ağaçları altında bir kale parkı ve sakin bir tarım köyü. Hepsi diğer tüm low poly paketlerle aynı paleti, ölçeği ve grid'i paylaşır.",
+  "bundle.japan": "Japan Mega Bundle"
 }

@@ -208,7 +208,7 @@ const faqLd = {
 
   .bento { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gap-columns); }
   .tile { display: grid; grid-template-rows: minmax(0, 1fr) auto; border: var(--rule-bar) solid var(--color-ink); box-shadow: var(--shadow-card); text-decoration: none; background: var(--color-paper-2); height: 360px; overflow: hidden; transition: background-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out); }
-  .tile-0 { grid-column: span 8; } .tile-1 { grid-column: span 4; } .tile-2 { grid-column: span 4; } .tile-3 { grid-column: span 8; }
+  .tile-0 { grid-column: span 8; } .tile-1 { grid-column: span 4; } .tile-2 { grid-column: span 4; } .tile-3 { grid-column: span 8; } .tile-4 { grid-column: span 12; }
   .tile-0 .tile-text { background: var(--color-accent); color: var(--color-accent-ink); }
   .tile-3 .tile-text { background: var(--color-accent-2); color: var(--color-on-accent-2); }
   .tile-img { position: relative; display: block; min-height: 0; overflow: hidden; border-bottom: var(--rule-bar) solid var(--color-ink); }
@@ -218,7 +218,7 @@ const faqLd = {
   .tile:hover .tile-text { background: var(--color-ink); color: var(--color-paper); }
   .tile:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
   .tile:active { box-shadow: var(--shadow-press); }
-  @media (max-width: 60rem) { .tile-0, .tile-1, .tile-2, .tile-3 { grid-column: 1 / -1; height: 300px; } }
+  @media (max-width: 60rem) { .tile-0, .tile-1, .tile-2, .tile-3, .tile-4 { grid-column: 1 / -1; height: 300px; } }
 
   .pinned { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-3xl); align-items: start; }
   .pinned-visual { position: sticky; top: calc(var(--nav-height) + var(--space-xl)); display: grid; }

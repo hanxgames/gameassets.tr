@@ -71,7 +71,7 @@
   "home.browse": "{packs}パックを見る",
   "home.bundleDeals": "お得なバンドル",
   "home.stamp": "{bundle}：全{n}パック、元値{was}",
-  "home.collectionsH2": "4つのコレクション、1つの世界。",
+  "home.collectionsH2": "5つのコレクション、1つの世界。",
   "home.collectionsLead": "ハロウィンの通りを街に混ぜたり、ゲーム全体を冬仕様に着せ替えたりできます。",
   "home.tile": "{n}パック、{min}から",
   "home.factsH2": "一度の支払いで、今日から制作。",
@@ -241,5 +241,11 @@
   "about.requests": "リクエスト",
   "about.requestsA": "各パックのitch.ioページにコメントしてください。",
   "home.pickedH2": "スタジオのおすすめ。",
-  "campaign.until": "{date}まで。"
+  "campaign.until": "{date}まで。",
+  "series.japan.name": "日本",
+  "series.japan.title": "日本 ローポリアセットパック",
+  "series.japan.seoTitle": "日本 ローポリ3Dアセットパック：東京、神社、アニメ風の街",
+  "series.japan.blurb": "神社、コンビニ、ネオンの灯る東京の通り、軽自動車、アニメ風の学校、田んぼ。すべて同じパレットとグリッドでそろえています。",
+  "series.japan.long": "日本版はHanX Assetsの世界を和風に作り直したシリーズです。鳥居、三重塔、温泉、ネオンのゲームセンターとスクランブル交差点、アニメ風の高校、商店街の店、軽トラと電車、桜に囲まれた城址公園、静かな農村を収録しています。パレット、スケール、グリッドは他のすべてのローポリパックと共通です。",
+  "bundle.japan": "Japan Mega Bundle"
 }

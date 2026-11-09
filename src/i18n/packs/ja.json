@@ -146,5 +146,49 @@
   "low-poly-christmas-hospital-pack": {
     "short": "ローポリのクリスマス病院モデル35点：St. Nick's Hospital、トナカイの救急車、お祝い気分の患者、雪のタイル。",
     "headline": "ゲームですぐ使えるモデル35点"
+  },
+  "low-poly-japan-village-pack": {
+    "short": "ローポリの日本の田舎モデル40点：田んぼ、蔵、農家、水車小屋、バス停、軽トラ、かかし。",
+    "headline": "ゲームですぐ使えるモデル40点"
+  },
+  "low-poly-japan-traffic-pack": {
+    "short": "ローポリの日本の交通モデル40点：軽自動車、バス、パトカー、消防車、電車、踏切、道路標識。",
+    "headline": "ゲームですぐ使えるモデル40点"
+  },
+  "low-poly-japan-shop-market-pack": {
+    "short": "ローポリの日本の商店街モデル38点：アーケードの入口ゲート、家族経営の店14軒、屋台、ガチャポン、招き猫。",
+    "headline": "ゲームですぐ使えるモデル38点"
+  },
+  "low-poly-japan-school-pack": {
+    "short": "ローポリのアニメ風高校モデル39点：時計塔のある校舎、体育館、プール、運動会、教室の小物、桜。",
+    "headline": "ゲームですぐ使えるモデル39点"
+  },
+  "low-poly-japan-park-nature-pack": {
+    "short": "ローポリの日本の公園モデル40点：天守、お堀、花見の桜、スワンボート、遊具、富士山、鹿。",
+    "headline": "ゲームですぐ使えるモデル40点"
+  },
+  "low-poly-japan-neighborhood-pack": {
+    "short": "アニメ風の日本の住宅街：一戸建て、アパート、交番、銭湯、駄菓子屋、ブロック塀、軽自動車、猫。",
+    "headline": "ゲームですぐ使えるモデル65点"
+  },
+  "low-poly-japan-hospital-pack": {
+    "short": "ローポリの日本の病院モデル37点：総合病院、救急センター、医院、薬局、救急車、タクシー、医療小物。",
+    "headline": "ゲームですぐ使えるモデル37点"
+  },
+  "low-poly-japan-gas-station-pack": {
+    "short": "ローポリの日本のガソリンスタンドモデル39点：吊り下げ式ホースのキャノピー、軽トラ、洗車機、タンクローリー、道の駅、看板。",
+    "headline": "ゲームですぐ使えるモデル39点"
+  },
+  "low-poly-japan-construction-pack": {
+    "short": "ローポリの日本の工事現場モデル40点：動物のバリケード、足場、タワークレーン、ショベルカー、現場事務所。",
+    "headline": "ゲームですぐ使えるモデル40点"
+  },
+  "low-poly-japan-city-pack": {
+    "short": "ローポリのネオン東京モデル38点：ゲームセンター、カラオケ、電波塔、駅、電車、スクランブル交差点。",
+    "headline": "ゲームですぐ使えるモデル38点"
+  },
+  "low-poly-japan-town-pack": {
+    "short": "ローポリの日本の町モデル50点：鳥居、神社、三重塔、ラーメン屋、温泉、コンビニ、桜の木、提灯。",
+    "headline": "ゲームですぐ使えるモデル50点"
   }
 }
