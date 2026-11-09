@@ -108,6 +108,29 @@ const year = new Date().getFullYear();
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href={`https://fonts.googleapis.com/css2?${fontFamilies}&display=swap`} />
+    {localized && lang === DEFAULT_LOCALE && (
+      <script is:inline define:vars={{ codes: LOCALES.map((l) => l.code).filter((c) => c !== DEFAULT_LOCALE) }}>
+        // English is the default at the root. Send a first-time visitor to their browser's language,
+        // unless they picked a language in the menu before. Crawlers are left alone.
+        (function () {
+          if (/bot|crawl|spider|slurp|lighthouse/i.test(navigator.userAgent)) return;
+          var saved = null;
+          try { saved = localStorage.getItem('lang'); } catch (e) {}
+          if (saved === 'en') return;
+          var target = saved && codes.indexOf(saved) > -1 ? saved : null;
+          if (!target) {
+            var langs = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || 'en'];
+            for (var i = 0; i < langs.length; i++) {
+              var l = String(langs[i]).toLowerCase();
+              var code = l.indexOf('pt') === 0 ? 'pt' : /^zh(-hans|-cn|-sg)?$|^zh-hans-/.test(l) ? 'zh' : l.indexOf('zh') === 0 ? '' : l.split('-')[0];
+              if (code === 'en') return;
+              if (code && codes.indexOf(code) > -1) { target = code; break; }
+            }
+          }
+          if (target) location.replace('/' + target + location.pathname + location.search + location.hash);
+        })();
+      </script>
+    )}
     <slot name="head" />
 
     <script type="application/ld+json" set:html={JSON.stringify(org)} />
@@ -128,7 +151,7 @@ const year = new Date().getFullYear();
             <details class="lang-menu">
               <summary aria-label={t('nav.language')}>{lang.toUpperCase()}</summary>
               <ul>
-                {LOCALES.map((l) => <li><a href={localePath(l.code, path)} hreflang={l.hreflang} lang={l.hreflang} aria-current={l.code === lang ? 'true' : undefined}>{l.name}</a></li>)}
+                {LOCALES.map((l) => <li><a href={localePath(l.code, path)} hreflang={l.hreflang} lang={l.hreflang} data-set-lang={l.code} aria-current={l.code === lang ? 'true' : undefined}>{l.name}</a></li>)}
               </ul>
             </details>
           )}
@@ -176,7 +199,7 @@ const year = new Date().getFullYear();
           <div>
             <p class="footer-head">{t('footer.languages')}</p>
             <ul class="footer-langs">
-              {LOCALES.map((l) => <li><a href={localePath(l.code, localized ? path : '/')} hreflang={l.hreflang} lang={l.hreflang}>{l.name}</a></li>)}
+              {LOCALES.map((l) => <li><a href={localePath(l.code, localized ? path : '/')} hreflang={l.hreflang} lang={l.hreflang} data-set-lang={l.code}>{l.name}</a></li>)}
             </ul>
           </div>
         </div>
@@ -194,6 +217,12 @@ const year = new Date().getFullYear();
         const open = menu!.classList.toggle('open');
         btn.setAttribute('aria-expanded', String(open));
         btn.textContent = open ? btn.dataset.close! : btn.dataset.open!;
+      });
+
+      // Remember a language picked by hand, so the browser-language redirect never overrides it.
+      document.addEventListener('click', (e) => {
+        const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[data-set-lang]');
+        if (a) { try { localStorage.setItem('lang', a.dataset.setLang!); } catch {} }
       });
 
       // Close the language menu on outside click or Escape.
