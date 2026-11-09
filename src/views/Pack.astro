@@ -4,7 +4,7 @@ import AssetCard from '../components/AssetCard.astro';
 import BuyButton from '../components/BuyButton.astro';
 import Countdown from '../components/Countdown.astro';
 import { SITE, ENGINES, assets, bundlesFor, bundleSavings, absolute, type Asset, type EngineKey } from '../data/site';
-import { useT, href, packText, packSeoTitle, packSeoDescription, fmtDate, fmtNum, bundleLabel } from '../i18n';
+import { useT, href, packText, packDescription, packSeoTitle, packSeoDescription, fmtDate, fmtNum, bundleLabel } from '../i18n';
 
 interface Props { lang: string; asset: Asset }
 const { lang, asset: a } = Astro.props;
@@ -23,10 +23,8 @@ const related = [
 const engines = (a.engines as string[]).filter((e) => e in ENGINES) as EngineKey[];
 const formats = (a.formats as string[]).filter((f) => f !== 'PNG');
 const { short, headline } = packText(lang, a);
-// Presentation only: drop the leading emoji itch.io puts on headings; the words stay as the owner wrote them.
-const descHtml = a.descriptionHtml
-  .replace(/(<h[2-4][^>]*>)\s*(?:\p{Extended_Pictographic}|️|‍)+\s*/gu, '$1')
-  .replace(/href="\/assets\//g, `href="${L('/assets/')}`);
+// Translated description when one exists; otherwise the owner's English text from itch.io.
+const desc = packDescription(lang, a);
 const pagePath = `/assets/${a.slug}/`;
 
 const productLd = {
@@ -130,8 +128,8 @@ const breadcrumb = {
     <section class="details">
       <article class="prose">
         <h2>{t('pack.about', { title: a.title })}</h2>
-        {lang !== 'en' && <p class="small">{t('pack.descNote')}</p>}
-        <div lang="en"><Fragment set:html={descHtml} /></div>
+        {lang !== 'en' && !desc.translated && <p class="small">{t('pack.descNote')}</p>}
+        <div lang={desc.translated ? undefined : 'en'}><Fragment set:html={desc.html} /></div>
       </article>
       <aside class="side">
         <h2>{t('pack.tags')}</h2>

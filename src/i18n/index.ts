@@ -31,6 +31,15 @@ export function packText(lang: string, a: Asset) {
   return { short: p?.short || a.shortDescription, headline: p?.headline || cleanHeadline(a) };
 }
 
+const descDicts = import.meta.glob<Record<string, string>>('./desc/*.json', { eager: true, import: 'default' });
+
+/** Long pack description in the page's language when a translation exists, else the English text from itch.io. */
+export function packDescription(lang: string, a: Asset): { html: string; translated: boolean } {
+  const tr = lang === 'en' ? undefined : descDicts[`./desc/${lang}.json`]?.[a.slug];
+  const html = tr ?? a.descriptionHtml.replace(/(<h[2-4][^>]*>)\s*(?:\p{Extended_Pictographic}|️|‍)+\s*/gu, '$1');
+  return { html: html.replace(/href="\/assets\//g, `href="${localePath(lang, '/assets/')}`), translated: Boolean(tr) };
+}
+
 export const href = (lang: string, path: string) => localePath(lang, path);
 export const fmtDate = (lang: string, iso: string) =>
   new Date(iso).toLocaleDateString(localeOf(lang).intl, { year: 'numeric', month: 'long', day: 'numeric' });

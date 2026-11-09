@@ -46,3 +46,4 @@ English (kök adres), Türkçe `/tr/`, Deutsch `/de/`, Français `/fr/`, Españo
 - Paket kısa açıklamaları: `src/i18n/packs/<dil>.json`. itch.io'ya yeni paket eklenirse çevirisi yoksa İngilizce kısa açıklama görünür; `src/i18n/packs-source.en.json` dosyasına bakıp ilgili dillere ekleyin.
 - Uzun paket açıklamaları itch.io'daki gibi İngilizce kalır.
 - Her sayfada `hreflang` etiketleri, site haritasında da dil bağlantıları otomatik üretilir. Dil listesi: `src/i18n/locales.ts`.
+- Uzun paket açıklamaları: `src/i18n/desc/<dil>.json` (kaynak: `src/i18n/desc-source.en.json`). itch.io'da bir açıklamayı değiştirirsen çevirileri de güncelle; çevirisi olmayan paket İngilizce açıklamayla görünür.
