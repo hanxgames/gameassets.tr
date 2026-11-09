@@ -1,6 +1,5 @@
 {
   "site.description": "Unity, Godot, Unreal ve Blender için oyuna hazır low poly ve 3D pixel art asset paketleri. Tek palet, tek ölçek, tek draw call. Ticari lisans, başlangıç {min}.",
-
   "nav.skip": "İçeriğe geç",
   "nav.home": "Ana sayfa",
   "nav.homeAria": "HanX Assets, ana sayfa",
@@ -13,7 +12,6 @@
   "nav.menu": "Menü",
   "nav.close": "Kapat",
   "nav.language": "Dil",
-
   "footer.collections": "Koleksiyonlar",
   "footer.byEngine": "Motora göre",
   "footer.brand": "HanX Assets",
@@ -29,18 +27,15 @@
   "footer.about": "Hakkımızda",
   "footer.legal": "© {year} {studio}. {packs} paket ve {bundles} set, itch.io üzerinden satılır ve teslim edilir.",
   "footer.made": "Türkiye'de yapıldı.",
-
   "buy.onItch": "itch.io'dan al",
   "buy.short": "Satın al",
   "buy.aria": "{title} paketini itch.io'dan {price} karşılığında satın al",
   "card.coverAlt": "{title} kapak görseli",
   "sale.until": "İndirim bitişi:",
-
   "bundle.lowpoly": "Low Poly Starter Bundle",
   "bundle.pixel": "3D Pixel Mega Bundle",
   "bundle.halloween": "Halloween Mega Bundle",
   "bundle.christmas": "Christmas Mega Bundle",
-
   "series.low-poly.name": "Low poly",
   "series.low-poly.title": "Low Poly 3D Asset Paketleri",
   "series.low-poly.seoTitle": "Unity, Godot ve Unreal için Low Poly 3D Asset Paketleri",
@@ -61,7 +56,6 @@
   "series.christmas.seoTitle": "Noel Low Poly 3D Asset Paketleri: Karlı Kış Oyun Modelleri",
   "series.christmas.blurb": "Karlı çatılar, ışık zincirleri, Noel ağaçları ve kış objeleri; sıcacık yılbaşı sahneleri ve sezonluk etkinlikler için.",
   "series.christmas.long": "Noel sürümleri tüm HanX Assets dünyasını karla kaplar: parlayan ışık zincirleri, süslü ağaçlar, hediye kutuları, kardan adamlar ve kış sokakları. Yılbaşı etkinlikleri, cozy oyunlar ve kış bölümleri için.",
-
   "engine.unity.title": "Unity için Low Poly 3D Asset'ler",
   "engine.unity.how": "FBX ya da GLB dosyalarını Assets klasörüne sürükle, ortak palet materyalini bir kez ata ve prefab'ları sahnene bırak. URP, HDRP ve Built-in pipeline ile çalışır.",
   "engine.godot.title": "Godot 4 için Low Poly 3D Asset'ler",
@@ -70,7 +64,6 @@
   "engine.unreal.how": "FBX dosyalarını Combine Meshes kapalıyken içe aktar, palet dokusundan tek bir material instance oluştur ve her mesh için onu kullan. Nanite gerekmez, modeller zaten çok hafif.",
   "engine.blender.title": "Blender için Low Poly 3D Modeller",
   "engine.blender.how": "Paketteki .blend dosyasını aç: her model zaten Asset olarak işaretli, yani paketin tamamı Blender'ın Asset Browser'ında (varlık tarayıcısı) görünür ve sahnelerine, render'larına sürüklemeye hazırdır.",
-
   "home.title": "Low Poly ve 3D Pixel Oyun Asset Paketleri: Unity, Godot, Unreal",
   "home.description": "Unity, Godot, Unreal ve Blender için {packs} low poly ve 3D pixel oyun asset paketi ({models}+ model). Tek doku, tek draw call, ticari lisans. Başlangıç {min}.",
   "home.h1": "Low poly oyun asset'leri {min} fiyatından.",
@@ -104,7 +97,6 @@
   "home.sceneAlt": "{title} sahnesi",
   "home.bundlesH2": "Koleksiyonun tamamı, tek ödeme.",
   "home.bundlesLead": "Her set, itch.io'da tek bir satın alma.",
-
   "table.bundle": "Set",
   "table.packs": "Paketler",
   "table.oneByOne": "Tek tek",
@@ -113,7 +105,6 @@
   "table.save": "%{pct} tasarruf",
   "table.get": "Seti al",
   "table.getAria": "{bundle} setini itch.io'dan al",
-
   "cat.title": "Tüm {packs} Low Poly ve 3D Pixel Asset Paketi: Unity, Godot, Unreal",
   "cat.description": "Oyuna hazır {packs} 3D asset paketi, {models}+ low poly ve 3D pixel model: şehirler, trafik, SWAT, zindanlar, Halloween ve Noel. Başlangıç {min}.",
   "cat.h1": "Tüm {packs} asset paketi.",
@@ -134,7 +125,6 @@
   "cat.countOther": "{n} paket",
   "cat.empty": "Bu aramayla eşleşen paket yok.",
   "cat.reset": "Filtreleri sıfırla",
-
   "pack.titleLp": "{title}: {engines} için {n} Low Poly Model",
   "pack.titlePx": "{title}: {engines} için {n} 3D Pixel Model",
   "pack.titleLpShort": "{title}: {n} Low Poly Model",
@@ -172,14 +162,12 @@
   "pack.prevAria": "Önceki görsel",
   "pack.nextAria": "Sonraki görsel",
   "pack.close": "Kapat",
-
   "col.description": "{title}: Unity, Godot ve Unreal için {n} paket, oyuna hazır {models}+ model. Başlangıç {min}.",
   "col.lead": "{n} paket, {models}+ model. {blurb}",
   "col.bundleH2": "{n} paketin hepsi tek sette.",
   "col.aboutH2": "Bu koleksiyon hakkında.",
   "col.othersH2": "Diğer koleksiyonlar.",
   "col.packsN": "{n} paket",
-
   "eng.metaTitle": "{title}: Oyuna Hazır {n} Paket",
   "eng.description": "{engine} için {n} low poly ve 3D pixel asset paketi ({models}+ model): şehirler, arabalar, SWAT, zindanlar ve fazlası. Tek materyal, ticari lisans, başlangıç {min}.",
   "eng.lead": "Temiz low poly mesh'ler, gerçek dünya ölçeği ve tek ortak materyalle {n} paket ve {models}+ model.",
@@ -192,7 +180,6 @@
   "eng.q3": "{engine} ile mobilde iyi çalışıyorlar mı?",
   "eng.a3": "Evet. Modeller tek materyali ve tek küçük palet dokusunu paylaşır, bu yüzden sahneler çok az draw call'a toplanır; üçgen sayıları da giriş seviyesi telefonlar ve WebGL build'leri için yeterince düşük kalır.",
   "eng.other": "Diğer motorlar:",
-
   "bundles.title": "Oyun Asset Setleri: Low Poly ve 3D Pixel, En Fazla %{pct} İndirim",
   "bundles.description": "{n} oyun asset seti: tüm low poly, 3D pixel, Halloween ya da Noel paketlerini tek ödemede al, en fazla %{pct} tasarruf et. Unity, Godot ve Unreal'a hazır.",
   "bundles.h1": "Setler. En fazla %{pct} tasarruf.",
@@ -209,7 +196,6 @@
   "bundle.description": "{series} koleksiyonundaki {n} paketin tamamını ({models}+ model) {full} yerine {price} karşılığında al. Unity, Godot, Unreal ve Blender'a hazır.",
   "bundle.lead": "{series} koleksiyonundan {n} paket, tek itch.io ödemesinde.",
   "bundle.inside": "İçinde neler var.",
-
   "faq.title": "SSS: Lisans, Oyun Motorları ve Ödeme",
   "faq.description": "HanX Assets hakkında yanıtlar: ticari lisans, Unity, Godot ve Unreal desteği, dosya formatları, mobil performans, setler ve itch.io ödemesi.",
   "faq.h1": "Merak ettiklerin, yanıtlarıyla.",
@@ -233,7 +219,6 @@
   "faq.8.a": "Hayır. Her model HanX Games tarafından elle yapıldı ve paketler itch.io'da “No generative AI was used” (üretken yapay zekâ kullanılmadı) etiketini taşıyor.",
   "faq.9.q": "İstek ya da özel iş alıyor musunuz?",
   "faq.9.a": "İstekleri çok seviyoruz. Herhangi bir paketin itch.io sayfasına yorum bırak ya da X'te (@Hanxgames_) bize ulaş ve oyununun neye ihtiyacı olduğunu anlat; çok istenenler yeni paketlere dönüşüyor.",
-
   "lic.title": "Asset Lisansı: Telifsiz Ticari Kullanım",
   "lic.description": "HanX Assets lisansı sade dille: low poly ve 3D pixel modelleri sınırsız ticari oyun, uygulama ve videoda kullan. Telif yok, kaynak gösterme zorunlu değil.",
   "lic.h1": "Kullan. Yayınla. Oyununu sat.",
@@ -244,7 +229,6 @@
   "lic.cantA": "Ham asset dosyalarını tek başına ya da başka bir asset paketinin içinde yeniden satamaz veya dağıtamazsın, model kütüphanelerine ya da pazar yerlerine yükleyemezsin, orijinal modelleri kendi eserin olarak sunamazsın.",
   "lic.unsure": "Emin değil misin?",
   "lic.unsureA": "Paketin itch.io sayfasına yorum bırak ve kullanım amacını anlat. Yanıtlıyoruz.",
-
   "about.title": "HanX Games Hakkında: HanX Assets'in Arkasındaki Stüdyo",
   "about.description": "HanX Games, Türkiye'den bağımsız bir oyun stüdyosu. Unity, Godot ve Unreal için elle yapılmış {packs} low poly ve 3D pixel asset paketi, {models}+ model.",
   "about.h1": "Keşke elimizde olsaydı dediğimiz asset'ler.",
@@ -255,5 +239,7 @@
   "about.store": "Mağaza",
   "about.news": "Haberler",
   "about.requests": "İstekler",
-  "about.requestsA": "Herhangi bir paketin itch.io sayfasına yorum yaz."
+  "about.requestsA": "Herhangi bir paketin itch.io sayfasına yorum yaz.",
+  "home.pickedH2": "Stüdyonun seçtikleri.",
+  "campaign.until": "{date} tarihine kadar."
 }

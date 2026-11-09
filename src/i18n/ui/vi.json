@@ -1,6 +1,5 @@
 {
   "site.description": "Gói asset low poly và 3D pixel art cho game trên Unity, Godot, Unreal và Blender. Một bảng màu, một tỷ lệ, một draw call. Giấy phép thương mại, từ {min}.",
-
   "nav.skip": "Chuyển đến nội dung",
   "nav.home": "Trang chủ",
   "nav.homeAria": "HanX Assets, trang chủ",
@@ -13,7 +12,6 @@
   "nav.menu": "Menu",
   "nav.close": "Đóng",
   "nav.language": "Ngôn ngữ",
-
   "footer.collections": "Bộ sưu tập",
   "footer.byEngine": "Theo engine",
   "footer.brand": "HanX Assets",
@@ -29,18 +27,15 @@
   "footer.about": "Giới thiệu",
   "footer.legal": "© {year} {studio}. {packs} gói và {bundles} combo, bán và giao qua itch.io.",
   "footer.made": "Sản xuất tại Thổ Nhĩ Kỳ.",
-
   "buy.onItch": "Mua trên itch.io",
   "buy.short": "Mua",
   "buy.aria": "Mua {title} trên itch.io với giá {price}",
   "card.coverAlt": "Ảnh bìa {title}",
   "sale.until": "Giá khuyến mãi đến",
-
   "bundle.lowpoly": "Low Poly Starter Bundle",
   "bundle.pixel": "3D Pixel Mega Bundle",
   "bundle.halloween": "Halloween Mega Bundle",
   "bundle.christmas": "Christmas Mega Bundle",
-
   "series.low-poly.name": "Low poly",
   "series.low-poly.title": "Gói asset 3D low poly",
   "series.low-poly.seoTitle": "Asset low poly, mô hình 3D cho Unity, Godot và Unreal",
@@ -61,7 +56,6 @@
   "series.christmas.seoTitle": "Asset 3D low poly Giáng sinh: mô hình game mùa đông tuyết phủ",
   "series.christmas.blurb": "Mái nhà phủ tuyết, dây đèn, cây thông Noel và đạo cụ mùa đông cho những cảnh lễ hội ấm cúng và sự kiện theo mùa.",
   "series.christmas.long": "Các phiên bản Giáng sinh phủ tuyết lên toàn bộ thế giới HanX Assets: dây đèn lấp lánh, cây thông trang trí, hộp quà, người tuyết và phố phường mùa đông, cho sự kiện lễ hội, game ấm cúng và màn chơi mùa đông.",
-
   "engine.unity.title": "Asset 3D low poly cho Unity",
   "engine.unity.how": "Kéo file FBX hoặc GLB vào thư mục Assets, gán material bảng màu dùng chung một lần rồi thả prefab vào scene. Hoạt động với URP, HDRP và pipeline Built-in.",
   "engine.godot.title": "Asset 3D low poly cho Godot 4",
@@ -70,7 +64,6 @@
   "engine.unreal.how": "Nhập file FBX với tùy chọn Combine Meshes tắt, tạo một material instance từ texture bảng màu và dùng lại cho mọi mesh. Không cần Nanite, các mô hình vốn đã rất nhẹ.",
   "engine.blender.title": "Mô hình 3D low poly cho Blender",
   "engine.blender.how": "Mở file .blend đi kèm: mọi mô hình đã được đánh dấu là Asset, nên toàn bộ gói hiện ra trong Asset Browser (trình duyệt asset) của Blender, sẵn sàng kéo vào scene và bản render của bạn.",
-
   "home.title": "Asset game low poly & 3D pixel cho Unity, Godot & Unreal",
   "home.description": "{packs} gói asset low poly và 3D pixel ({models}+ mô hình 3D cho game) dùng cho Unity, Godot, Unreal và Blender. Một draw call, giấy phép thương mại, từ {min}.",
   "home.h1": "Asset game low poly từ {min}.",
@@ -104,7 +97,6 @@
   "home.sceneAlt": "Cảnh {title}",
   "home.bundlesH2": "Trọn bộ, một lần thanh toán.",
   "home.bundlesLead": "Mỗi combo là một lần mua duy nhất trên itch.io.",
-
   "table.bundle": "Combo",
   "table.packs": "Số gói",
   "table.oneByOne": "Mua lẻ",
@@ -113,7 +105,6 @@
   "table.save": "tiết kiệm {pct}%",
   "table.get": "Mua combo",
   "table.getAria": "Mua {bundle} trên itch.io",
-
   "cat.title": "{packs} gói asset low poly & 3D pixel cho Unity, Godot, Unreal",
   "cat.description": "Xem {packs} gói asset 3D sẵn sàng cho game với {models}+ mô hình low poly và 3D pixel: thành phố, giao thông, SWAT, hầm ngục, Halloween và Giáng sinh. Từ {min}.",
   "cat.h1": "Tất cả {packs} gói asset.",
@@ -134,7 +125,6 @@
   "cat.countOther": "{n} gói",
   "cat.empty": "Không có gói nào khớp với tìm kiếm.",
   "cat.reset": "Xóa bộ lọc",
-
   "pack.titleLp": "{title}: {n} mô hình low poly cho {engines}",
   "pack.titlePx": "{title}: {n} mô hình 3D pixel cho {engines}",
   "pack.titleLpShort": "{title}: {n} mô hình low poly",
@@ -172,14 +162,12 @@
   "pack.prevAria": "Ảnh trước",
   "pack.nextAria": "Ảnh sau",
   "pack.close": "Đóng",
-
   "col.description": "{title}: {n} gói với {models}+ mô hình sẵn sàng cho game, dùng cho Unity, Godot và Unreal. Từ {min}.",
   "col.lead": "{n} gói, {models}+ mô hình. {blurb}",
   "col.bundleH2": "Cả {n} gói trong một combo.",
   "col.aboutH2": "Về bộ sưu tập này.",
   "col.othersH2": "Bộ sưu tập khác.",
   "col.packsN": "{n} gói",
-
   "eng.metaTitle": "{title}: {n} gói sẵn sàng cho game",
   "eng.description": "{n} gói asset low poly và 3D pixel ({models}+ mô hình) sẵn sàng cho {engine}: thành phố, xe, SWAT, hầm ngục và hơn thế. Một material, giấy phép thương mại, từ {min}.",
   "eng.lead": "{n} gói và {models}+ mô hình với mesh low poly gọn gàng, tỷ lệ thực tế và một material dùng chung.",
@@ -192,7 +180,6 @@
   "eng.q3": "Chúng có chạy mượt trên mobile với {engine} không?",
   "eng.a3": "Có. Các mô hình dùng chung một material và một texture bảng màu nhỏ, nên scene được gộp thành rất ít draw call, và số tam giác đủ thấp cho điện thoại giá rẻ và bản build WebGL.",
   "eng.other": "Engine khác:",
-
   "bundles.title": "Combo asset game: tiết kiệm đến {pct}% cho gói low poly & 3D pixel",
   "bundles.description": "{n} combo asset game: mọi gói low poly, 3D pixel, Halloween hoặc Giáng sinh trong một lần thanh toán, tiết kiệm đến {pct}%. Dùng cho Unity, Godot, Unreal.",
   "bundles.h1": "Combo. Tiết kiệm đến {pct}%.",
@@ -209,7 +196,6 @@
   "bundle.description": "Nhận cả {n} gói của bộ sưu tập {series} ({models}+ mô hình) với giá {price} thay vì {full}. Sẵn sàng cho Unity, Godot, Unreal và Blender.",
   "bundle.lead": "{n} gói từ bộ sưu tập {series} trong một lần thanh toán trên itch.io.",
   "bundle.inside": "Bên trong có gì.",
-
   "faq.title": "Hỏi đáp: giấy phép, engine và thanh toán",
   "faq.description": "Giải đáp về HanX Assets: giấy phép thương mại, hỗ trợ Unity, Godot và Unreal, định dạng file, hiệu năng trên mobile, combo và thanh toán qua itch.io.",
   "faq.h1": "Hỏi gì, đáp nấy.",
@@ -233,7 +219,6 @@
   "faq.8.a": "Không. Mọi mô hình đều do HanX Games làm thủ công, và các gói được gắn thẻ “No generative AI was used” trên itch.io.",
   "faq.9.q": "Bạn có nhận yêu cầu hoặc đặt làm riêng không?",
   "faq.9.a": "Chúng tôi rất thích nhận yêu cầu. Hãy để lại bình luận trên trang itch.io của bất kỳ gói nào hoặc liên hệ với chúng tôi trên X (@Hanxgames_) và cho biết game của bạn cần gì; những yêu cầu phổ biến sẽ trở thành gói mới.",
-
   "lic.title": "Giấy phép asset: dùng thương mại, không phí bản quyền",
   "lic.description": "Giấy phép HanX Assets: dùng mô hình low poly và 3D pixel trong không giới hạn game, ứng dụng, video thương mại. Không phí bản quyền, không cần ghi công.",
   "lic.h1": "Dùng. Phát hành. Bán game.",
@@ -244,7 +229,6 @@
   "lic.cantA": "Bán lại hoặc phân phối lại các file asset gốc, dù riêng lẻ hay nằm trong một gói asset khác, tải chúng lên thư viện mô hình hoặc chợ asset, hoặc nhận các mô hình gốc là tác phẩm của mình.",
   "lic.unsure": "Chưa chắc chắn?",
   "lic.unsureA": "Hãy để lại bình luận trên trang itch.io của gói đó và mô tả cách bạn sử dụng. Chúng tôi sẽ trả lời.",
-
   "about.title": "Về HanX Games, studio đứng sau HanX Assets",
   "about.description": "HanX Games là studio game indie từ Thổ Nhĩ Kỳ, làm thủ công các gói asset low poly và 3D pixel: {packs} gói và {models}+ mô hình cho Unity, Godot và Unreal.",
   "about.h1": "Những asset chúng tôi từng mong có.",
@@ -255,5 +239,7 @@
   "about.store": "Cửa hàng",
   "about.news": "Tin tức",
   "about.requests": "Yêu cầu",
-  "about.requestsA": "Bình luận trên trang itch.io của bất kỳ gói nào."
+  "about.requestsA": "Bình luận trên trang itch.io của bất kỳ gói nào.",
+  "home.pickedH2": "Studio chọn cho bạn.",
+  "campaign.until": "Đến hết {date}."
 }

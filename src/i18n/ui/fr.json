@@ -1,6 +1,5 @@
 {
   "site.description": "Packs d’assets de jeu low poly et 3D pixel art pour Unity, Godot, Unreal et Blender. Une palette, une échelle, un draw call. Licence commerciale, dès {min}.",
-
   "nav.skip": "Aller au contenu",
   "nav.home": "Accueil",
   "nav.homeAria": "HanX Assets, accueil",
@@ -13,7 +12,6 @@
   "nav.menu": "Menu",
   "nav.close": "Fermer",
   "nav.language": "Langue",
-
   "footer.collections": "Collections",
   "footer.byEngine": "Par moteur",
   "footer.brand": "HanX Assets",
@@ -29,18 +27,15 @@
   "footer.about": "À propos",
   "footer.legal": "© {year} {studio}. {packs} packs et {bundles} bundles, vendus et livrés via itch.io.",
   "footer.made": "Conçu en Turquie.",
-
   "buy.onItch": "Acheter sur itch.io",
   "buy.short": "Acheter",
   "buy.aria": "Acheter {title} sur itch.io pour {price}",
   "card.coverAlt": "Couverture de {title}",
   "sale.until": "Prix promo jusqu’au",
-
   "bundle.lowpoly": "Low Poly Starter Bundle",
   "bundle.pixel": "3D Pixel Mega Bundle",
   "bundle.halloween": "Halloween Mega Bundle",
   "bundle.christmas": "Christmas Mega Bundle",
-
   "series.low-poly.name": "Low poly",
   "series.low-poly.title": "Packs d’assets 3D low poly",
   "series.low-poly.seoTitle": "Assets low poly : packs de modèles 3D pour Unity, Godot, Unreal",
@@ -61,7 +56,6 @@
   "series.christmas.seoTitle": "Assets low poly de Noël : modèles 3D d’hiver enneigés",
   "series.christmas.blurb": "Toits enneigés, guirlandes lumineuses, sapins de Noël et props d’hiver pour des scènes de fêtes chaleureuses et des événements saisonniers.",
   "series.christmas.long": "Les éditions de Noël recouvrent tout l’univers HanX Assets de neige : guirlandes lumineuses, sapins décorés, paquets cadeaux, bonhommes de neige et rues hivernales, pour les événements de fin d’année, les cozy games et les niveaux d’hiver.",
-
   "engine.unity.title": "Assets 3D low poly pour Unity",
   "engine.unity.how": "Glissez les fichiers FBX ou GLB dans votre dossier Assets, assignez une fois le matériau de palette partagé et déposez les prefabs dans votre scène. Compatible URP, HDRP et pipeline Built-in.",
   "engine.godot.title": "Assets 3D low poly pour Godot 4",
@@ -70,7 +64,6 @@
   "engine.unreal.how": "Importez les fichiers FBX avec Combine Meshes désactivé, créez une seule material instance à partir de la texture de palette et réutilisez-la pour chaque mesh. Nanite est inutile, les modèles sont déjà très légers.",
   "engine.blender.title": "Modèles 3D low poly pour Blender",
   "engine.blender.how": "Ouvrez le fichier .blend fourni : chaque modèle est déjà marqué comme Asset, le pack entier apparaît donc dans l’Asset Browser (navigateur d’assets) de Blender, prêt à être glissé dans vos scènes et vos rendus.",
-
   "home.title": "Assets de jeu low poly et 3D pixel pour Unity, Godot et Unreal",
   "home.description": "{packs} packs d’assets low poly et 3D pixel ({models}+ modèles 3D) pour Unity, Godot, Unreal et Blender. Une texture, un draw call, licence commerciale. Dès {min}.",
   "home.h1": "Assets low poly pour vos jeux, dès {min}.",
@@ -104,7 +97,6 @@
   "home.sceneAlt": "Scène de {title}",
   "home.bundlesH2": "Des collections entières, un seul paiement.",
   "home.bundlesLead": "Chaque bundle est un achat unique sur itch.io.",
-
   "table.bundle": "Bundle",
   "table.packs": "Packs",
   "table.oneByOne": "À l’unité",
@@ -113,7 +105,6 @@
   "table.save": "{pct} % d’économie",
   "table.get": "Obtenir le bundle",
   "table.getAria": "Obtenir le {bundle} sur itch.io",
-
   "cat.title": "{packs} packs d’assets low poly et 3D pixel : Unity, Godot, Unreal",
   "cat.description": "Parcourez {packs} packs d’assets 3D prêts pour le jeu, avec {models}+ modèles low poly et 3D pixel : villes, trafic, SWAT, donjons, Halloween et Noël. Dès {min}.",
   "cat.h1": "Les {packs} packs d’assets.",
@@ -134,7 +125,6 @@
   "cat.countOther": "{n} packs",
   "cat.empty": "Aucun pack ne correspond à cette recherche.",
   "cat.reset": "Réinitialiser les filtres",
-
   "pack.titleLp": "{title} : {n} modèles low poly pour {engines}",
   "pack.titlePx": "{title} : {n} modèles 3D pixel pour {engines}",
   "pack.titleLpShort": "{title} : {n} modèles low poly",
@@ -172,14 +162,12 @@
   "pack.prevAria": "Image précédente",
   "pack.nextAria": "Image suivante",
   "pack.close": "Fermer",
-
   "col.description": "{title} : {n} packs avec {models}+ modèles 3D prêts pour le jeu, pour Unity, Godot et Unreal. Dès {min}.",
   "col.lead": "{n} packs, {models}+ modèles. {blurb}",
   "col.bundleH2": "Les {n} dans un seul bundle.",
   "col.aboutH2": "À propos de cette collection.",
   "col.othersH2": "Autres collections.",
   "col.packsN": "{n} packs",
-
   "eng.metaTitle": "{title} : {n} packs prêts pour le jeu",
   "eng.description": "{n} packs d’assets low poly et 3D pixel ({models}+ modèles) prêts pour {engine} : villes, voitures, SWAT, donjons et plus. Un matériau, licence commerciale, dès {min}.",
   "eng.lead": "{n} packs et {models}+ modèles aux maillages low poly propres, à l’échelle réelle, avec un seul matériau partagé.",
@@ -192,7 +180,6 @@
   "eng.q3": "Tournent-ils bien sur mobile avec {engine} ?",
   "eng.a3": "Oui. Les modèles partagent un seul matériau et une petite texture de palette, si bien que les scènes se regroupent en très peu de draw calls, et le nombre de triangles reste assez bas pour les smartphones d’entrée de gamme et les builds WebGL.",
   "eng.other": "Autres moteurs :",
-
   "bundles.title": "Bundles d’assets low poly et 3D pixel : jusqu’à {pct} % d’économie",
   "bundles.description": "{n} bundles d’assets : tous les packs low poly, 3D pixel, Halloween ou Noël en un seul paiement, jusqu’à {pct} % d’économie. Pour Unity, Godot et Unreal.",
   "bundles.h1": "Bundles. Jusqu’à {pct} % d’économie.",
@@ -209,7 +196,6 @@
   "bundle.description": "Obtenez les {n} packs de la collection {series} ({models}+ modèles) pour {price} au lieu de {full}. Prêts pour Unity, Godot, Unreal et Blender.",
   "bundle.lead": "{n} packs de la collection {series} en un seul paiement itch.io.",
   "bundle.inside": "Ce qu’il contient.",
-
   "faq.title": "FAQ : licence, moteurs et paiement",
   "faq.description": "Réponses sur HanX Assets : licence commerciale, Unity, Godot et Unreal, formats de fichiers, performances mobiles, bundles et paiement itch.io.",
   "faq.h1": "Vos questions, nos réponses.",
@@ -233,7 +219,6 @@
   "faq.8.a": "Non. Chaque modèle est fait main par HanX Games, et les packs portent la mention « No generative AI was used » sur itch.io.",
   "faq.9.q": "Acceptez-vous les demandes ou les commandes sur mesure ?",
   "faq.9.a": "Nous adorons les demandes. Laissez un commentaire sur la page itch.io de n’importe quel pack ou contactez-nous sur X (@Hanxgames_) pour nous dire ce dont votre jeu a besoin ; les demandes populaires deviennent de nouveaux packs.",
-
   "lic.title": "Licence des assets : usage commercial libre de redevances",
   "lic.description": "La licence HanX Assets en clair : utilisez les modèles low poly et 3D pixel sans limite dans vos jeux, applis et vidéos commerciaux. Sans redevances ni mention.",
   "lic.h1": "Utilisez. Publiez. Vendez votre jeu.",
@@ -244,7 +229,6 @@
   "lic.cantA": "Revendre ou redistribuer les fichiers d’assets bruts, seuls ou dans un autre pack d’assets, les mettre en ligne sur des bibliothèques de modèles ou des marketplaces, ni présenter les modèles originaux comme votre propre création.",
   "lic.unsure": "Un doute ?",
   "lic.unsureA": "Laissez un commentaire sur la page itch.io du pack en décrivant votre usage. Nous répondons.",
-
   "about.title": "À propos de HanX Games, le studio derrière HanX Assets",
   "about.description": "HanX Games est un studio indé de Turquie qui crée des packs d’assets low poly et 3D pixel faits main : {packs} packs et {models}+ modèles pour Unity, Godot et Unreal.",
   "about.h1": "Les assets dont nous rêvions.",
@@ -255,5 +239,7 @@
   "about.store": "Boutique",
   "about.news": "Actus",
   "about.requests": "Demandes",
-  "about.requestsA": "Commentez la page itch.io de n’importe quel pack."
+  "about.requestsA": "Commentez la page itch.io de n’importe quel pack.",
+  "home.pickedH2": "La sélection du studio.",
+  "campaign.until": "Jusqu’au {date}."
 }

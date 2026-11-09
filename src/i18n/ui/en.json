@@ -1,6 +1,5 @@
 {
   "site.description": "Game-ready low poly and 3D pixel art asset packs for Unity, Godot, Unreal and Blender. One palette, one scale, one draw call. Commercial license, from {min}.",
-
   "nav.skip": "Skip to content",
   "nav.home": "Home",
   "nav.homeAria": "HanX Assets, home",
@@ -13,7 +12,6 @@
   "nav.menu": "Menu",
   "nav.close": "Close",
   "nav.language": "Language",
-
   "footer.collections": "Collections",
   "footer.byEngine": "By engine",
   "footer.brand": "HanX Assets",
@@ -29,18 +27,15 @@
   "footer.about": "About",
   "footer.legal": "© {year} {studio}. {packs} packs and {bundles} bundles, sold and delivered through itch.io.",
   "footer.made": "Made in Türkiye.",
-
   "buy.onItch": "Buy on itch.io",
   "buy.short": "Buy",
   "buy.aria": "Buy {title} on itch.io for {price}",
   "card.coverAlt": "{title} cover",
   "sale.until": "Sale price until",
-
   "bundle.lowpoly": "Low Poly Starter Bundle",
   "bundle.pixel": "3D Pixel Mega Bundle",
   "bundle.halloween": "Halloween Mega Bundle",
   "bundle.christmas": "Christmas Mega Bundle",
-
   "series.low-poly.name": "Low poly",
   "series.low-poly.title": "Low Poly 3D Asset Packs",
   "series.low-poly.seoTitle": "Low Poly 3D Asset Packs for Unity, Godot & Unreal",
@@ -61,7 +56,6 @@
   "series.christmas.seoTitle": "Christmas Low Poly 3D Asset Packs: Snowy Winter Game Models",
   "series.christmas.blurb": "Snowy rooftops, string lights, Christmas trees and winter props for cozy holiday scenes and seasonal events.",
   "series.christmas.long": "The Christmas editions cover the whole HanX Assets world in snow: glowing string lights, decorated trees, gift boxes, snowmen and winter streets, for holiday events, cozy games and winter levels.",
-
   "engine.unity.title": "Low Poly 3D Assets for Unity",
   "engine.unity.how": "Drag the FBX or GLB files into your Assets folder, assign the shared palette material once and drop prefabs into your scene. Works with URP, HDRP and the Built-in pipeline.",
   "engine.godot.title": "Low Poly 3D Assets for Godot 4",
@@ -70,7 +64,6 @@
   "engine.unreal.how": "Import the FBX files with Combine Meshes off, create one material instance from the palette texture and reuse it for every mesh. Nanite is not needed, the models are already tiny.",
   "engine.blender.title": "Low Poly 3D Models for Blender",
   "engine.blender.how": "Open the included .blend file: every model is already marked as an Asset, so the whole pack shows up in Blender’s Asset Browser, ready to drag into your scenes and renders.",
-
   "home.title": "Low Poly & 3D Pixel Game Assets for Unity, Godot & Unreal",
   "home.description": "{packs} game-ready low poly and 3D pixel asset packs ({models}+ models) for Unity, Godot, Unreal and Blender. One texture, one draw call, commercial license. From {min}.",
   "home.h1": "Low poly game assets from {min}.",
@@ -104,7 +97,6 @@
   "home.sceneAlt": "{title} scene",
   "home.bundlesH2": "Whole collections, one checkout.",
   "home.bundlesLead": "Each bundle is a single purchase on itch.io.",
-
   "table.bundle": "Bundle",
   "table.packs": "Packs",
   "table.oneByOne": "One by one",
@@ -113,7 +105,6 @@
   "table.save": "save {pct}%",
   "table.get": "Get bundle",
   "table.getAria": "Get the {bundle} on itch.io",
-
   "cat.title": "All {packs} Low Poly & 3D Pixel Asset Packs for Unity, Godot, Unreal",
   "cat.description": "Browse {packs} game-ready 3D asset packs with {models}+ low poly and 3D pixel models: cities, traffic, SWAT, dungeons, Halloween and Christmas. From {min}.",
   "cat.h1": "All {packs} asset packs.",
@@ -134,7 +125,6 @@
   "cat.countOther": "{n} packs",
   "cat.empty": "No pack matches that search.",
   "cat.reset": "Reset filters",
-
   "pack.titleLp": "{title}: {n} Low Poly Models for {engines}",
   "pack.titlePx": "{title}: {n} 3D Pixel Models for {engines}",
   "pack.titleLpShort": "{title}: {n} Low Poly Models",
@@ -172,14 +162,12 @@
   "pack.prevAria": "Previous image",
   "pack.nextAria": "Next image",
   "pack.close": "Close",
-
   "col.description": "{title}: {n} packs with {models}+ game-ready models for Unity, Godot and Unreal. From {min}.",
   "col.lead": "{n} packs, {models}+ models. {blurb}",
   "col.bundleH2": "All {n} in one bundle.",
   "col.aboutH2": "About this collection.",
   "col.othersH2": "Other collections.",
   "col.packsN": "{n} packs",
-
   "eng.metaTitle": "{title}: {n} Game-Ready Packs",
   "eng.description": "{n} low poly and 3D pixel asset packs ({models}+ models) ready for {engine}: cities, cars, SWAT, dungeons and more. One material, commercial license, from {min}.",
   "eng.lead": "{n} packs and {models}+ models with clean low poly meshes, real-world scale and one shared material.",
@@ -192,7 +180,6 @@
   "eng.q3": "Do they run well on mobile with {engine}?",
   "eng.a3": "Yes. The models share one material and one small palette texture, so scenes batch into very few draw calls, and triangle counts stay low enough for budget phones and WebGL builds.",
   "eng.other": "Other engines:",
-
   "bundles.title": "Game Asset Bundles: Save up to {pct}% on Low Poly & 3D Pixel Packs",
   "bundles.description": "{n} game asset bundles: get every low poly, 3D pixel, Halloween or Christmas pack in one checkout and save up to {pct}%. Unity, Godot and Unreal ready.",
   "bundles.h1": "Bundles. Save up to {pct}%.",
@@ -209,7 +196,6 @@
   "bundle.description": "Get all {n} packs of the {series} collection ({models}+ models) for {price} instead of {full}. Unity, Godot, Unreal and Blender ready.",
   "bundle.lead": "{n} packs from the {series} collection in one itch.io checkout.",
   "bundle.inside": "What is inside.",
-
   "faq.title": "FAQ: Licensing, Engines & Checkout",
   "faq.description": "Answers about HanX Assets: commercial license, Unity, Godot and Unreal support, file formats, mobile performance, bundles and the itch.io checkout.",
   "faq.h1": "Questions, answered.",
@@ -233,7 +219,6 @@
   "faq.8.a": "No. Every model is hand-made by HanX Games, and the packs are tagged “No generative AI was used” on itch.io.",
   "faq.9.q": "Do you take requests or custom work?",
   "faq.9.a": "We love requests. Leave a comment on any pack’s itch.io page or reach us on X (@Hanxgames_) and tell us what your game needs; popular requests become new packs.",
-
   "lic.title": "Asset License: Royalty-Free Commercial Use",
   "lic.description": "The HanX Assets license in plain words: use the low poly and 3D pixel models in unlimited commercial games, apps and videos. No royalties, no attribution required.",
   "lic.h1": "Use it. Ship it. Sell your game.",
@@ -244,7 +229,6 @@
   "lic.cantA": "Resell or redistribute the raw asset files, alone or inside another asset pack, upload them to model libraries or marketplaces, or claim the original models as your own artwork.",
   "lic.unsure": "Not sure?",
   "lic.unsureA": "Leave a comment on the pack’s itch.io page and describe your use. We answer.",
-
   "about.title": "About HanX Games, the Studio Behind HanX Assets",
   "about.description": "HanX Games is an indie game studio from Türkiye making hand-made low poly and 3D pixel asset packs: {packs} packs and {models}+ models for Unity, Godot and Unreal.",
   "about.h1": "The assets we wished we had.",
@@ -255,5 +239,7 @@
   "about.store": "Store",
   "about.news": "News",
   "about.requests": "Requests",
-  "about.requestsA": "Comment on any pack’s itch.io page."
+  "about.requestsA": "Comment on any pack’s itch.io page.",
+  "home.pickedH2": "Picked by the studio.",
+  "campaign.until": "Until {date}."
 }

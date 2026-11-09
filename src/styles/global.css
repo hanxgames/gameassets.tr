@@ -226,3 +226,13 @@ h2 { max-width: 22ch; }
 
 /* CJK headings: no capitals to set, so give the lines room. */
 :lang(ja) :is(h1, h2, h3), :lang(ko) :is(h1, h2, h3), :lang(zh-Hans) :is(h1, h2, h3) { line-height: var(--display-leading, 1.25); letter-spacing: 0; }
+
+/* ---------- Campaign strip (admin panel) ---------- */
+.campaign { background: var(--color-accent-2); color: var(--color-on-accent-2); border-bottom: var(--rule-bar) solid var(--color-ink); }
+.campaign .container { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: center; gap: var(--space-xs) var(--space-md); padding-block: var(--space-sm); text-align: center; }
+.campaign p, .campaign a { font: var(--display-weight) var(--text-lg)/1.2 var(--font-display); text-transform: uppercase; letter-spacing: var(--tracking-display); color: inherit; }
+.campaign a { text-decoration: underline; text-decoration-thickness: var(--rule-bar); text-underline-offset: 0.18em; transition: color var(--dur-micro) var(--ease-out); }
+.campaign a:hover { color: var(--color-accent); }
+.campaign a:focus-visible { outline: 2px solid var(--color-on-accent-2); outline-offset: 2px; }
+.campaign a:active { color: var(--color-paper-3); }
+.campaign-until { font-size: var(--text-sm); }

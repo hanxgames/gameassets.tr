@@ -1,0 +1,41 @@
+name: Site health check
+
+# Weekly (Monday 09:00 Türkiye time) and on demand from the admin panel.
+# Writes health.json to the `status` branch, which the panel reads; main is never touched.
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: health
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check pages, images and itch.io packs
+        run: node scripts/health.mjs > "$RUNNER_TEMP/health.json"
+      - name: Publish report to the status branch
+        run: |
+          git config user.name "gameassets-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin status || true
+          if git show-ref --verify --quiet refs/remotes/origin/status; then
+            git switch -c status origin/status
+          else
+            git switch --orphan status
+            git rm -rf --quiet . || true
+          fi
+          cp "$RUNNER_TEMP/health.json" health.json
+          git add health.json
+          git commit -m "health: $(date -u +%Y-%m-%dT%H:%MZ)" || echo "No change"
+          git push origin status

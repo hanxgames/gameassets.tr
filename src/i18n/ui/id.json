@@ -1,6 +1,5 @@
 {
   "site.description": "Paket aset low poly dan 3D pixel art siap pakai untuk Unity, Godot, Unreal, dan Blender. Satu palet, satu skala, satu draw call. Lisensi komersial, mulai {min}.",
-
   "nav.skip": "Langsung ke konten",
   "nav.home": "Beranda",
   "nav.homeAria": "HanX Assets, beranda",
@@ -13,7 +12,6 @@
   "nav.menu": "Menu",
   "nav.close": "Tutup",
   "nav.language": "Bahasa",
-
   "footer.collections": "Koleksi",
   "footer.byEngine": "Per engine",
   "footer.brand": "HanX Assets",
@@ -29,18 +27,15 @@
   "footer.about": "Tentang",
   "footer.legal": "© {year} {studio}. {packs} paket dan {bundles} bundel, dijual dan dikirim melalui itch.io.",
   "footer.made": "Dibuat di Turki.",
-
   "buy.onItch": "Beli di itch.io",
   "buy.short": "Beli",
   "buy.aria": "Beli {title} di itch.io seharga {price}",
   "card.coverAlt": "Sampul {title}",
   "sale.until": "Harga promo hingga",
-
   "bundle.lowpoly": "Low Poly Starter Bundle",
   "bundle.pixel": "3D Pixel Mega Bundle",
   "bundle.halloween": "Halloween Mega Bundle",
   "bundle.christmas": "Christmas Mega Bundle",
-
   "series.low-poly.name": "Low poly",
   "series.low-poly.title": "Paket Aset 3D Low Poly",
   "series.low-poly.seoTitle": "Paket Aset Low Poly 3D untuk Unity, Godot dan Unreal",
@@ -61,7 +56,6 @@
   "series.christmas.seoTitle": "Aset 3D Low Poly Natal: Model Game Musim Dingin Bersalju",
   "series.christmas.blurb": "Atap bersalju, lampu hias, pohon Natal, dan properti musim dingin untuk scene liburan yang hangat dan event musiman.",
   "series.christmas.long": "Edisi Natal menyelimuti seluruh dunia HanX Assets dengan salju: lampu hias yang berpendar, pohon yang dihias, kotak kado, manusia salju, dan jalanan musim dingin, untuk event liburan, game cozy, dan level musim dingin.",
-
   "engine.unity.title": "Aset 3D Low Poly untuk Unity",
   "engine.unity.how": "Seret file FBX atau GLB ke folder Assets, pasang material palet bersama sekali saja, lalu letakkan prefab di scene Anda. Bekerja dengan URP, HDRP, dan pipeline Built-in.",
   "engine.godot.title": "Aset 3D Low Poly untuk Godot 4",
@@ -70,7 +64,6 @@
   "engine.unreal.how": "Impor file FBX dengan Combine Meshes nonaktif, buat satu material instance dari tekstur palet, lalu gunakan ulang untuk setiap mesh. Nanite tidak diperlukan, modelnya sudah sangat ringan.",
   "engine.blender.title": "Model 3D Low Poly untuk Blender",
   "engine.blender.how": "Buka file .blend yang disertakan: setiap model sudah ditandai sebagai Asset, sehingga seluruh paket muncul di Asset Browser Blender, siap diseret ke scene dan render Anda.",
-
   "home.title": "Aset Game Low Poly & 3D Pixel untuk Unity, Godot & Unreal",
   "home.description": "{packs} paket aset low poly dan 3D pixel ({models}+ model 3D untuk game) untuk Unity, Godot, Unreal, dan Blender. Satu draw call, lisensi komersial, mulai {min}.",
   "home.h1": "Aset game low poly mulai {min}.",
@@ -104,7 +97,6 @@
   "home.sceneAlt": "Scene {title}",
   "home.bundlesH2": "Koleksi lengkap, sekali checkout.",
   "home.bundlesLead": "Setiap bundel adalah satu kali pembelian di itch.io.",
-
   "table.bundle": "Bundel",
   "table.packs": "Paket",
   "table.oneByOne": "Beli satuan",
@@ -113,7 +105,6 @@
   "table.save": "hemat {pct}%",
   "table.get": "Ambil bundel",
   "table.getAria": "Dapatkan {bundle} di itch.io",
-
   "cat.title": "{packs} Paket Aset Low Poly & 3D Pixel untuk Unity, Godot, Unreal",
   "cat.description": "Jelajahi {packs} paket aset 3D siap pakai dengan {models}+ model low poly dan 3D pixel: kota, lalu lintas, SWAT, dungeon, Halloween, dan Natal. Mulai {min}.",
   "cat.h1": "Semua {packs} paket aset.",
@@ -134,7 +125,6 @@
   "cat.countOther": "{n} paket",
   "cat.empty": "Tidak ada paket yang cocok dengan pencarian itu.",
   "cat.reset": "Reset filter",
-
   "pack.titleLp": "{title}: {n} Model Low Poly untuk {engines}",
   "pack.titlePx": "{title}: {n} Model 3D Pixel untuk {engines}",
   "pack.titleLpShort": "{title}: {n} Model Low Poly",
@@ -172,14 +162,12 @@
   "pack.prevAria": "Gambar sebelumnya",
   "pack.nextAria": "Gambar berikutnya",
   "pack.close": "Tutup",
-
   "col.description": "{title}: {n} paket dengan {models}+ model siap pakai untuk Unity, Godot, dan Unreal. Mulai {min}.",
   "col.lead": "{n} paket, {models}+ model. {blurb}",
   "col.bundleH2": "Semua {n} dalam satu bundel.",
   "col.aboutH2": "Tentang koleksi ini.",
   "col.othersH2": "Koleksi lainnya.",
   "col.packsN": "{n} paket",
-
   "eng.metaTitle": "{title}: {n} Paket Siap Pakai",
   "eng.description": "{n} paket aset low poly dan 3D pixel ({models}+ model) siap untuk {engine}: kota, mobil, SWAT, dungeon, dan lainnya. Satu material, lisensi komersial, mulai {min}.",
   "eng.lead": "{n} paket dan {models}+ model dengan mesh low poly yang rapi, skala dunia nyata, dan satu material bersama.",
@@ -192,7 +180,6 @@
   "eng.q3": "Apakah lancar di perangkat mobile dengan {engine}?",
   "eng.a3": "Ya. Model-modelnya memakai satu material dan satu tekstur palet kecil, sehingga scene di-batch menjadi sangat sedikit draw call, dan jumlah segitiganya cukup rendah untuk ponsel kelas bawah dan build WebGL.",
   "eng.other": "Engine lain:",
-
   "bundles.title": "Bundel Aset Game Low Poly & 3D Pixel: Hemat hingga {pct}%",
   "bundles.description": "{n} bundel aset game: semua paket low poly, 3D pixel, Halloween, atau Natal dalam sekali checkout, hemat hingga {pct}%. Siap untuk Unity, Godot, dan Unreal.",
   "bundles.h1": "Bundel. Hemat hingga {pct}%.",
@@ -209,7 +196,6 @@
   "bundle.description": "Dapatkan semua {n} paket koleksi {series} ({models}+ model) seharga {price}, bukan {full}. Siap untuk Unity, Godot, Unreal, dan Blender.",
   "bundle.lead": "{n} paket dari koleksi {series} dalam sekali checkout di itch.io.",
   "bundle.inside": "Isi bundel ini.",
-
   "faq.title": "FAQ: Lisensi, Engine & Pembayaran",
   "faq.description": "Jawaban seputar HanX Assets: lisensi komersial, dukungan Unity, Godot, dan Unreal, format file, performa mobile, bundel, dan checkout itch.io.",
   "faq.h1": "Pertanyaan, terjawab.",
@@ -233,7 +219,6 @@
   "faq.8.a": "Tidak. Setiap model dibuat dengan tangan oleh HanX Games, dan paket-paketnya diberi tag “No generative AI was used” di itch.io.",
   "faq.9.q": "Apakah Anda menerima request atau pesanan khusus?",
   "faq.9.a": "Kami senang menerima request. Tinggalkan komentar di halaman itch.io paket mana pun atau hubungi kami di X (@Hanxgames_) dan ceritakan apa yang dibutuhkan game Anda; request yang populer akan menjadi paket baru.",
-
   "lic.title": "Lisensi Aset: Penggunaan Komersial Bebas Royalti",
   "lic.description": "Lisensi HanX Assets secara singkat: pakai model low poly dan 3D pixel di game, aplikasi, dan video komersial tanpa batas. Tanpa royalti, tanpa wajib atribusi.",
   "lic.h1": "Pakai. Rilis. Jual game Anda.",
@@ -244,7 +229,6 @@
   "lic.cantA": "Menjual ulang atau mendistribusikan ulang file aset mentah, baik secara terpisah maupun di dalam paket aset lain, mengunggahnya ke pustaka model atau marketplace, atau mengakui model aslinya sebagai karya Anda sendiri.",
   "lic.unsure": "Belum yakin?",
   "lic.unsureA": "Tinggalkan komentar di halaman itch.io paket tersebut dan jelaskan penggunaan Anda. Kami akan menjawab.",
-
   "about.title": "Tentang HanX Games, Studio di Balik HanX Assets",
   "about.description": "HanX Games, studio game indie dari Turki, membuat paket aset low poly dan 3D pixel buatan tangan: {packs} paket, {models}+ model untuk Unity, Godot, dan Unreal.",
   "about.h1": "Aset yang dulu kami cari.",
@@ -255,5 +239,7 @@
   "about.store": "Toko",
   "about.news": "Berita",
   "about.requests": "Permintaan",
-  "about.requestsA": "Tulis komentar di halaman itch.io paket mana pun."
+  "about.requestsA": "Tulis komentar di halaman itch.io paket mana pun.",
+  "home.pickedH2": "Pilihan studio.",
+  "campaign.until": "Hingga {date}."
 }

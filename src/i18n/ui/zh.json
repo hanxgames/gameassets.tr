@@ -1,6 +1,5 @@
 {
   "site.description": "适用于 Unity、Godot、Unreal 和 Blender 的低多边形（低模）与 3D 像素风游戏素材包，开箱即用。统一调色板、统一比例、一次 Draw Call。含商用授权，{min} 起。",
-
   "nav.skip": "跳到主要内容",
   "nav.home": "首页",
   "nav.homeAria": "HanX Assets，首页",
@@ -13,7 +12,6 @@
   "nav.menu": "菜单",
   "nav.close": "关闭",
   "nav.language": "语言",
-
   "footer.collections": "系列",
   "footer.byEngine": "按引擎",
   "footer.brand": "HanX Assets",
@@ -29,18 +27,15 @@
   "footer.about": "关于我们",
   "footer.legal": "© {year} {studio}。共 {packs} 个素材包和 {bundles} 个捆绑包，通过 itch.io 销售和交付。",
   "footer.made": "土耳其制作。",
-
   "buy.onItch": "在 itch.io 购买",
   "buy.short": "购买",
   "buy.aria": "在 itch.io 以 {price} 购买{title}",
   "card.coverAlt": "{title}封面",
   "sale.until": "特价截至",
-
   "bundle.lowpoly": "Low Poly Starter Bundle",
   "bundle.pixel": "3D Pixel Mega Bundle",
   "bundle.halloween": "Halloween Mega Bundle",
   "bundle.christmas": "Christmas Mega Bundle",
-
   "series.low-poly.name": "低多边形",
   "series.low-poly.title": "低多边形 3D 素材包",
   "series.low-poly.seoTitle": "低多边形 3D 素材包，适用于 Unity、Godot、Unreal",
@@ -61,7 +56,6 @@
   "series.christmas.seoTitle": "圣诞低多边形 3D 素材包：冬季雪景游戏模型",
   "series.christmas.blurb": "积雪屋顶、串灯、圣诞树和冬季道具，打造温馨的节日场景和季节活动。",
   "series.christmas.long": "圣诞版让整个 HanX Assets 世界覆盖白雪：发光的串灯、装饰好的圣诞树、礼物盒、雪人和冬日街道，适用于节日活动、休闲治愈游戏和冬季关卡。",
-
   "engine.unity.title": "Unity 低多边形 3D 资源",
   "engine.unity.how": "将 FBX 或 GLB 文件拖入 Assets 文件夹，指定一次共享调色板材质，再把预制体放进场景即可。支持 URP、HDRP 和内置渲染管线。",
   "engine.godot.title": "Godot 4 低多边形 3D 资源",
@@ -70,7 +64,6 @@
   "engine.unreal.how": "导入 FBX 文件时关闭 Combine Meshes，用调色板贴图创建一个材质实例，所有网格体共用即可。模型本身已经非常轻量，无需 Nanite。",
   "engine.blender.title": "Blender 低多边形 3D 模型",
   "engine.blender.how": "打开附带的 .blend 文件：每个模型都已标记为资产，整个素材包会出现在 Blender 的资产浏览器中，可直接拖入场景和渲染。",
-
   "home.title": "Unity、Godot、Unreal 低多边形与 3D 像素游戏素材",
   "home.description": "{packs} 个开箱即用的低多边形与 3D 像素游戏素材包（{models}+ 个 3D 模型），适用于 Unity、Godot、Unreal 和 Blender。一张贴图，一次 Draw Call，含商用授权。{min} 起。",
   "home.h1": "低多边形游戏素材，{min} 起。",
@@ -104,7 +97,6 @@
   "home.sceneAlt": "{title}场景",
   "home.bundlesH2": "整个系列，一次结账。",
   "home.bundlesLead": "每个捆绑包在 itch.io 上一次购买即可获得。",
-
   "table.bundle": "捆绑包",
   "table.packs": "素材包数",
   "table.oneByOne": "单独购买",
@@ -113,7 +105,6 @@
   "table.save": "省 {pct}%",
   "table.get": "获取捆绑包",
   "table.getAria": "在 itch.io 获取{bundle}",
-
   "cat.title": "全部 {packs} 个低多边形与 3D 像素素材包，适用于 Unity、Godot、Unreal",
   "cat.description": "浏览 {packs} 个开箱即用的 3D 游戏素材包，包含 {models}+ 个低多边形和 3D 像素模型：城市、交通、SWAT、地牢、万圣节和圣诞。{min} 起。",
   "cat.h1": "全部 {packs} 个素材包。",
@@ -134,7 +125,6 @@
   "cat.countOther": "{n} 个素材包",
   "cat.empty": "没有符合搜索条件的素材包。",
   "cat.reset": "重置筛选",
-
   "pack.titleLp": "{title}：{n} 个低多边形模型，适用于 {engines}",
   "pack.titlePx": "{title}：{n} 个 3D 像素模型，适用于 {engines}",
   "pack.titleLpShort": "{title}：{n} 个低多边形模型",
@@ -172,14 +162,12 @@
   "pack.prevAria": "上一张图片",
   "pack.nextAria": "下一张图片",
   "pack.close": "关闭",
-
   "col.description": "{title}：{n} 个素材包，{models}+ 个开箱即用的游戏模型，适用于 Unity、Godot 和 Unreal。{min} 起。",
   "col.lead": "{n} 个素材包，{models}+ 个模型。{blurb}",
   "col.bundleH2": "全部 {n} 个，一个捆绑包。",
   "col.aboutH2": "关于本系列。",
   "col.othersH2": "其他系列。",
   "col.packsN": "{n} 个素材包",
-
   "eng.metaTitle": "{title}：{n} 个开箱即用的素材包",
   "eng.description": "{n} 个可直接用于 {engine} 的低多边形与 3D 像素素材包（{models}+ 个 3D 模型）：城市、汽车、SWAT、地牢等。单一材质，含商用授权，{min} 起。",
   "eng.lead": "{n} 个素材包，{models}+ 个模型，干净的低多边形网格、真实比例和一个共享材质。",
@@ -192,7 +180,6 @@
   "eng.q3": "用 {engine} 做移动端游戏，运行流畅吗？",
   "eng.a3": "流畅。模型共用一个材质和一张小尺寸调色板贴图，场景可合批为极少的 Draw Call，三角面数也足够低，适合入门级手机和 WebGL 构建。",
   "eng.other": "其他引擎：",
-
   "bundles.title": "游戏素材捆绑包：低多边形与 3D 像素素材包最高省 {pct}%",
   "bundles.description": "{n} 个游戏素材捆绑包：一次结账即可获得全部低多边形、3D 像素、万圣节或圣诞素材包，最高省 {pct}%。支持 Unity、Godot 和 Unreal。",
   "bundles.h1": "捆绑包，最高省 {pct}%。",
@@ -209,7 +196,6 @@
   "bundle.description": "以 {price} 获取{series}系列全部 {n} 个素材包（{models}+ 个模型），原价 {full}。支持 Unity、Godot、Unreal 和 Blender。",
   "bundle.lead": "{series}系列的 {n} 个素材包，在 itch.io 一次结账。",
   "bundle.inside": "包含内容。",
-
   "faq.title": "常见问题：授权、引擎与结账",
   "faq.description": "关于 HanX Assets 的解答：商用授权，Unity、Godot 和 Unreal 支持，文件格式，移动端性能，捆绑包以及 itch.io 结账流程。",
   "faq.h1": "常见问题解答。",
@@ -233,7 +219,6 @@
   "faq.8.a": "没有。每个模型都由 HanX Games 手工制作，素材包在 itch.io 上标注了“No generative AI was used”（未使用生成式 AI）。",
   "faq.9.q": "接受需求或定制吗？",
   "faq.9.a": "非常欢迎提需求。在任意素材包的 itch.io 页面留言，或在 X（@Hanxgames_）上联系我们，告诉我们你的游戏需要什么；呼声高的需求会做成新的素材包。",
-
   "lic.title": "素材授权：免版税，可商用",
   "lic.description": "用通俗的话说明 HanX Assets 授权：低多边形和 3D 像素模型可用于不限数量的商业游戏、应用和视频。无需版税，无需署名。",
   "lic.h1": "放心使用，上线发布，售卖游戏。",
@@ -244,7 +229,6 @@
   "lic.cantA": "转售或再分发原始素材文件（无论单独提供还是包含在其他素材包中），将其上传到模型库或素材市场，或声称原始模型是你自己的作品。",
   "lic.unsure": "不确定？",
   "lic.unsureA": "在该素材包的 itch.io 页面留言说明你的用途，我们会回复。",
-
   "about.title": "关于 HanX Games：HanX Assets 背后的工作室",
   "about.description": "HanX Games 是来自土耳其的独立游戏工作室，手工制作低多边形和 3D 像素游戏素材包：共 {packs} 个素材包、{models}+ 个 3D 模型，适用于 Unity、Godot 和 Unreal。",
   "about.h1": "我们自己想要的素材。",
@@ -255,5 +239,7 @@
   "about.store": "商店",
   "about.news": "动态",
   "about.requests": "需求",
-  "about.requestsA": "在任意素材包的 itch.io 页面留言。"
+  "about.requestsA": "在任意素材包的 itch.io 页面留言。",
+  "home.pickedH2": "工作室精选。",
+  "campaign.until": "截至 {date}。"
 }

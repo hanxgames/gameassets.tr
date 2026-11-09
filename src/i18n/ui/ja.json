@@ -1,6 +1,5 @@
 {
   "site.description": "Unity、Godot、Unreal、Blender向けの、ゲームですぐ使えるローポリ・3Dピクセルアートのアセットパック。共通パレット、共通スケール、1ドローコール。商用ライセンス付きで{min}からです。",
-
   "nav.skip": "本文へスキップ",
   "nav.home": "ホーム",
   "nav.homeAria": "HanX Assets、ホーム",
@@ -13,7 +12,6 @@
   "nav.menu": "メニュー",
   "nav.close": "閉じる",
   "nav.language": "言語",
-
   "footer.collections": "コレクション",
   "footer.byEngine": "エンジン別",
   "footer.brand": "HanX Assets",
@@ -29,18 +27,15 @@
   "footer.about": "私たちについて",
   "footer.legal": "© {year} {studio}。{packs}パックと{bundles}バンドルをitch.ioで販売・配信しています。",
   "footer.made": "トルコで制作しています。",
-
   "buy.onItch": "itch.ioで購入",
   "buy.short": "購入",
   "buy.aria": "{title}をitch.ioで{price}で購入",
   "card.coverAlt": "{title}のカバー画像",
   "sale.until": "セール価格の期限",
-
   "bundle.lowpoly": "Low Poly Starter Bundle",
   "bundle.pixel": "3D Pixel Mega Bundle",
   "bundle.halloween": "Halloween Mega Bundle",
   "bundle.christmas": "Christmas Mega Bundle",
-
   "series.low-poly.name": "ローポリ",
   "series.low-poly.title": "ローポリ3Dアセットパック",
   "series.low-poly.seoTitle": "Unity・Godot・Unreal対応 ローポリ3Dアセットパック",
@@ -61,7 +56,6 @@
   "series.christmas.seoTitle": "クリスマス ローポリ3Dアセットパック：雪の冬ゲーム用3Dモデル",
   "series.christmas.blurb": "雪の積もった屋根、ストリングライト、クリスマスツリー、冬の小物。心温まるホリデーシーンや季節イベントに使えます。",
   "series.christmas.long": "クリスマス版はHanX Assetsの世界全体を雪で覆います。光るストリングライト、飾り付けたツリー、ギフトボックス、雪だるま、冬の街並みを収録しており、ホリデーイベント、癒やし系のゲーム、冬のステージに使えます。",
-
   "engine.unity.title": "Unity向けローポリ3Dアセット",
   "engine.unity.how": "FBXまたはGLBファイルをAssetsフォルダにドラッグし、共通のパレットマテリアルを一度割り当てたら、プレハブをシーンに配置するだけです。URP、HDRP、ビルトインパイプラインに対応しています。",
   "engine.godot.title": "Godot 4向けローポリ3Dアセット",
@@ -70,7 +64,6 @@
   "engine.unreal.how": "FBXファイルをCombine Meshesオフでインポートし、パレットテクスチャからマテリアルインスタンスを1つ作成して、すべてのメッシュで使い回します。モデル自体がとても軽いため、Naniteは不要です。",
   "engine.blender.title": "Blender向けローポリ3Dモデル",
   "engine.blender.how": "同梱の.blendファイルを開いてください。すべてのモデルがアセットとしてマーク済みなので、パック全体がBlenderのアセットブラウザーに表示され、そのままシーンやレンダーにドラッグできます。",
-
   "home.title": "ローポリ＆3Dピクセル ゲームアセット Unity・Godot・Unreal対応",
   "home.description": "Unity、Godot、Unreal、Blender向けのローポリ・3Dピクセルのアセットパック{packs}種類（3Dモデル{models}点以上）。テクスチャ1枚、1ドローコール、商用ライセンス付き。{min}からです。",
   "home.h1": "ローポリのゲームアセットが{min}から。",
@@ -104,7 +97,6 @@
   "home.sceneAlt": "{title}のシーン",
   "home.bundlesH2": "コレクション丸ごと、1回の決済で。",
   "home.bundlesLead": "各バンドルはitch.ioで1回購入するだけで手に入ります。",
-
   "table.bundle": "バンドル",
   "table.packs": "パック数",
   "table.oneByOne": "個別購入",
@@ -113,7 +105,6 @@
   "table.save": "{pct}%お得",
   "table.get": "バンドルを入手",
   "table.getAria": "{bundle}をitch.ioで入手",
-
   "cat.title": "ローポリ・3Dピクセル アセットパック全{packs}種 Unity・Godot・Unreal対応",
   "cat.description": "ローポリと3Dピクセルの3Dモデル{models}点以上を収録した、ゲームですぐ使えるアセットパック{packs}種類。都市、交通、SWAT、ダンジョン、ハロウィン、クリスマスまで。{min}からです。",
   "cat.h1": "アセットパック全{packs}種。",
@@ -134,7 +125,6 @@
   "cat.countOther": "{n}パック",
   "cat.empty": "検索条件に一致するパックはありません。",
   "cat.reset": "フィルターをリセット",
-
   "pack.titleLp": "{title}：{engines}向けローポリモデル{n}点",
   "pack.titlePx": "{title}：{engines}向け3Dピクセルモデル{n}点",
   "pack.titleLpShort": "{title}：ローポリモデル{n}点",
@@ -172,14 +162,12 @@
   "pack.prevAria": "前の画像",
   "pack.nextAria": "次の画像",
   "pack.close": "閉じる",
-
   "col.description": "{title}：Unity、Godot、Unreal向けの、ゲームですぐ使える3Dモデル{models}点以上を収録した{n}パック。{min}からです。",
   "col.lead": "{n}パック、{models}点以上のモデル。{blurb}",
   "col.bundleH2": "全{n}パックを1つのバンドルで。",
   "col.aboutH2": "このコレクションについて。",
   "col.othersH2": "ほかのコレクション。",
   "col.packsN": "{n}パック",
-
   "eng.metaTitle": "{title}：ゲームですぐ使える{n}パック",
   "eng.description": "{engine}ですぐ使えるローポリ・3Dピクセルのアセットパック{n}種類（3Dモデル{models}点以上）。都市、車、SWAT、ダンジョンなど。マテリアル1つ、商用ライセンス付きで{min}からです。",
   "eng.lead": "{n}パック、{models}点以上のモデル。整ったローポリメッシュ、実寸スケール、共通のマテリアル1つで構成しています。",
@@ -192,7 +180,6 @@
   "eng.q3": "{engine}で作るモバイルゲームでも快適に動きますか？",
   "eng.a3": "はい。モデルは1つのマテリアルと小さなパレットテクスチャ1枚を共有しているため、シーンはごく少ないドローコールにまとまります。ポリゴン数も、低価格スマートフォンやWebGLビルドで動く程度に抑えています。",
   "eng.other": "ほかのエンジン：",
-
   "bundles.title": "ゲームアセットバンドル：ローポリ＆3Dピクセルが最大{pct}%お得",
   "bundles.description": "ゲームアセットバンドル{n}種類。ローポリ、3Dピクセル、ハロウィン、クリスマスの全パックを1回の決済で入手でき、最大{pct}%お得です。Unity、Godot、Unrealに対応しています。",
   "bundles.h1": "バンドルで最大{pct}%お得。",
@@ -209,7 +196,6 @@
   "bundle.description": "{series}コレクションの全{n}パック（{models}点以上のモデル）を、{full}ではなく{price}で入手できます。Unity、Godot、Unreal、Blenderに対応しています。",
   "bundle.lead": "{series}コレクションの{n}パックを、itch.ioの1回の決済で入手できます。",
   "bundle.inside": "収録内容。",
-
   "faq.title": "よくある質問：ライセンス、対応エンジン、購入方法",
   "faq.description": "HanX Assetsに関するよくある質問です。商用ライセンス、Unity・Godot・Unreal対応、ファイル形式、モバイルでのパフォーマンス、バンドル、itch.ioでの購入についてお答えします。",
   "faq.h1": "疑問にお答えします。",
@@ -233,7 +219,6 @@
   "faq.8.a": "いいえ。すべてのモデルはHanX Gamesの手作りで、itch.ioでは各パックに「No generative AI was used」（生成AI不使用）のタグを付けています。",
   "faq.9.q": "リクエストやカスタム制作は受け付けていますか？",
   "faq.9.a": "リクエストは大歓迎です。各パックのitch.ioページにコメントするか、X（@Hanxgames_）で、ゲームに必要なものを教えてください。要望の多いものは新しいパックになります。",
-
   "lic.title": "アセットライセンス：ロイヤリティフリーで商用利用可",
   "lic.description": "HanX Assetsのライセンスをわかりやすく説明します。ローポリ・3Dピクセルの3Dモデルを、商用のゲーム、アプリ、動画に無制限で使用できます。ロイヤリティもクレジット表記も不要です。",
   "lic.h1": "使う。リリースする。ゲームを売る。",
@@ -244,7 +229,6 @@
   "lic.cantA": "素材ファイルそのものを、単体で、または別のアセットパックに含めて再販売・再配布すること。モデルライブラリやマーケットプレイスにアップロードすること。オリジナルのモデルを自分の作品だと主張すること。",
   "lic.unsure": "迷ったら",
   "lic.unsureA": "パックのitch.ioページに用途を書いてコメントしてください。お答えします。",
-
   "about.title": "HanX Gamesについて：HanX Assetsを手がけるスタジオ",
   "about.description": "HanX Gamesはトルコのインディーゲームスタジオです。Unity、Godot、Unreal向けに、手作りのローポリ・3Dピクセルのアセットパック{packs}種類、3Dモデル{models}点以上を制作しています。",
   "about.h1": "自分たちが欲しかったアセット。",
@@ -255,5 +239,7 @@
   "about.store": "ストア",
   "about.news": "ニュース",
   "about.requests": "リクエスト",
-  "about.requestsA": "各パックのitch.ioページにコメントしてください。"
+  "about.requestsA": "各パックのitch.ioページにコメントしてください。",
+  "home.pickedH2": "スタジオのおすすめ。",
+  "campaign.until": "{date}まで。"
 }

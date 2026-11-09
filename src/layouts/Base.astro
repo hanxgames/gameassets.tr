@@ -2,7 +2,8 @@
 import '../styles/global.css';
 import { SITE, seriesOrder, absolute, assets, bundles, minPrice } from '../data/site';
 import { LOCALES, localeOf, localePath, DEFAULT_LOCALE } from '../i18n/locales';
-import { useT } from '../i18n';
+import { useT, fmtDate } from '../i18n';
+import campaign from '../data/campaign.json';
 
 interface Props {
   title: string;
@@ -64,6 +65,11 @@ const website = {
   },
 };
 const year = new Date().getFullYear();
+// Campaign strip from the admin panel (src/data/campaign.json). Hidden after its end date, also client-side.
+const campaignTexts = campaign.text as Record<string, string>;
+const campaignText = (campaignTexts[lang] || campaignTexts.en || '').trim();
+const campaignLive = campaign.enabled && campaignText && (!campaign.ends || new Date(campaign.ends).getTime() > Date.now());
+const campaignHref = campaign.link ? (campaign.link.startsWith('/') ? localePath(lang, campaign.link) : campaign.link) : '';
 ---
 <!doctype html>
 <html lang={loc.hreflang}>
@@ -139,6 +145,21 @@ const year = new Date().getFullYear();
   </head>
   <body>
     <a class="skip visually-hidden-focusable" href="#main">{t('nav.skip')}</a>
+    {campaignLive && (
+      <aside class="campaign" data-ends={campaign.ends || undefined} aria-label={campaignText}>
+        <div class="container">
+          {campaignHref
+            ? <a href={campaignHref} target={campaignHref.startsWith('http') ? '_blank' : undefined} rel={campaignHref.startsWith('http') ? 'noopener' : undefined}>{campaignText}</a>
+            : <p>{campaignText}</p>}
+          {campaign.ends && <span class="campaign-until">{t('campaign.until', { date: fmtDate(lang, campaign.ends) })}</span>}
+        </div>
+      </aside>
+    )}
+    {campaignLive && campaign.ends && (
+      <script is:inline>
+        (function () { var c = document.querySelector('.campaign[data-ends]'); if (c && Date.now() > new Date(c.dataset.ends).getTime()) c.remove(); })();
+      </script>
+    )}
     <header class="masthead">
       <div class="container">
         <nav aria-label="Shop">

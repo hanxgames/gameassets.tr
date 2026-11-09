@@ -1,0 +1,31 @@
+name: Sync scheduler
+
+# Runs every hour and starts the itch.io sync (deploy.yml) at the hours chosen in the
+# admin panel, stored in src/data/schedule.json as Türkiye time (UTC+3).
+on:
+  schedule:
+    - cron: '7 * * * *'
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: src/data/schedule.json
+          sparse-checkout-cone-mode: false
+      - name: Start the sync if this hour is scheduled
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          HOUR_TR=$(( ( $(date -u +%-H) + 3 ) % 24 ))
+          RUN=$(node -e "const s=require('./src/data/schedule.json');process.stdout.write(String(s.enabled && (s.hoursTR||[]).includes(Number(process.argv[1]))))" "$HOUR_TR")
+          echo "Türkiye hour: $HOUR_TR, scheduled: $RUN"
+          if [ "$RUN" = "true" ]; then
+            gh workflow run deploy.yml --repo "$GITHUB_REPOSITORY" --ref main -f sync=true -f reason=schedule
+          fi

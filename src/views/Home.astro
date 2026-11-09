@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import AssetCard from '../components/AssetCard.astro';
 import { SITE, seriesOrder, assets, bundles, bySeries, totalModels, minPrice, absolute, bundleSavings, membersOf, assetBySlug, type Asset } from '../data/site';
 import { useT, href, packText, bundleLabel } from '../i18n';
+import featured from '../data/featured.json';
 
 interface Props { lang: string }
 const { lang } = Astro.props;
@@ -10,10 +11,13 @@ const t = useT(lang);
 const L = (p: string) => href(lang, p);
 const min = `$${minPrice.toFixed(2)}`;
 const modelsRounded = Math.floor(totalModels / 100) * 100;
-const newest = [...assets].sort((a, b) => +new Date(b.published ?? 0) - +new Date(a.published ?? 0)).slice(0, 8);
-const starter = bundles.find((b) => /assets launch/i.test(b.title)) ?? bundles[0];
+// Home page picks come from the admin panel (src/data/featured.json); anything missing falls back to sensible defaults.
+const picked = (featured.rail as string[]).map(assetBySlug).filter(Boolean) as Asset[];
+const railIsPicked = picked.length > 0;
+const newest = railIsPicked ? picked.slice(0, 8) : [...assets].sort((a, b) => +new Date(b.published ?? 0) - +new Date(a.published ?? 0)).slice(0, 8);
+const starter = bundles.find((b) => b.id === featured.heroBundle || b.slug === featured.heroBundle) ?? bundles.find((b) => /assets launch/i.test(b.title)) ?? bundles[0];
 const starterMembers = starter ? membersOf(starter) : [];
-const heroPack = assetBySlug('low-poly-city-pack') ?? starterMembers[0] ?? assets[0];
+const heroPack = assetBySlug(featured.heroPack) ?? assetBySlug('low-poly-city-pack') ?? starterMembers[0] ?? assets[0];
 const heroImage = heroPack.screenshots[0] ?? heroPack.cover;
 
 const minOf = (list: Asset[]) => `$${Math.min(...list.map((a) => a.priceValue).filter((v) => v > 0)).toFixed(2)}`;
@@ -112,7 +116,7 @@ const faqLd = {
   <section class="section">
     <div class="container">
       <div class="section-head">
-        <h2>{t('home.newestH2')}</h2>
+        <h2>{t(railIsPicked ? 'home.pickedH2' : 'home.newestH2')}</h2>
         <p><a class="link" href={L('/assets/')}>{t('home.seeAll', { packs: assets.length })}</a></p>
       </div>
       <div class="rail" tabindex="0" role="region" aria-label={t('home.railAria')}>
