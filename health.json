@@ -1,0 +1,24 @@
+{
+  "checkedAt": "2026-11-09T09:27:00.099Z",
+  "durationSec": 275,
+  "counts": {
+    "pages": 770,
+    "images": 758,
+    "itch": 37
+  },
+  "problems": [],
+  "skipped": [],
+  "newOnItch": [
+    "low-poly-japan-village-pack",
+    "low-poly-japan-traffic-pack",
+    "low-poly-japan-shop-market-pack",
+    "low-poly-japan-school-pack",
+    "low-poly-japan-park-nature-pack",
+    "low-poly-japan-neighborhood-pack",
+    "low-poly-japan-hospital-pack",
+    "low-poly-japan-gas-station-pack",
+    "low-poly-japan-construction-pack",
+    "low-poly-japan-city-pack",
+    "low-poly-japan-town-pack"
+  ]
+}
