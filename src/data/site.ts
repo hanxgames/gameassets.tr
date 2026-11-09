@@ -1,4 +1,5 @@
 import catalog from './catalog.json';
+import hidden from './hidden.json';
 
 export type Asset = (typeof catalog.assets)[number];
 export type Bundle = (typeof catalog.bundles)[number];
@@ -16,8 +17,12 @@ export const SITE = {
     'Game-ready low poly and 3D pixel art asset packs for Unity, Godot, Unreal & Blender. One palette, one scale, one draw call. Commercial license, from $0.69.',
 };
 
-export const assets: Asset[] = catalog.assets;
-export const bundles: Bundle[] = catalog.bundles;
+/** Pack slugs hidden from the site from the admin panel (src/data/hidden.json). */
+const hiddenSlugs = new Set<string>(hidden as string[]);
+export const assets: Asset[] = catalog.assets.filter((a) => !hiddenSlugs.has(a.slug));
+export const bundles: Bundle[] = catalog.bundles
+  .map((b) => ({ ...b, members: b.members.filter((s) => !hiddenSlugs.has(s)) }))
+  .filter((b) => b.members.length > 0);
 export const syncedAt = catalog.syncedAt;
 
 export const SERIES = {
