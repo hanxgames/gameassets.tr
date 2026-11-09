@@ -47,3 +47,14 @@ English (kök adres), Türkçe `/tr/`, Deutsch `/de/`, Français `/fr/`, Españo
 - Uzun paket açıklamaları itch.io'daki gibi İngilizce kalır.
 - Her sayfada `hreflang` etiketleri, site haritasında da dil bağlantıları otomatik üretilir. Dil listesi: `src/i18n/locales.ts`.
 - Uzun paket açıklamaları: `src/i18n/desc/<dil>.json` (kaynak: `src/i18n/desc-source.en.json`). itch.io'da bir açıklamayı değiştirirsen çevirileri de güncelle; çevirisi olmayan paket İngilizce açıklamayla görünür.
+
+## Yönetim paneli
+
+https://hanxgames.github.io/gameassets-admin/ (repo: hanxgames/gameassets-admin). Panelin yazdığı ayar dosyaları:
+
+- `src/data/featured.json`: ana sayfadaki büyük paket, fiyat damgasındaki bundle ve paket şeridi
+- `src/data/campaign.json`: sitenin üstündeki kampanya şeridi (bitiş tarihinde kendiliğinden kalkar)
+- `src/data/schedule.json`: otomatik itch.io senkron saatleri (Türkiye saati). `scheduler.yml` saatte bir bakar.
+- `src/data/hidden.json`: siteden gizlenen paketler
+
+`health.yml` her pazartesi sayfaları, görselleri ve itch.io sayfalarını kontrol edip raporu `status` dalına yazar.
