@@ -1,0 +1,168 @@
+---
+import Base from '../layouts/Base.astro';
+import AssetCard from '../components/AssetCard.astro';
+import { SITE, ENGINES, seriesOrder, assets, bySeries, totalModels, minPrice, absolute } from '../data/site';
+import { useT, href } from '../i18n';
+
+interface Props { lang: string }
+const { lang } = Astro.props;
+const t = useT(lang);
+const L = (p: string) => href(lang, p);
+const list = assets;
+const modelsRounded = Math.floor(totalModels / 100) * 100;
+const min = `$${minPrice.toFixed(2)}`;
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: t('nav.home'), item: absolute(L('/')) },
+    { '@type': 'ListItem', position: 2, name: t('nav.allPacks'), item: absolute(L('/assets/')) },
+  ],
+};
+const collection = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: t('cat.title', { packs: assets.length }),
+  url: absolute(L('/assets/')),
+  inLanguage: lang,
+  isPartOf: { '@id': `${SITE.url}/#website` },
+  mainEntity: {
+    '@type': 'ItemList',
+    numberOfItems: list.length,
+    itemListElement: list.map((a, i) => ({ '@type': 'ListItem', position: i + 1, url: absolute(L(`/assets/${a.slug}/`)), name: a.title })),
+  },
+};
+---
+<Base
+  lang={lang}
+  path="/assets/"
+  title={t('cat.title', { packs: assets.length })}
+  description={t('cat.description', { packs: assets.length, models: modelsRounded, min })}
+  jsonld={[breadcrumb, collection]}
+>
+  <header class="listing-head">
+    <div class="container">
+      <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href={L('/')}>{t('nav.home')}</a></li><li><span aria-current="page">{t('nav.allPacks')}</span></li></ol></nav>
+      <h1>{t('cat.h1', { packs: assets.length })}</h1>
+      <p class="lead">{t('cat.lead')}</p>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="filters" role="search">
+      <label class="search">
+        <span class="visually-hidden">{t('cat.searchLabel')}</span>
+        <input id="q" type="search" name="q" placeholder={t('cat.searchPh')} autocomplete="off" />
+      </label>
+      <div class="chips" role="group" aria-label={t('cat.collection')}>
+        <button class="fchip active" type="button" data-series="" aria-pressed="true">{t('cat.all', { n: assets.length })}</button>
+        {seriesOrder.map((s) => <button class="fchip" type="button" data-series={s} aria-pressed="false">{t(`series.${s}.name`)} {bySeries(s).length}</button>)}
+      </div>
+      <div class="selects">
+        <label><span class="visually-hidden">{t('cat.engine')}</span>
+          <select id="engine" name="engine">
+            <option value="">{t('cat.anyEngine')}</option>
+            {Object.values(ENGINES).map((e) => <option value={e.slug}>{e.name}</option>)}
+          </select>
+        </label>
+        <label><span class="visually-hidden">{t('cat.sort')}</span>
+          <select id="sort" name="sort">
+            <option value="featured">{t('sort.featured')}</option>
+            <option value="new">{t('sort.new')}</option>
+            <option value="price-asc">{t('sort.priceAsc')}</option>
+            <option value="price-desc">{t('sort.priceDesc')}</option>
+            <option value="models">{t('sort.models')}</option>
+          </select>
+        </label>
+      </div>
+    </div>
+    <p class="small result-count" id="count" role="status" data-one={t('cat.countOne')} data-other={t('cat.countOther')}>{t('cat.countOther', { n: assets.length })}</p>
+
+    <div class="pack-grid" id="grid">
+      {list.map((a, i) => <AssetCard asset={a} lang={lang} eager={i < 4} headingLevel="h2" />)}
+    </div>
+    <p class="empty" id="empty" hidden>{t('cat.empty')} <button class="btn btn--sm" type="button" id="reset">{t('cat.reset')}</button></p>
+  </div>
+</Base>
+
+<style>
+  .filters { position: sticky; top: var(--nav-height); z-index: var(--z-sticky); display: flex; flex-wrap: wrap; gap: var(--space-md); align-items: center; padding-block: var(--space-lg); background: var(--color-paper); border-bottom: var(--rule-bar) solid var(--color-ink); }
+  .search { flex: 1 1 280px; display: flex; }
+  .search input { width: 100%; min-height: 48px; padding: 0 var(--space-md); border: var(--rule-bar) solid var(--color-ink); border-radius: var(--radius-pill); background: var(--color-paper); color: var(--color-ink); font-size: var(--text-md); }
+  .search input::placeholder { color: var(--color-muted); }
+  .search input:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 0; }
+  .chips { display: flex; flex-wrap: wrap; gap: var(--space-xs); }
+  .fchip { min-height: 44px; padding: 0 var(--space-md); border: var(--rule-bar) solid var(--color-ink); border-radius: var(--radius-pill); background: var(--color-paper); color: var(--color-ink); font-size: var(--text-sm); font-weight: 500; white-space: nowrap; cursor: pointer; transition: background-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out); }
+  .fchip:hover { background: var(--color-paper-3); }
+  .fchip.active { background: var(--color-ink); color: var(--color-paper); }
+  .fchip:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
+  .fchip:active { background: var(--color-ink-2); color: var(--color-paper); }
+  .selects { display: flex; gap: var(--space-xs); }
+  select { appearance: none; min-height: 48px; padding: 0 var(--space-xl) 0 var(--space-md); border: var(--rule-bar) solid var(--color-ink); border-radius: var(--radius-pill); background: var(--color-paper); color: var(--color-ink); font-size: var(--text-sm); font-weight: 500; cursor: pointer; background-image: linear-gradient(45deg, transparent 50%, var(--color-ink) 50%), linear-gradient(135deg, var(--color-ink) 50%, transparent 50%); background-position: calc(100% - 18px) 50%, calc(100% - 12px) 50%; background-size: 6px 6px; background-repeat: no-repeat; }
+  select:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
+  .result-count { margin-block: var(--space-lg) var(--space-xl); }
+  .empty { padding-block: var(--space-3xl); font-size: var(--text-lead); display: flex; gap: var(--space-md); align-items: center; flex-wrap: wrap; }
+  .pack[hidden] { display: none; }
+  @media (max-width: 60rem) { .filters { position: static; } .selects { width: 100%; } .selects label, .selects select { flex: 1; width: 100%; } }
+</style>
+
+<script>
+  const grid = document.getElementById('grid')!;
+  const cards = [...grid.querySelectorAll<HTMLElement>('.pack')];
+  const original = [...cards];
+  const q = document.getElementById('q') as HTMLInputElement;
+  const engine = document.getElementById('engine') as HTMLSelectElement;
+  const sort = document.getElementById('sort') as HTMLSelectElement;
+  const chips = [...document.querySelectorAll<HTMLButtonElement>('.fchip')];
+  const count = document.getElementById('count')!;
+  const empty = document.getElementById('empty')!;
+  let series = '';
+
+  const params = new URLSearchParams(location.search);
+  q.value = params.get('q') || '';
+  engine.value = params.get('engine') || '';
+  sort.value = params.get('sort') || 'featured';
+  series = params.get('series') || '';
+  chips.forEach((c) => { const on = c.dataset.series === series; c.classList.toggle('active', on); c.setAttribute('aria-pressed', String(on)); });
+
+  function apply() {
+    const terms = q.value.toLowerCase().trim().split(/\s+/).filter(Boolean);
+    let shown = 0;
+    for (const c of cards) {
+      const ok = (!series || c.dataset.series === series) &&
+        (!engine.value || (c.dataset.engines || '').split(' ').includes(engine.value)) &&
+        terms.every((t) => (c.dataset.search || '').includes(t));
+      c.hidden = !ok;
+      if (ok) shown++;
+    }
+    const sorted = [...original];
+    const num = (c: HTMLElement, k: string) => Number(c.dataset[k] || 0);
+    if (sort.value === 'new') sorted.sort((a, b) => +new Date(b.dataset.date || 0) - +new Date(a.dataset.date || 0));
+    if (sort.value === 'price-asc') sorted.sort((a, b) => num(a, 'price') - num(b, 'price'));
+    if (sort.value === 'price-desc') sorted.sort((a, b) => num(b, 'price') - num(a, 'price'));
+    if (sort.value === 'models') sorted.sort((a, b) => num(b, 'models') - num(a, 'models'));
+    sorted.forEach((c) => grid.appendChild(c));
+    count.textContent = (shown === 1 ? count.dataset.one! : count.dataset.other!).replace('{n}', String(shown));
+    empty.hidden = shown > 0;
+    const p = new URLSearchParams();
+    if (q.value) p.set('q', q.value);
+    if (series) p.set('series', series);
+    if (engine.value) p.set('engine', engine.value);
+    if (sort.value !== 'featured') p.set('sort', sort.value);
+    history.replaceState(null, '', `${location.pathname}${p.toString() ? '?' + p : ''}`);
+  }
+  q.addEventListener('input', apply);
+  engine.addEventListener('change', apply);
+  sort.addEventListener('change', apply);
+  chips.forEach((c) => c.addEventListener('click', () => {
+    series = c.dataset.series || '';
+    chips.forEach((x) => { x.classList.toggle('active', x === c); x.setAttribute('aria-pressed', String(x === c)); });
+    apply();
+  }));
+  document.getElementById('reset')!.addEventListener('click', () => {
+    q.value = ''; engine.value = ''; sort.value = 'featured'; series = '';
+    chips.forEach((x) => { x.classList.toggle('active', x.dataset.series === ''); x.setAttribute('aria-pressed', String(x.dataset.series === '')); });
+    apply();
+  });
+  apply();
+</script>

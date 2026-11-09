@@ -1,8 +1,8 @@
 ---
 /** The sale end date, stated once as a fact. */
-interface Props { ends: string | null | undefined; label?: string }
-const { ends, label = 'Sale price until' } = Astro.props;
+import { fmtDate } from '../i18n';
+interface Props { ends: string | null | undefined; label: string; lang?: string }
+const { ends, label, lang = 'en' } = Astro.props;
 const valid = ends && new Date(ends).getTime() > Date.now();
-const d = valid ? new Date(ends!) : null;
 ---
-{d && <p class="small">{label}{' '}<time datetime={ends}>{d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</time>.</p>}
+{valid && <p class="small">{label}{' '}<time datetime={ends}>{fmtDate(lang, ends!)}</time>.</p>}

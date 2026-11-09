@@ -1,0 +1,9 @@
+---
+import View from '../../../views/Engine.astro';
+import { OTHER_LOCALES } from '../../../i18n/locales';
+import { assets, bundles, seriesOrder, bySeries, ENGINES } from '../../../data/site';
+export function getStaticPaths() {
+  return OTHER_LOCALES.flatMap((l) => Object.keys(ENGINES).map((e) => ({ params: { engine: e, lang: l.code } })));
+}
+---
+<View lang={Astro.params.lang!} engine={Astro.params.engine as any} />

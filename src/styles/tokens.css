@@ -21,3 +21,9 @@
   --shadow-press: 1px 1px 0 var(--color-ink); --nav-height: 76px;
   --text-poster: clamp(3.5rem, 7.5vw, 8.5rem); --text-price: clamp(3rem, 6vw, 6rem);
 }
+/* Per-script font stacks: Big Shoulders Display and Golos Text cover Latin and Cyrillic body text; other scripts fall back glyph by glyph to a face loaded only on that locale. */
+:root:lang(ru) { --font-display: "Big Shoulders Display", "Oswald", Impact, sans-serif; }
+:root:lang(ja) { --font-display: "Big Shoulders Display", "Noto Sans JP", sans-serif; --font-body: "Golos Text", "Noto Sans JP", system-ui, sans-serif; --display-leading: 1.25; }
+:root:lang(ko) { --font-display: "Big Shoulders Display", "Noto Sans KR", sans-serif; --font-body: "Golos Text", "Noto Sans KR", system-ui, sans-serif; --display-leading: 1.25; }
+:root:lang(zh-Hans) { --font-display: "Big Shoulders Display", "Noto Sans SC", sans-serif; --font-body: "Golos Text", "Noto Sans SC", system-ui, sans-serif; --display-leading: 1.25; }
+:root:lang(vi) { --font-display: "Big Shoulders Display", "Be Vietnam Pro", sans-serif; --font-body: "Be Vietnam Pro", system-ui, sans-serif; }

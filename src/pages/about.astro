@@ -1,26 +1,4 @@
 ---
-import Base from '../layouts/Base.astro';
-import ListingHero from '../components/ListingHero.astro';
-import { SITE, assets, totalModels } from '../data/site';
-const about = { '@context': 'https://schema.org', '@type': 'AboutPage', name: 'About HanX Games', url: `${SITE.url}/about/`, mainEntity: { '@id': `${SITE.url}/#org` } };
+import View from '../views/About.astro';
 ---
-<Base title="About HanX Games, the Studio Behind HanX Assets" description={`HanX Games is an indie game studio from Türkiye making hand-made low poly and 3D pixel asset packs: ${assets.length} packs and ${totalModels}+ models for Unity, Godot and Unreal.`} jsonld={[about]}>
-  <ListingHero title="The assets we wished we had." crumbs={[{ href: '/', label: 'Home' }, { label: 'About' }]}>
-    <p>HanX Games is an independent game studio from Türkiye.</p>
-  </ListingHero>
-  <div class="container">
-    <section class="section--s about">
-      <div class="prose">
-        <p>While building our own games we kept hitting the same wall: asset packs that did not match each other, used dozens of materials and slowed mobile builds to a crawl.</p>
-        <p>So we made <strong>HanX Assets</strong>: {assets.length} hand-made packs and {totalModels}+ models. The low poly packs share one palette texture, one real-world scale and one 8 m grid, and the 3D pixel packs hold one pixel density. Cities, traffic, villages, schools, building sites, a full SWAT team, pixel dungeons and seasonal Halloween and Christmas editions fit together into one world.</p>
-        <p>Every model is made by hand, with no generative AI, clean topology, clean names and a README listing triangle counts and sizes.</p>
-      </div>
-      <dl class="rows">
-        <div><dt>Store</dt><dd><a class="link" href={SITE.itch} target="_blank" rel="noopener">hanx-games.itch.io</a></dd></div>
-        <div><dt>News</dt><dd><a class="link" href={SITE.twitterUrl} target="_blank" rel="noopener">X (Twitter) {SITE.twitter}</a></dd></div>
-        <div><dt>Requests</dt><dd>Comment on any pack’s itch.io page.</dd></div>
-      </dl>
-    </section>
-  </div>
-</Base>
-<style>.about { display: grid; gap: var(--space-2xl); }</style>
+<View lang="en" />

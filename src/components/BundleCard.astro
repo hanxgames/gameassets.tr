@@ -1,25 +1,28 @@
 ---
-import { bundleName, bundleSavings, membersOf, type Bundle } from '../data/site';
+import { bundleSavings, membersOf, type Bundle } from '../data/site';
+import { useT, href, bundleLabel } from '../i18n';
 import Countdown from './Countdown.astro';
-interface Props { bundle: Bundle; compact?: boolean; eager?: boolean }
-const { bundle: b, compact = false, eager = false } = Astro.props;
+interface Props { bundle: Bundle; lang?: string; compact?: boolean; eager?: boolean }
+const { bundle: b, lang = 'en', compact = false, eager = false } = Astro.props;
+const t = useT(lang);
 const members = membersOf(b);
 const save = bundleSavings(b);
+const name = bundleLabel(t, b);
 ---
 <article class="offer">
   <div class="offer-media">
-    <div class="frame frame--cover tilt-l"><img src={members[0]?.cover.src} alt={`${bundleName(b)}: ${members[0]?.title} and ${members.length - 1} more packs`} width="1200" height="952" loading={eager ? 'eager' : 'lazy'} fetchpriority={eager ? 'high' : 'auto'} decoding="async" /></div>
-    <span class="stamp offer-stamp">{members.length} packs</span>
+    <div class="frame frame--cover tilt-l"><img src={members[0]?.cover.src} alt={t('bc.alt', { bundle: name, first: members[0]?.title ?? '', n: members.length - 1 })} width="1200" height="952" loading={eager ? 'eager' : 'lazy'} fetchpriority={eager ? 'high' : 'auto'} decoding="async" /></div>
+    <span class="stamp offer-stamp">{t('bc.stamp', { n: members.length })}</span>
   </div>
   <div class="offer-body">
-    <h3><a href={`/bundles/${b.slug}/`}>{bundleName(b)}</a></h3>
+    <h3><a href={href(lang, `/bundles/${b.slug}/`)}>{name}</a></h3>
     {!compact && <p class="small">{members.map((m) => m.title.replace(/^(Low Poly|3D Pixel) (Halloween |Christmas )?/, '').replace(/ Pack$/, '')).join(', ')}.</p>}
     <p class="offer-price"><span class="price-figure">{b.bundlePrice}</span>{b.regularPrice && <span class="was">{b.regularPrice}</span>}</p>
-    {save > 0 && <p class="small">Save {save}% against buying the {members.length} packs one by one. {b.modelCount}+ models.</p>}
-    {!compact && <Countdown ends={b.ends} label="Bundle price until" />}
+    {save > 0 && <p class="small">{t('bc.save', { pct: save, n: members.length, models: b.modelCount })}</p>}
+    {!compact && <Countdown ends={b.ends} label={t('bc.until')} lang={lang} />}
     <div class="actions">
-      <a class="btn btn--primary" href={b.url} target="_blank" rel="noopener" aria-label={`Get the ${bundleName(b)} on itch.io for ${b.bundlePrice}`}>Get all {members.length}</a>
-      <a class="btn" href={`/bundles/${b.slug}/`}>See the packs</a>
+      <a class="btn btn--primary" href={b.url} target="_blank" rel="noopener" aria-label={t('bc.getAria', { bundle: name, price: b.bundlePrice })}>{t('bc.getAll', { n: members.length })}</a>
+      <a class="btn" href={href(lang, `/bundles/${b.slug}/`)}>{t('bc.see')}</a>
     </div>
   </div>
 </article>

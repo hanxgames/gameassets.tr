@@ -11,7 +11,10 @@ export default defineConfig({
     sitemap({
       filter: (page) => !page.includes('/404'),
       changefreq: 'weekly',
-      i18n: { defaultLocale: 'en', locales: { en: 'en', tr: 'tr' } },
+      i18n: {
+        defaultLocale: 'en',
+        locales: { en: 'en', tr: 'tr', de: 'de', fr: 'fr', es: 'es', it: 'it', pt: 'pt-BR', pl: 'pl', ru: 'ru', ja: 'ja', ko: 'ko', zh: 'zh-Hans', id: 'id', vi: 'vi' },
+      },
       serialize(item) {
         if (item.url === 'https://gameassets.tr/') item.priority = 1.0;
         else if (item.url.includes('/assets/') || item.url.includes('/bundles/')) item.priority = 0.9;

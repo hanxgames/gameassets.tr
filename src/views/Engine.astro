@@ -1,0 +1,75 @@
+---
+import Base from '../layouts/Base.astro';
+import AssetCard from '../components/AssetCard.astro';
+import ListingHero from '../components/ListingHero.astro';
+import { ENGINES, byEngine, assets, absolute, minPrice, type EngineKey } from '../data/site';
+import { useT, href } from '../i18n';
+
+interface Props { lang: string; engine: EngineKey }
+const { lang, engine: key } = Astro.props;
+const t = useT(lang);
+const L = (p: string) => href(lang, p);
+const name = ENGINES[key].name;
+const title = t(`engine.${key}.title`);
+const how = t(`engine.${key}.how`);
+// Every pack ships GLB, FBX, OBJ and .blend, so all packs work everywhere; packs that name the engine come first.
+const explicit = byEngine(key);
+const list = [...explicit, ...assets.filter((a) => !explicit.includes(a))];
+const models = list.reduce((n, a) => n + (a.modelCount || 0), 0);
+const path = `/engines/${key}/`;
+const faq = [1, 2, 3].map((i) => ({ q: t(`eng.q${i}`, { engine: name }), a: t(`eng.a${i}`, { engine: name, n: assets.length }) + (i === 1 ? ` ${how}` : '') }));
+const jsonld = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: title,
+    inLanguage: lang,
+    url: absolute(L(path)),
+    mainEntity: { '@type': 'ItemList', numberOfItems: list.length, itemListElement: list.map((a, i) => ({ '@type': 'ListItem', position: i + 1, url: absolute(L(`/assets/${a.slug}/`)), name: a.title })) },
+  },
+  { '@context': 'https://schema.org', '@type': 'FAQPage', inLanguage: lang, mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: t('nav.home'), item: absolute(L('/')) },
+      { '@type': 'ListItem', position: 2, name: title, item: absolute(L(path)) },
+    ],
+  },
+];
+---
+<Base
+  lang={lang}
+  path={path}
+  title={t('eng.metaTitle', { title, n: list.length })}
+  description={t('eng.description', { n: list.length, models, engine: name, min: `$${minPrice.toFixed(2)}` })}
+  jsonld={jsonld}
+>
+  <ListingHero title={`${title}.`} crumbs={[{ href: L('/'), label: t('nav.home') }, { label: title }]}>
+    <p>{t('eng.lead', { n: list.length, models })}</p>
+  </ListingHero>
+  <div class="container">
+    <section class="section--s">
+      <div class="pack-grid">{list.map((a, i) => <AssetCard asset={a} lang={lang} eager={i < 4} />)}</div>
+    </section>
+    <section class="section how">
+      <h2>{t('eng.howH2', { engine: name })}</h2>
+      <p class="lead">{how}</p>
+    </section>
+    <section class="section">
+      <h2 class="block-head">{t('eng.faqH2', { engine: name })}</h2>
+      <div class="faq">{faq.map((f) => <details><summary>{f.q}</summary><div class="answer">{f.a}</div></details>)}</div>
+      <p class="other">
+        {t('eng.other')} {(Object.keys(ENGINES) as EngineKey[]).filter((e) => e !== key).map((e, i) => <>{i > 0 && ', '}<a class="link" href={L(`/engines/${e}/`)}>{t(`engine.${e}.title`)}</a></>)}
+      </p>
+    </section>
+  </div>
+</Base>
+<style>
+  .block-head { margin-bottom: var(--space-xl); }
+  .how { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gap-columns); }
+  .how h2 { grid-column: 1 / span 5; text-wrap: balance; }
+  .how .lead { grid-column: 6 / span 7; max-width: 60ch; }
+  .other { margin-top: var(--space-xl); }
+  @media (max-width: 60rem) { .how h2, .how .lead { grid-column: 1 / -1; } }
+</style>

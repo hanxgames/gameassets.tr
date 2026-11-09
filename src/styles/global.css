@@ -88,7 +88,7 @@ h2 { max-width: 22ch; }
 .section--s { padding-block: var(--section-gap-s) 0; }
 .section--l { padding-block: var(--section-gap-l) 0; }
 .section-head { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gap-columns); align-items: end; margin-bottom: var(--space-2xl); }
-.section-head > :first-child { grid-column: 1 / span 7; }
+.section-head > :first-child { grid-column: 1 / span 7; overflow-wrap: break-word; min-width: 0; }
 .section-head > :nth-child(2) { grid-column: 8 / span 5; }
 .band-paper { background: var(--color-paper-2); padding-block: var(--section-gap-s); margin-top: var(--section-gap); border-block: var(--rule-bar) solid var(--color-ink); }
 @media (max-width: 60rem) { .section-head > :first-child, .section-head > :nth-child(2) { grid-column: 1 / -1; } }
@@ -210,3 +210,19 @@ h2 { max-width: 22ch; }
 @media (prefers-reduced-motion: reduce) {
   .tilt-l, .tilt-r { rotate: none; }
 }
+
+/* ---------- Language menu ---------- */
+.lang-menu { position: relative; }
+.lang-menu summary { list-style: none; cursor: pointer; min-height: 44px; display: inline-flex; align-items: center; padding: 0 var(--space-sm); border: var(--rule-bar) solid var(--color-ink); font-size: var(--text-sm); font-weight: 500; transition: background-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out); }
+.lang-menu summary::-webkit-details-marker { display: none; }
+.lang-menu summary:hover, .lang-menu[open] summary { background: var(--color-ink); color: var(--color-paper); }
+.lang-menu summary:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.lang-menu summary:active { background: var(--color-ink-2); color: var(--color-paper); }
+.lang-menu ul { position: absolute; right: 0; top: calc(100% + var(--space-xs)); z-index: var(--z-dropdown); list-style: none; margin: 0; padding: var(--space-xs) 0; min-width: 14rem; background: var(--color-paper); border: var(--rule-bar) solid var(--color-ink); box-shadow: var(--shadow-card); display: grid; }
+.lang-menu ul a { display: block; padding: var(--space-xs) var(--space-md); border: 0; font-size: var(--text-sm); }
+.lang-menu ul a:hover { background: var(--color-paper-2); }
+.lang-menu ul a[aria-current] { background: var(--color-accent); color: var(--color-accent-ink); }
+.footer-langs { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--space-md); }
+
+/* CJK headings: no capitals to set, so give the lines room. */
+:lang(ja) :is(h1, h2, h3), :lang(ko) :is(h1, h2, h3), :lang(zh-Hans) :is(h1, h2, h3) { line-height: var(--display-leading, 1.25); letter-spacing: 0; }

@@ -1,0 +1,253 @@
+---
+import Base from '../layouts/Base.astro';
+import AssetCard from '../components/AssetCard.astro';
+import { SITE, seriesOrder, assets, bundles, bySeries, totalModels, minPrice, absolute, bundleSavings, membersOf, assetBySlug, type Asset } from '../data/site';
+import { useT, href, packText, bundleLabel } from '../i18n';
+
+interface Props { lang: string }
+const { lang } = Astro.props;
+const t = useT(lang);
+const L = (p: string) => href(lang, p);
+const min = `$${minPrice.toFixed(2)}`;
+const modelsRounded = Math.floor(totalModels / 100) * 100;
+const newest = [...assets].sort((a, b) => +new Date(b.published ?? 0) - +new Date(a.published ?? 0)).slice(0, 8);
+const starter = bundles.find((b) => /assets launch/i.test(b.title)) ?? bundles[0];
+const starterMembers = starter ? membersOf(starter) : [];
+const heroPack = assetBySlug('low-poly-city-pack') ?? starterMembers[0] ?? assets[0];
+const heroImage = heroPack.screenshots[0] ?? heroPack.cover;
+
+const minOf = (list: Asset[]) => `$${Math.min(...list.map((a) => a.priceValue).filter((v) => v > 0)).toFixed(2)}`;
+const tiles = seriesOrder.map((s) => ({ s, list: bySeries(s) })).filter((x) => x.list.length);
+
+const pinned = [
+  { slug: 'low-poly-city-pack', key: 'texture' },
+  { slug: 'low-poly-traffic-pack', key: 'grid' },
+  { slug: '3d-pixel-dungeon-pack', key: 'pixel' },
+].map((p) => ({ ...p, asset: assetBySlug(p.slug) })).filter((p) => p.asset) as { slug: string; key: string; asset: Asset }[];
+
+const facts = ['checkout', 'license', 'engines', 'updates'].map((k) => ({ q: t(`fact.${k}.q`), a: t(`fact.${k}.a`) }));
+
+const itemList = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: t('home.title'),
+  numberOfItems: assets.length,
+  itemListElement: assets.map((a, i) => ({ '@type': 'ListItem', position: i + 1, url: absolute(L(`/assets/${a.slug}/`)), name: a.title })),
+};
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  inLanguage: lang,
+  mainEntity: facts.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+---
+<Base
+  lang={lang}
+  path="/"
+  title={`${t('home.title')} | ${SITE.brand}`}
+  description={t('home.description', { packs: assets.length, models: modelsRounded, min })}
+  jsonld={[itemList, faqLd]}
+>
+  <Fragment slot="head"><link rel="preload" as="image" href={heroImage.src} fetchpriority="high" /></Fragment>
+
+  <!-- Hero: Counter. The offer is the visual. -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <h1>{t('home.h1', { min })}</h1>
+        <p class="lead">{t('home.lead', { packs: assets.length })}</p>
+        <div class="actions">
+          <a class="btn btn--primary" href={L('/assets/')}>{t('home.browse', { packs: assets.length })}</a>
+          <a class="btn" href={L('/bundles/')}>{t('home.bundleDeals')}</a>
+        </div>
+      </div>
+      <figure class="hero-offer">
+        <div class="frame hero-frame tilt-r">
+          <img src={heroImage.src} alt={`${heroPack.title}: ${packText(lang, heroPack).short}`} width="1600" height="1000" fetchpriority="high" decoding="async" />
+        </div>
+        {starter && (
+          <a class="hero-stamp" href={L(`/bundles/${starter.slug}/`)}>
+            <span class="price-figure">{starter.bundlePrice}</span>
+            <span>{t('home.stamp', { bundle: bundleLabel(t, starter), n: starterMembers.length, was: starter.regularPrice })}</span>
+          </a>
+        )}
+      </figure>
+    </div>
+  </section>
+
+  <!-- Bento: the four collections -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2>{t('home.collectionsH2')}</h2>
+        <p class="lead">{t('home.collectionsLead')}</p>
+      </div>
+      <div class="bento">
+        {tiles.map(({ s, list }, i) => (
+          <a class={`tile tile-${i}`} href={L(`/collections/${s}/`)}>
+            <span class="tile-img"><img src={list[0].cover.src} alt="" width="1200" height="952" loading="lazy" decoding="async" /></span>
+            <span class="tile-text">
+              <span class="tile-name">{t(`series.${s}.title`)}</span>
+              <span>{t('home.tile', { n: list.length, min: minOf(list) })}</span>
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Rows: delivery and care as plain facts -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2>{t('home.factsH2')}</h2>
+      </div>
+      <dl class="rows">
+        {facts.map((f) => <div><dt>{f.q}</dt><dd>{f.a}</dd></div>)}
+      </dl>
+    </div>
+  </section>
+
+  <!-- Rail: newest packs -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2>{t('home.newestH2')}</h2>
+        <p><a class="link" href={L('/assets/')}>{t('home.seeAll', { packs: assets.length })}</a></p>
+      </div>
+      <div class="rail" tabindex="0" role="region" aria-label={t('home.railAria')}>
+        {newest.map((a) => <AssetCard asset={a} lang={lang} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- Pinned: how a pack is built -->
+  {pinned.length > 0 && (
+    <section class="section">
+      <div class="container pinned">
+        <div class="pinned-visual" aria-hidden="true">
+          {pinned.map((p, i) => (
+            <div class={`frame frame--wide pinned-img ${i === 0 ? 'is-on' : ''}`} data-step={i}>
+              <img src={(p.asset.screenshots[0] ?? p.asset.cover).src} alt="" width="1600" height="1000" loading="lazy" decoding="async" />
+            </div>
+          ))}
+        </div>
+        <div class="pinned-steps">
+          <h2>{t('home.pinnedH2')}</h2>
+          <ol>
+            {pinned.map((p, i) => (
+              <li data-step={i}>
+                <div class="frame frame--wide pinned-inline"><img src={(p.asset.screenshots[0] ?? p.asset.cover).sm} alt={t('home.sceneAlt', { title: p.asset.title })} width="720" height="450" loading="lazy" decoding="async" /></div>
+                <h3>{t(`pin.${p.key}.t`)}</h3>
+                <p class="lead">{t(`pin.${p.key}.d`)}</p>
+                <p class="small">{t('home.shown')} <a class="link" href={L(`/assets/${p.asset.slug}/`)}>{p.asset.title}</a></p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Table: the offers again -->
+  {bundles.length > 0 && (
+    <section class="band-paper">
+      <div class="container">
+        <div class="section-head">
+          <h2>{t('home.bundlesH2')}</h2>
+          <p class="lead">{t('home.bundlesLead')}</p>
+        </div>
+        <div class="table-wrap">
+          <table class="price-table">
+            <thead><tr><th scope="col">{t('table.bundle')}</th><th scope="col">{t('table.packs')}</th><th scope="col">{t('table.oneByOne')}</th><th scope="col">{t('table.bundlePrice')}</th><th scope="col"><span class="visually-hidden">{t('table.buy')}</span></th></tr></thead>
+            <tbody>
+              {bundles.map((b) => (
+                <tr>
+                  <td class="name"><a href={L(`/bundles/${b.slug}/`)}>{bundleLabel(t, b)}</a></td>
+                  <td>{b.members.length}</td>
+                  <td class="was">{b.regularPrice}</td>
+                  <td class="big">{b.bundlePrice} <span class="small">{t('table.save', { pct: bundleSavings(b) })}</span></td>
+                  <td><a class="btn btn--sm" href={b.url} target="_blank" rel="noopener" aria-label={t('table.getAria', { bundle: bundleLabel(t, b) })}>{t('table.get')}</a></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  )}
+</Base>
+
+<style>
+  .hero { padding-block: var(--space-xl); }
+  .hero { min-height: calc(100svh - var(--nav-height)); display: grid; align-items: center; }
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-3xl); align-items: center; }
+  .hero-copy { display: grid; gap: var(--space-lg); justify-items: start; }
+  .hero-copy h1 { font-size: clamp(3rem, 5.2vw, 6rem); max-width: 10ch; overflow-wrap: break-word; min-width: 0; text-wrap: balance; }
+  .hero-offer { position: relative; margin: 0; padding-bottom: var(--space-xl); }
+  .hero-frame { aspect-ratio: 16 / 10; }
+  .hero-stamp {
+    position: absolute; left: calc(-1 * var(--space-xl)); bottom: 0; z-index: var(--z-raised);
+    display: grid; gap: var(--space-2xs); max-width: 22rem; padding: var(--space-sm) var(--space-md);
+    background: var(--color-accent-2); color: var(--color-on-accent-2); border: var(--rule-bar) solid var(--color-ink); box-shadow: var(--shadow-card);
+    text-decoration: none; rotate: -2deg; transition: background-color var(--dur-micro) var(--ease-out);
+  }
+  .hero-stamp .price-figure { font-size: var(--text-price); }
+  .hero-stamp span:last-child { font-size: var(--text-sm); font-weight: 500; }
+  .hero-stamp:hover { background: var(--color-ink); }
+  .hero-stamp:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
+  .hero-stamp:active { box-shadow: var(--shadow-press); }
+  @media (max-width: 60rem) {
+    .hero-grid { grid-template-columns: minmax(0, 1fr); min-height: 0; gap: var(--space-xl); }
+    .hero-stamp { left: var(--space-sm); }
+  }
+
+  .bento { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gap-columns); }
+  .tile { display: grid; grid-template-rows: minmax(0, 1fr) auto; border: var(--rule-bar) solid var(--color-ink); box-shadow: var(--shadow-card); text-decoration: none; background: var(--color-paper-2); height: 360px; overflow: hidden; transition: background-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out); }
+  .tile-0 { grid-column: span 8; } .tile-1 { grid-column: span 4; } .tile-2 { grid-column: span 4; } .tile-3 { grid-column: span 8; }
+  .tile-0 .tile-text { background: var(--color-accent); color: var(--color-accent-ink); }
+  .tile-3 .tile-text { background: var(--color-accent-2); color: var(--color-on-accent-2); }
+  .tile-img { position: relative; display: block; min-height: 0; overflow: hidden; border-bottom: var(--rule-bar) solid var(--color-ink); }
+  .tile-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .tile-text { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-md); flex-wrap: wrap; padding: var(--space-md) var(--space-lg); font-size: var(--text-sm); font-weight: 500; }
+  .tile-name { font: var(--display-weight) var(--text-xl)/1.1 var(--font-display); text-transform: uppercase; letter-spacing: var(--tracking-display); }
+  .tile:hover .tile-text { background: var(--color-ink); color: var(--color-paper); }
+  .tile:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
+  .tile:active { box-shadow: var(--shadow-press); }
+  @media (max-width: 60rem) { .tile-0, .tile-1, .tile-2, .tile-3 { grid-column: 1 / -1; height: 300px; } }
+
+  .pinned { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-3xl); align-items: start; }
+  .pinned-visual { position: sticky; top: calc(var(--nav-height) + var(--space-xl)); display: grid; }
+  .pinned-img { grid-area: 1 / 1; opacity: 0; transition: opacity var(--dur-long) var(--ease-out); }
+  .pinned-img.is-on { opacity: 1; }
+  .pinned-steps h2 { margin-bottom: var(--space-2xl); }
+  .section-head h2, .pinned-steps h2 { overflow-wrap: break-word; min-width: 0; }
+  .pinned-steps ol { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-4xl); counter-reset: step; }
+  .pinned-steps li { display: grid; gap: var(--space-md); counter-increment: step; min-height: 40svh; align-content: center; }
+  .pinned-steps h3 { font-size: var(--text-section); }
+  .pinned-steps h3::before { content: counter(step) '. '; color: var(--color-accent-2); }
+  .pinned-inline { display: none; }
+  @media (max-width: 60rem) {
+    .pinned { grid-template-columns: minmax(0, 1fr); }
+    .pinned-visual { display: none; }
+    .pinned-inline { display: block; }
+    .pinned-steps ol { gap: var(--space-2xl); }
+    .pinned-steps li { min-height: 0; }
+  }
+</style>
+
+<script>
+  // Pinned run: the sticky picture follows the step in view. Without script the first picture shows.
+  const imgs = [...document.querySelectorAll<HTMLElement>('.pinned-img')];
+  const steps = [...document.querySelectorAll<HTMLElement>('.pinned-steps li')];
+  if (imgs.length && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        const n = (e.target as HTMLElement).dataset.step;
+        imgs.forEach((im) => im.classList.toggle('is-on', im.dataset.step === n));
+      });
+    }, { rootMargin: '-45% 0px -45% 0px' });
+    steps.forEach((s) => io.observe(s));
+  }
+</script>

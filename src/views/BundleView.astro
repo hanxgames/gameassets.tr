@@ -1,0 +1,74 @@
+---
+import Base from '../layouts/Base.astro';
+import AssetCard from '../components/AssetCard.astro';
+import BundleCard from '../components/BundleCard.astro';
+import ListingHero from '../components/ListingHero.astro';
+import { SITE, membersOf, bundleSeries, bundleSavings, absolute, fmtUSD, type Bundle } from '../data/site';
+import { useT, href, bundleLabel } from '../i18n';
+
+interface Props { lang: string; bundle: Bundle }
+const { lang, bundle: b } = Astro.props;
+const t = useT(lang);
+const L = (p: string) => href(lang, p);
+const members = membersOf(b);
+const series = t(`series.${bundleSeries(b)}.title`);
+const pct = bundleSavings(b);
+const name = bundleLabel(t, b);
+const full = fmtUSD(members.reduce((n, a) => n + a.originalPriceValue, 0));
+const path = `/bundles/${b.slug}/`;
+const lead = lang === 'en' && b.description ? b.description.replace(/\s+[—–]\s+/g, ', ') : t('bundle.lead', { n: members.length, series });
+const jsonld = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: `${name}: ${members.length} × ${series}`,
+    description: lead,
+    inLanguage: lang,
+    image: [absolute(b.og)],
+    brand: { '@type': 'Brand', name: SITE.brand },
+    sku: `bundle-${b.id}`,
+    url: absolute(L(path)),
+    offers: {
+      '@type': 'Offer',
+      url: b.url,
+      price: b.bundlePriceValue.toFixed(2),
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      priceValidUntil: (b.ends || new Date(Date.now() + 180 * 864e5).toISOString()).slice(0, 10),
+      seller: { '@type': 'Organization', name: SITE.studio },
+    },
+    isRelatedTo: members.map((a) => ({ '@type': 'Product', name: a.itchTitle, url: absolute(L(`/assets/${a.slug}/`)) })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: t('nav.home'), item: absolute(L('/')) },
+      { '@type': 'ListItem', position: 2, name: t('nav.bundles'), item: absolute(L('/bundles/')) },
+      { '@type': 'ListItem', position: 3, name, item: absolute(L(path)) },
+    ],
+  },
+];
+---
+<Base
+  lang={lang}
+  path={path}
+  title={pct ? t('bundle.metaTitleSave', { bundle: name, n: members.length, price: b.bundlePrice, pct }) : t('bundle.metaTitle', { bundle: name, n: members.length, price: b.bundlePrice })}
+  description={t('bundle.description', { n: members.length, series, models: b.modelCount, price: b.bundlePrice, full })}
+  image={b.og}
+  type="product"
+  price={{ amount: b.bundlePriceValue, currency: 'USD' }}
+  jsonld={jsonld}
+>
+  <ListingHero title={`${name}.`} crumbs={[{ href: L('/'), label: t('nav.home') }, { href: L('/bundles/'), label: t('nav.bundles') }, { label: name }]}>
+    <p>{lead}</p>
+  </ListingHero>
+  <div class="container">
+    <BundleCard bundle={b} lang={lang} eager />
+    <section class="section">
+      <h2 class="block-head">{t('bundle.inside')}</h2>
+      <div class="pack-grid">{members.map((a) => <AssetCard asset={a} lang={lang} />)}</div>
+    </section>
+  </div>
+</Base>
+<style>.block-head { margin-bottom: var(--space-xl); }</style>

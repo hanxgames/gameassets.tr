@@ -1,0 +1,9 @@
+---
+import View from '../../../views/BundleView.astro';
+import { OTHER_LOCALES } from '../../../i18n/locales';
+import { assets, bundles, seriesOrder, bySeries, ENGINES } from '../../../data/site';
+export function getStaticPaths() {
+  return OTHER_LOCALES.flatMap((l) => bundles.map((b) => ({ params: { slug: b.slug, lang: l.code }, props: { bundle: b } })));
+}
+---
+<View lang={Astro.params.lang!} bundle={Astro.props.bundle} />

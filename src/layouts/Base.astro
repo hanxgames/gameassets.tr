@@ -1,32 +1,42 @@
 ---
 import '../styles/global.css';
-import { SITE, SERIES, seriesOrder, absolute, assets, bundles } from '../data/site';
+import { SITE, seriesOrder, absolute, assets, bundles, minPrice } from '../data/site';
+import { LOCALES, localeOf, localePath, DEFAULT_LOCALE } from '../i18n/locales';
+import { useT } from '../i18n';
 
 interface Props {
   title: string;
   description: string;
+  /** Locale code of this page. */
+  lang?: string;
+  /** The page path without a locale prefix, e.g. "/assets/low-poly-city-pack/". Drives canonical, hreflang and the language menu. */
+  path?: string;
+  /** Set false for pages that exist in one language only (404). */
+  localized?: boolean;
   image?: string;
   imageAlt?: string;
   type?: 'website' | 'product' | 'article';
   jsonld?: object[];
   noindex?: boolean;
-  lang?: 'en' | 'tr';
-  alternates?: { lang: string; href: string }[];
   /** Product-specific OG price tags */
   price?: { amount: number; currency: string };
 }
-const { title, description, image = '/og/home.jpg', imageAlt, type = 'website', jsonld = [], noindex = false, lang = 'en', alternates = [], price } = Astro.props;
-const canonical = absolute(Astro.url.pathname);
+const { title, description, lang = DEFAULT_LOCALE, path = '/', localized = true, image = '/og/home.jpg', imageAlt, type = 'website', jsonld = [], noindex = false, price } = Astro.props;
+const t = useT(lang);
+const loc = localeOf(lang);
+const L = (p: string) => localePath(lang, p);
+const canonical = absolute(localized ? L(path) : Astro.url.pathname);
 const ogImage = absolute(image);
 const fullTitle = title.includes(SITE.brand) || title.includes(SITE.name) ? title : `${title} | ${SITE.brand}`;
-const path = Astro.url.pathname;
+const current = Astro.url.pathname;
 const nav = [
-  { href: '/assets/', label: lang === 'tr' ? 'Tüm paketler' : 'All packs' },
-  { href: '/bundles/', label: lang === 'tr' ? 'Bundle fırsatları' : 'Bundles' },
-  { href: '/collections/low-poly/', label: 'Low poly' },
-  { href: '/collections/3d-pixel/', label: '3D pixel' },
-  { href: '/faq/', label: 'FAQ' },
+  { href: L('/assets/'), label: t('nav.allPacks') },
+  { href: L('/bundles/'), label: t('nav.bundles') },
+  { href: L('/collections/low-poly/'), label: t('nav.lowPoly') },
+  { href: L('/collections/3d-pixel/'), label: t('nav.pixel') },
+  { href: L('/faq/'), label: t('nav.faq') },
 ];
+const fontFamilies = ['family=Big+Shoulders+Display:wght@800', 'family=Golos+Text:wght@400;500', loc.fonts].filter(Boolean).join('&');
 const org = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
@@ -44,18 +54,19 @@ const website = {
   name: SITE.name,
   alternateName: SITE.brand,
   url: SITE.url,
-  inLanguage: lang,
+  inLanguage: LOCALES.map((l) => l.hreflang),
+  description: t('site.description', { min: `$${minPrice.toFixed(2)}` }),
   publisher: { '@id': `${SITE.url}/#org` },
   potentialAction: {
     '@type': 'SearchAction',
-    target: { '@type': 'EntryPoint', urlTemplate: `${SITE.url}/assets/?q={search_term_string}` },
+    target: { '@type': 'EntryPoint', urlTemplate: `${SITE.url}${L('/assets/')}?q={search_term_string}` },
     'query-input': 'required name=search_term_string',
   },
 };
 const year = new Date().getFullYear();
 ---
 <!doctype html>
-<html lang={lang}>
+<html lang={loc.hreflang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -63,7 +74,8 @@ const year = new Date().getFullYear();
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     {noindex ? <meta name="robots" content="noindex, follow" /> : <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />}
-    {alternates.map((a) => <link rel="alternate" hreflang={a.lang} href={absolute(a.href)} />)}
+    {localized && LOCALES.map((l) => <link rel="alternate" hreflang={l.hreflang} href={absolute(localePath(l.code, path))} />)}
+    {localized && <link rel="alternate" hreflang="x-default" href={absolute(path)} />}
     <meta name="theme-color" content="#f6efd9" />
     <meta name="color-scheme" content="light" />
     <meta name="author" content={SITE.studio} />
@@ -76,7 +88,8 @@ const year = new Date().getFullYear();
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:alt" content={imageAlt || title} />
-    <meta property="og:locale" content={lang === 'tr' ? 'tr_TR' : 'en_US'} />
+    <meta property="og:locale" content={loc.og} />
+    {localized && LOCALES.filter((l) => l.code !== lang).map((l) => <meta property="og:locale:alternate" content={l.og} />)}
     {price && <meta property="product:price:amount" content={price.amount.toFixed(2)} />}
     {price && <meta property="product:price:currency" content={price.currency} />}
     <meta name="twitter:card" content="summary_large_image" />
@@ -90,11 +103,11 @@ const year = new Date().getFullYear();
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
-    <link rel="alternate" type="application/rss+xml" title="HanX Assets — new asset packs" href="/rss.xml" />
+    <link rel="alternate" type="application/rss+xml" title="HanX Assets: new asset packs" href="/rss.xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800&family=Golos+Text:wght@400;500&display=swap" />
+    <link rel="stylesheet" href={`https://fonts.googleapis.com/css2?${fontFamilies}&display=swap`} />
     <slot name="head" />
 
     <script type="application/ld+json" set:html={JSON.stringify(org)} />
@@ -102,23 +115,30 @@ const year = new Date().getFullYear();
     {jsonld.map((j) => <script type="application/ld+json" set:html={JSON.stringify(j)} />)}
   </head>
   <body>
-    <a class="skip visually-hidden-focusable" href="#main">Skip to content</a>
+    <a class="skip visually-hidden-focusable" href="#main">{t('nav.skip')}</a>
     <header class="masthead">
       <div class="container">
         <nav aria-label="Shop">
-          {nav.slice(0, 3).map((n) => <a href={n.href} aria-current={path.startsWith(n.href) ? 'page' : undefined}>{n.label}</a>)}
+          {nav.slice(0, 3).map((n) => <a href={n.href} aria-current={current.startsWith(n.href) ? 'page' : undefined}>{n.label}</a>)}
         </nav>
-        <a class="wordmark" href={lang === 'tr' ? '/tr/' : '/'} aria-label={`${SITE.brand}, home`}>HanX <b>Assets</b></a>
+        <a class="wordmark" href={L('/')} aria-label={t('nav.homeAria')}>HanX <b>Assets</b></a>
         <nav aria-label="Info">
-          {nav.slice(3).map((n) => <a href={n.href} aria-current={path.startsWith(n.href) ? 'page' : undefined}>{n.label}</a>)}
-          <a href={SITE.itch} target="_blank" rel="noopener">{lang === 'tr' ? 'itch.io mağazası' : 'itch.io store'}</a>
+          {nav.slice(3).map((n) => <a href={n.href} aria-current={current.startsWith(n.href) ? 'page' : undefined}>{n.label}</a>)}
+          {localized && (
+            <details class="lang-menu">
+              <summary aria-label={t('nav.language')}>{lang.toUpperCase()}</summary>
+              <ul>
+                {LOCALES.map((l) => <li><a href={localePath(l.code, path)} hreflang={l.hreflang} lang={l.hreflang} aria-current={l.code === lang ? 'true' : undefined}>{l.name}</a></li>)}
+              </ul>
+            </details>
+          )}
         </nav>
-        <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav">Menu</button>
+        <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav" data-open={t('nav.menu')} data-close={t('nav.close')}>{t('nav.menu')}</button>
       </div>
       <div class="mobile-nav" id="mobile-nav">
         <ul class="container">
           {nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
-          <li><a href={SITE.itch} target="_blank" rel="noopener">itch.io store</a></li>
+          <li><a href={SITE.itch} target="_blank" rel="noopener">{t('nav.itch')}</a></li>
         </ul>
       </div>
     </header>
@@ -130,39 +150,39 @@ const year = new Date().getFullYear();
         <p class="wordmark-xl" aria-hidden="true">HanX <b>Assets</b></p>
         <div class="footer-links">
           <div>
-            <p class="footer-head">Collections</p>
-            <ul>{seriesOrder.map((s) => <li><a href={`/collections/${s}/`}>{SERIES[s].name} packs</a></li>)}</ul>
+            <p class="footer-head">{t('footer.collections')}</p>
+            <ul>{seriesOrder.map((s) => <li><a href={L(`/collections/${s}/`)}>{t('footer.seriesPacks', { name: t(`series.${s}.name`) })}</a></li>)}</ul>
           </div>
           <div>
-            <p class="footer-head">By engine</p>
+            <p class="footer-head">{t('footer.byEngine')}</p>
             <ul>
-              <li><a href="/engines/unity/">Unity assets</a></li>
-              <li><a href="/engines/godot/">Godot 4 assets</a></li>
-              <li><a href="/engines/unreal/">Unreal assets</a></li>
-              <li><a href="/engines/blender/">Blender models</a></li>
+              <li><a href={L('/engines/unity/')}>{t('footer.unity')}</a></li>
+              <li><a href={L('/engines/godot/')}>{t('footer.godot')}</a></li>
+              <li><a href={L('/engines/unreal/')}>{t('footer.unreal')}</a></li>
+              <li><a href={L('/engines/blender/')}>{t('footer.blender')}</a></li>
             </ul>
           </div>
           <div>
-            <p class="footer-head">HanX Assets</p>
+            <p class="footer-head">{t('footer.brand')}</p>
             <ul>
-              <li><a href="/bundles/">Bundle deals</a></li>
-              <li><a href="/faq/">FAQ</a></li>
-              <li><a href="/license/">License</a></li>
-              <li><a href="/about/">About</a></li>
-              <li><a href="/tr/" hreflang="tr">Türkçe</a></li>
-            </ul>
-          </div>
-          <div>
-            <p class="footer-head">Elsewhere</p>
-            <ul>
-              <li><a href={SITE.itch} target="_blank" rel="noopener">itch.io store</a></li>
+              <li><a href={L('/bundles/')}>{t('footer.bundleDeals')}</a></li>
+              <li><a href={L('/faq/')}>{t('nav.faq')}</a></li>
+              <li><a href={L('/license/')}>{t('footer.license')}</a></li>
+              <li><a href={L('/about/')}>{t('footer.about')}</a></li>
+              <li><a href={SITE.itch} target="_blank" rel="noopener">{t('nav.itch')}</a></li>
               <li><a href={SITE.twitterUrl} target="_blank" rel="noopener">X (Twitter)</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="footer-head">{t('footer.languages')}</p>
+            <ul class="footer-langs">
+              {LOCALES.map((l) => <li><a href={localePath(l.code, localized ? path : '/')} hreflang={l.hreflang} lang={l.hreflang}>{l.name}</a></li>)}
             </ul>
           </div>
         </div>
         <div class="footer-legal">
-          <span>© {year} {SITE.studio}. {assets.length} packs and {bundles.length} bundles, sold and delivered through itch.io.</span>
-          <span>{lang === 'tr' ? 'Türkiye’de yapıldı.' : 'Made in Türkiye.'}</span>
+          <span>{t('footer.legal', { year, studio: SITE.studio, packs: assets.length, bundles: bundles.length })}</span>
+          <span>{t('footer.made')}</span>
         </div>
       </div>
     </footer>
@@ -173,8 +193,13 @@ const year = new Date().getFullYear();
       btn?.addEventListener('click', () => {
         const open = menu!.classList.toggle('open');
         btn.setAttribute('aria-expanded', String(open));
-        btn.textContent = open ? 'Close' : 'Menu';
+        btn.textContent = open ? btn.dataset.close! : btn.dataset.open!;
       });
+
+      // Close the language menu on outside click or Escape.
+      const langMenu = document.querySelector<HTMLDetailsElement>('.lang-menu');
+      document.addEventListener('click', (e) => { if (langMenu?.open && !langMenu.contains(e.target as Node)) langMenu.open = false; });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && langMenu?.open) { langMenu.open = false; langMenu.querySelector('summary')?.focus(); } });
 
       // Buy buttons open the itch.io checkout in a centred popup on desktop,
       // and navigate normally on phones or when popups are blocked.

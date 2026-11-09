@@ -4,7 +4,7 @@ import ListingHero from '../components/ListingHero.astro';
 import AssetCard from '../components/AssetCard.astro';
 import { assets } from '../data/site';
 ---
-<Base title="Page not found" description={`This page does not exist, but ${assets.length} asset packs do.`} noindex>
+<Base title="Page not found" description={`This page does not exist, but ${assets.length} asset packs do.`} noindex localized={false}>
   <ListingHero title="This level is not built yet." crumbs={[{ href: '/', label: 'Home' }, { label: 'Not found' }]}>
     <p>The address leads nowhere. <a class="link" href="/assets/">Browse all {assets.length} packs</a> instead.</p>
   </ListingHero>

@@ -1,0 +1,150 @@
+{
+  "low-poly-swat-pack": {
+    "short": "114 个低多边形 SWAT 模型：带骨骼绑定的小队、武器、装甲车、总部基地和战术训练屋。",
+    "headline": "114 个开箱即用的模型"
+  },
+  "low-poly-gas-station-pack": {
+    "short": "31 个低多边形加油站模型：顶棚、加油机、便利店、洗车房、修车库、拖车和油罐车。",
+    "headline": "31 个开箱即用的模型"
+  },
+  "low-poly-park-nature-pack": {
+    "short": "67 个低多边形公园与自然模型：15 种树木、植物、岩石、凉亭、小桥、池塘和小径。",
+    "headline": "67 个开箱即用的模型"
+  },
+  "low-poly-construction-pack": {
+    "short": "46 个低多边形工程模型：挖掘机、推土机、起重机、卡车、脚手架和建材。",
+    "headline": "46 个开箱即用的模型"
+  },
+  "low-poly-shop-market-pack": {
+    "short": "52 个低多边形商店模型：8 种店面、市场摊位、超市内景、商品和街道道具。",
+    "headline": "52 个开箱即用的模型"
+  },
+  "low-poly-school-pack": {
+    "short": "50 个低多边形学校模型：教学楼、体育馆、教室套件、操场、运动器材和校车。",
+    "headline": "50 个开箱即用的模型"
+  },
+  "low-poly-city-pack": {
+    "short": "37 个低多边形城市模型：11 栋精细建筑、屋顶道具、街道设施和地面地块。",
+    "headline": "37 个开箱即用的模型"
+  },
+  "low-poly-village-pack": {
+    "short": "57 个低多边形乡村模型：小屋、谷仓、柴房、鸡舍、水井、栅栏、农场道具和树木。",
+    "headline": "57 个开箱即用的模型"
+  },
+  "low-poly-traffic-pack": {
+    "short": "52 个开箱即用的低多边形模型：模块化道路、红绿灯、路牌、道具和 13 辆车辆。",
+    "headline": "52 个开箱即用的模型"
+  },
+  "3d-pixel-rpg-items-pack": {
+    "short": "低多边形 3D 像素风 RPG 道具：武器、护甲、药水、宝箱和战利品。GLB/FBX/OBJ/Blend。",
+    "headline": "Pixel RPG Items Pack：84 个开箱即用的 3D 像素风模型"
+  },
+  "3d-pixel-medieval-town-pack": {
+    "short": "3D 像素风中世纪小镇与城堡套件：城墙、塔楼、酒馆、集市和骑士。",
+    "headline": "Pixel Medieval Town Pack：74 个开箱即用的 3D 像素风模型"
+  },
+  "3d-pixel-dungeon-pack": {
+    "short": "模块化 3D 像素风地牢套件：墙壁、门、陷阱、火把、道具、英雄和怪物。",
+    "headline": "Pixel Dungeon Pack：79 个开箱即用的 3D 像素风模型"
+  },
+  "3d-pixel-farm-village-pack": {
+    "short": "温馨的 3D 像素风农场与村庄：谷仓、3 个生长阶段的作物、动物、工具和村民。",
+    "headline": "Pixel Farm & Village Pack：108 个开箱即用的 3D 像素风模型"
+  },
+  "3d-pixel-swat-pack": {
+    "short": "3D 像素风 SWAT 小队：带骨骼绑定的队员、武器、装甲车和战术道具。",
+    "headline": "Pixel SWAT Pack：69 个开箱即用的 3D 像素风模型"
+  },
+  "3d-pixel-city-pack": {
+    "short": "低多边形 3D 像素风城市：建筑、模块化道路套件、汽车、街道道具和带骨骼绑定的市民。",
+    "headline": "Pixel City Pack：82 个开箱即用的 3D 像素风模型"
+  },
+  "3d-pixel-home-interior-pack": {
+    "short": "温馨的 3D 像素风家居室内：各个房间的家具、装饰、宠物和住户。",
+    "headline": "Pixel Home Interior Pack：94 个开箱即用的 3D 像素风模型"
+  },
+  "3d-pixel-nature-pack": {
+    "short": "低多边形 3D 像素风自然：树木、植物、岩石和无缝 4 米地形套件。",
+    "headline": "Pixel Nature Pack：79 个开箱即用的 3D 像素风模型"
+  },
+  "low-poly-halloween-neighborhood-pack": {
+    "short": "80 个低多边形万圣节模型：鬼屋、墓地、南瓜、幽灵、发光灯饰、树木和模块化地块。",
+    "headline": "80 个开箱即用的模型"
+  },
+  "low-poly-halloween-city-pack": {
+    "short": "低多边形闹鬼市中心：触手公寓、巨型眼球写字楼、Grave Inn 酒店和街道道具。",
+    "headline": "33 个开箱即用的模型"
+  },
+  "low-poly-halloween-shop-market-pack": {
+    "short": "低多边形怪物市场：Brains & Co 肉铺、Bone Bakery 面包店、药水店和面具店、诡异摊位、推车和道具。",
+    "headline": "30 个开箱即用的模型"
+  },
+  "low-poly-halloween-construction-pack": {
+    "short": "37 个低多边形万圣节工程模型：怪物机械、女巫帽起重机、骷髅施工队和糖果玉米路障。",
+    "headline": "37 个开箱即用的模型"
+  },
+  "low-poly-halloween-village-pack": {
+    "short": "34 个低多边形闹鬼农场模型：南瓜灯谷仓、蝙蝠翼风车、怪物筒仓、稻草人和玉米迷宫。",
+    "headline": "34 个开箱即用的模型"
+  },
+  "low-poly-halloween-school-pack": {
+    "short": "39 个低多边形万圣节学校模型：Monster Academy、闹鬼校车、诡异操场、校园道具和地块。",
+    "headline": "39 个开箱即用的模型"
+  },
+  "low-poly-halloween-hospital-pack": {
+    "short": "36 个低多边形万圣节医院模型：闹鬼医院、急诊室、太平间、救护车、灵车、木乃伊、药水和地块。",
+    "headline": "36 个开箱即用的模型"
+  },
+  "low-poly-halloween-gas-station-pack": {
+    "short": "Ghoul Gas：怪物大嘴便利店、蜘蛛顶棚、棺材加油机、Soul Wash 洗车房和诡异车辆。",
+    "headline": "35 个开箱即用的模型"
+  },
+  "low-poly-halloween-traffic-pack": {
+    "short": "闹鬼公路：模块化道路、灵车、幽灵巴士、怪兽卡车、眼球红绿灯和诡异路牌。",
+    "headline": "37 个开箱即用的模型"
+  },
+  "low-poly-halloween-park-nature-pack": {
+    "short": "35 个低多边形诡异公园模型：棺材旋转木马、史莱姆喷泉、怪物游乐场、触手池塘和诡异树木。",
+    "headline": "35 个开箱即用的模型"
+  },
+  "low-poly-christmas-neighborhood-pack": {
+    "short": "65 个低多边形圣诞模型：姜饼屋和糖果屋、圣诞老人、雪人、发光灯饰、积雪松树和地块。",
+    "headline": "65 个开箱即用的模型"
+  },
+  "low-poly-christmas-school-pack": {
+    "short": "38 个低多边形圣诞学校模型：Elf Academy、雪橇校车、拐杖糖操场、道具和雪地地块。",
+    "headline": "38 个开箱即用的模型"
+  },
+  "low-poly-christmas-gas-station-pack": {
+    "short": "North Pole Fuel：礼物包装便利店、巨型圣诞树顶棚、拐杖糖加油机、Snow Wash 洗车房和蛋酒油罐车。",
+    "headline": "33 个开箱即用的模型"
+  },
+  "low-poly-christmas-city-pack": {
+    "short": "33 个低多边形圣诞城市模型：礼物包装公寓、装饰球高塔、Hotel Noel、溜冰场和道具。",
+    "headline": "33 个开箱即用的模型"
+  },
+  "low-poly-christmas-village-pack": {
+    "short": "低多边形圣诞老人村：玩具工坊、圣诞老人之家、驯鹿马厩、精灵小屋、雪橇和道具。",
+    "headline": "40 个开箱即用的模型"
+  },
+  "low-poly-christmas-shop-market-pack": {
+    "short": "33 个低多边形圣诞市集模型：糖果店、姜饼面包房、8 个市集摊位、驯鹿旋转木马和道具。",
+    "headline": "33 个开箱即用的模型"
+  },
+  "low-poly-christmas-park-nature-pack": {
+    "short": "低多边形冬日仙境公园：溜冰场、驯鹿旋转木马、巨型雪花球、雪橇坡、游乐场和松树。",
+    "headline": "35 个开箱即用的模型"
+  },
+  "low-poly-christmas-traffic-pack": {
+    "short": "雪橇公路：积雪模块化道路、圣诞老人雪橇、扫雪车、节日车辆、装饰球灯和路牌。",
+    "headline": "36 个开箱即用的模型"
+  },
+  "low-poly-christmas-construction-pack": {
+    "short": "39 个低多边形圣诞工程模型：拐杖糖机械、星星起重机、精灵施工队和雪地工地地块。",
+    "headline": "39 个开箱即用的模型"
+  },
+  "low-poly-christmas-hospital-pack": {
+    "short": "35 个低多边形圣诞医院模型：St. Nick's Hospital、驯鹿救护车、节日病人和雪地地块。",
+    "headline": "35 个开箱即用的模型"
+  }
+}

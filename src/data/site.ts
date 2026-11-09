@@ -85,12 +85,17 @@ export const membersOf = (b: Bundle) => b.members.map(assetBySlug).filter(Boolea
 
 export const fmtUSD = (v: number) => `$${v.toFixed(2)}`;
 
-export function bundleName(b: Bundle) {
+export function bundleKey(b: Bundle): 'lowpoly' | 'pixel' | 'halloween' | 'christmas' {
   const t = b.title;
-  if (/halloween/i.test(t)) return 'Halloween Mega Bundle';
-  if (/christmas/i.test(t)) return 'Christmas Mega Bundle';
-  if (/pixel/i.test(t)) return '3D Pixel Mega Bundle';
-  return 'Low Poly Starter Bundle';
+  if (/halloween/i.test(t)) return 'halloween';
+  if (/christmas/i.test(t)) return 'christmas';
+  if (/pixel/i.test(t)) return 'pixel';
+  return 'lowpoly';
+}
+const BUNDLE_NAMES = { lowpoly: 'Low Poly Starter Bundle', pixel: '3D Pixel Mega Bundle', halloween: 'Halloween Mega Bundle', christmas: 'Christmas Mega Bundle' };
+/** English bundle name (used by RSS, llms.txt and as the fallback). */
+export function bundleName(b: Bundle) {
+  return BUNDLE_NAMES[bundleKey(b)];
 }
 export function bundleSeries(b: Bundle): SeriesKey {
   const t = b.title;

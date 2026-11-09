@@ -1,17 +1,4 @@
 ---
-import Base from '../layouts/Base.astro';
-import ListingHero from '../components/ListingHero.astro';
-import { FAQ, faqJsonLd } from '../data/faq';
+import View from '../views/Faq.astro';
 ---
-<Base title="FAQ: Licensing, Engines & Checkout" description="Answers about HanX Assets: commercial license, Unity, Godot and Unreal support, file formats, mobile performance, bundles and the itch.io checkout." jsonld={[faqJsonLd()]}>
-  <ListingHero title="Questions, answered." crumbs={[{ href: '/', label: 'Home' }, { label: 'FAQ' }]}>
-    <p>Still stuck? Ask in the comments of any pack on itch.io or on X.</p>
-  </ListingHero>
-  <div class="container">
-    <section class="section--s">
-      <div class="faq">{FAQ.map((f, i) => <details open={i < 2}><summary>{f.q}</summary><div class="answer">{f.a}</div></details>)}</div>
-      <p class="after"><a class="btn btn--primary" href="/assets/">Browse the packs</a></p>
-    </section>
-  </div>
-</Base>
-<style>.after { margin-top: var(--space-2xl); }</style>
+<View lang="en" />

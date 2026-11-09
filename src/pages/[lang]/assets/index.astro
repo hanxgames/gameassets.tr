@@ -1,0 +1,8 @@
+---
+import View from '../../../views/Catalog.astro';
+import { OTHER_LOCALES } from '../../../i18n/locales';
+export function getStaticPaths() {
+  return OTHER_LOCALES.map((l) => ({ params: { lang: l.code } }));
+}
+---
+<View lang={Astro.params.lang!} />

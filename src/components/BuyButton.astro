@@ -1,7 +1,9 @@
 ---
 import type { Asset } from '../data/site';
-interface Props { asset: Asset; variant?: 'primary' | 'outline'; size?: 'sm' | 'md'; label?: string; block?: boolean }
-const { asset, variant = 'outline', size = 'md', label = 'Buy on itch.io', block = false } = Astro.props;
+import { useT } from '../i18n';
+interface Props { asset: Asset; lang?: string; variant?: 'primary' | 'outline'; size?: 'sm' | 'md'; label?: string; block?: boolean }
+const { asset, lang = 'en', variant = 'outline', size = 'md', label, block = false } = Astro.props;
+const t = useT(lang);
 const cls = ['btn', variant === 'primary' && 'btn--primary', size === 'sm' && 'btn--sm', block && 'btn--block'].filter(Boolean).join(' ');
 ---
-<a class={cls} href={asset.buyUrl} data-buy data-popup={`${asset.buyUrl}?popup=1`} target="_blank" rel="noopener" aria-label={`Buy ${asset.title} on itch.io for ${asset.price}`}>{label}</a>
+<a class={cls} href={asset.buyUrl} data-buy data-popup={`${asset.buyUrl}?popup=1`} target="_blank" rel="noopener" aria-label={t('buy.aria', { title: asset.title, price: asset.price })}>{label ?? t('buy.onItch')}</a>

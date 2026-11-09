@@ -1,0 +1,33 @@
+---
+import Base from '../layouts/Base.astro';
+import ListingHero from '../components/ListingHero.astro';
+import { SITE, assets, totalModels } from '../data/site';
+import { useT, href } from '../i18n';
+
+interface Props { lang: string }
+const { lang } = Astro.props;
+const t = useT(lang);
+const L = (p: string) => href(lang, p);
+const vars = { packs: assets.length, models: totalModels };
+const about = { '@context': 'https://schema.org', '@type': 'AboutPage', name: t('about.title'), inLanguage: lang, url: `${SITE.url}${L('/about/')}`, mainEntity: { '@id': `${SITE.url}/#org` } };
+---
+<Base lang={lang} path="/about/" title={t('about.title')} description={t('about.description', vars)} jsonld={[about]}>
+  <ListingHero title={t('about.h1')} crumbs={[{ href: L('/'), label: t('nav.home') }, { label: t('footer.about') }]}>
+    <p>{t('about.lead')}</p>
+  </ListingHero>
+  <div class="container">
+    <section class="section--s about">
+      <div class="prose">
+        <p>{t('about.p1')}</p>
+        <p>{t('about.p2', vars)}</p>
+        <p>{t('about.p3')}</p>
+      </div>
+      <dl class="rows">
+        <div><dt>{t('about.store')}</dt><dd><a class="link" href={SITE.itch} target="_blank" rel="noopener">hanx-games.itch.io</a></dd></div>
+        <div><dt>{t('about.news')}</dt><dd><a class="link" href={SITE.twitterUrl} target="_blank" rel="noopener">X (Twitter) {SITE.twitter}</a></dd></div>
+        <div><dt>{t('about.requests')}</dt><dd>{t('about.requestsA')}</dd></div>
+      </dl>
+    </section>
+  </div>
+</Base>
+<style>.about { display: grid; gap: var(--space-2xl); }</style>

@@ -1,0 +1,24 @@
+---
+import Base from '../layouts/Base.astro';
+import ListingHero from '../components/ListingHero.astro';
+import { faqItems, faqJsonLd } from '../data/faq';
+import { useT, href } from '../i18n';
+
+interface Props { lang: string }
+const { lang } = Astro.props;
+const t = useT(lang);
+const L = (p: string) => href(lang, p);
+const items = faqItems(t);
+---
+<Base lang={lang} path="/faq/" title={t('faq.title')} description={t('faq.description')} jsonld={[faqJsonLd(items)]}>
+  <ListingHero title={t('faq.h1')} crumbs={[{ href: L('/'), label: t('nav.home') }, { label: t('nav.faq') }]}>
+    <p>{t('faq.lead')}</p>
+  </ListingHero>
+  <div class="container">
+    <section class="section--s">
+      <div class="faq">{items.map((f, i) => <details open={i < 2}><summary>{f.q}</summary><div class="answer">{f.a}</div></details>)}</div>
+      <p class="after"><a class="btn btn--primary" href={L('/assets/')}>{t('faq.browse')}</a></p>
+    </section>
+  </div>
+</Base>
+<style>.after { margin-top: var(--space-2xl); }</style>

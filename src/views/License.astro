@@ -1,0 +1,24 @@
+---
+import Base from '../layouts/Base.astro';
+import ListingHero from '../components/ListingHero.astro';
+import { useT, href } from '../i18n';
+
+interface Props { lang: string }
+const { lang } = Astro.props;
+const t = useT(lang);
+const L = (p: string) => href(lang, p);
+---
+<Base lang={lang} path="/license/" title={t('lic.title')} description={t('lic.description')}>
+  <ListingHero title={t('lic.h1')} crumbs={[{ href: L('/'), label: t('nav.home') }, { label: t('footer.license') }]}>
+    <p>{t('lic.lead')}</p>
+  </ListingHero>
+  <div class="container">
+    <section class="section--s">
+      <dl class="rows">
+        <div><dt>{t('lic.can')}</dt><dd>{t('lic.canA')}</dd></div>
+        <div><dt>{t('lic.cant')}</dt><dd>{t('lic.cantA')}</dd></div>
+        <div><dt>{t('lic.unsure')}</dt><dd>{t('lic.unsureA')}</dd></div>
+      </dl>
+    </section>
+  </div>
+</Base>

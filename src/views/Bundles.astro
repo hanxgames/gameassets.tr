@@ -1,0 +1,36 @@
+---
+import Base from '../layouts/Base.astro';
+import BundleCard from '../components/BundleCard.astro';
+import ListingHero from '../components/ListingHero.astro';
+import { bundles, bundleSavings, absolute } from '../data/site';
+import { useT, href, bundleLabel } from '../i18n';
+
+interface Props { lang: string }
+const { lang } = Astro.props;
+const t = useT(lang);
+const L = (p: string) => href(lang, p);
+const pct = Math.max(0, ...bundles.map(bundleSavings));
+const jsonld = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: t('bundles.title', { pct }),
+    itemListElement: bundles.map((b, i) => ({ '@type': 'ListItem', position: i + 1, url: absolute(L(`/bundles/${b.slug}/`)), name: bundleLabel(t, b) })),
+  },
+];
+---
+<Base
+  lang={lang}
+  path="/bundles/"
+  title={t('bundles.title', { pct })}
+  description={t('bundles.description', { n: bundles.length, pct })}
+  image={bundles[0]?.og}
+  jsonld={jsonld}
+>
+  <ListingHero title={t('bundles.h1', { pct })} crumbs={[{ href: L('/'), label: t('nav.home') }, { label: t('nav.bundles') }]}>
+    <p>{t('bundles.lead')}</p>
+  </ListingHero>
+  <div class="container">
+    {bundles.map((b, i) => <BundleCard bundle={b} lang={lang} eager={i === 0} />)}
+  </div>
+</Base>
