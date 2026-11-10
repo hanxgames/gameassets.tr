@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import AssetCard from '../components/AssetCard.astro';
 import BuyButton from '../components/BuyButton.astro';
 import Countdown from '../components/Countdown.astro';
-import { SITE, ENGINES, assets, bundlesFor, bundleSavings, absolute, type Asset, type EngineKey } from '../data/site';
+import { SITE, ENGINES, assets, bundlesFor, bundleSavings, absolute, digitalShipping, type Asset, type EngineKey } from '../data/site';
 import { useT, href, packText, packDescription, packSeoTitle, packSeoDescription, fmtDate, fmtNum, bundleLabel } from '../i18n';
 
 interface Props { lang: string; asset: Asset }
@@ -50,6 +50,9 @@ const productLd = {
     availability: 'https://schema.org/InStock',
     itemCondition: 'https://schema.org/NewCondition',
     priceValidUntil: (a.sale?.ends || new Date(Date.now() + 365 * 864e5).toISOString()).slice(0, 10),
+    // sale price: the itch.io sale's start (synced from the sale page) and end
+    ...(onSale && (a.sale as any)?.starts ? { validFrom: (a.sale as any).starts } : {}),
+    shippingDetails: digitalShipping,
     seller: { '@type': 'Organization', name: SITE.studio, url: SITE.itch },
   },
 };

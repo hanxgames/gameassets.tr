@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import AssetCard from '../components/AssetCard.astro';
 import BundleCard from '../components/BundleCard.astro';
 import ListingHero from '../components/ListingHero.astro';
-import { SITE, membersOf, bundleSeries, bundleSavings, absolute, fmtUSD, type Bundle } from '../data/site';
+import { SITE, membersOf, bundleSeries, bundleSavings, absolute, fmtUSD, digitalShipping, type Bundle } from '../data/site';
 import { useT, href, bundleLabel } from '../i18n';
 
 interface Props { lang: string; bundle: Bundle }
@@ -35,6 +35,8 @@ const jsonld = [
       priceCurrency: 'USD',
       availability: 'https://schema.org/InStock',
       priceValidUntil: (b.ends || new Date(Date.now() + 180 * 864e5).toISOString()).slice(0, 10),
+      ...((b as any).starts ? { validFrom: (b as any).starts } : {}),
+      shippingDetails: digitalShipping,
       seller: { '@type': 'Organization', name: SITE.studio },
     },
     isRelatedTo: members.map((a) => ({ '@type': 'Product', name: a.itchTitle, url: absolute(L(`/assets/${a.slug}/`)) })),

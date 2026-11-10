@@ -210,8 +210,10 @@ async function scrapeSale(id, pathPart) {
   const regular = strip((html.match(/class="buy_summary[^"]*">Regularly <span>([^<]+)</) || [])[1]);
   const rate = Number((html.match(/class="percent_off">(\d+)%/) || [])[1]) || null;
   const description = strip(innerDiv(html, 'promotion_description') || innerDiv(html, 'user_formatted'));
+  const iso = (k) => { const m = html.match(new RegExp(`"${k}":"([^"]+)"`)); const d = m ? new Date(m[1].replace(' ', 'T').replace(/(\d)$/, '$1Z')) : null; return d && !isNaN(d) ? d.toISOString() : null; };
+  const starts = iso('start_date');
   const members = [...html.matchAll(/href="https:\/\/hanx-games\.itch\.io\/([a-z0-9-]+)"[^>]*class="title game_link"|class="title game_link"[^>]*href="https:\/\/hanx-games\.itch\.io\/([a-z0-9-]+)"/g)].map((m) => m[1] || m[2]);
-  return { id, url, title, description, bundlePrice, bundlePriceValue: money(bundlePrice), regularPrice: regular, regularPriceValue: money(regular), rate, members: [...new Set(members)] };
+  return { id, url, title, description, starts, bundlePrice, bundlePriceValue: money(bundlePrice), regularPrice: regular, regularPriceValue: money(regular), rate, members: [...new Set(members)] };
 }
 
 function bundleSlug(title) {
@@ -294,6 +296,11 @@ async function main() {
       modelCount: memberAssets.reduce((n, a) => n + (a.modelCount || 0), 0),
     });
     console.log(`  ✓ bundle ${b.title}: ${members.length} packs for ${b.bundlePrice}`);
+  }
+  // sale start for each pack's sale price (structured data validFrom)
+  for (const a of assets) {
+    const b = bundles.find((x) => a.sale && x.id === a.sale.id);
+    if (b?.starts) a.sale.starts = b.starts;
   }
 
   await mkdir(OG_DIR, { recursive: true });

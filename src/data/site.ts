@@ -153,3 +153,17 @@ export function assetSeoDescription(a: Asset) {
 export function absolute(p: string) {
   return new URL(p, SITE.url).toString();
 }
+
+/**
+ * Structured-data delivery for a digital download (Google merchant listings): nothing ships, the itch.io download is ready
+ * straight after paying, at no extra cost, so the rate is 0 and handling/transit are 0 days. Destinations list the main
+ * markets the site is written for (one DefinedRegion each, as Google expects).
+ */
+const DIGITAL_COUNTRIES = ['US', 'GB', 'CA', 'AU', 'DE', 'AT', 'CH', 'FR', 'BE', 'NL', 'ES', 'IT', 'PT', 'PL', 'TR', 'BR', 'MX', 'JP', 'KR', 'ID', 'VN', 'IN'];
+const zeroDays = { '@type': 'QuantitativeValue', minValue: 0, maxValue: 0, unitCode: 'DAY' };
+export const digitalShipping = {
+  '@type': 'OfferShippingDetails',
+  shippingRate: { '@type': 'MonetaryAmount', value: 0, currency: 'USD' },
+  shippingDestination: DIGITAL_COUNTRIES.map((c) => ({ '@type': 'DefinedRegion', addressCountry: c })),
+  deliveryTime: { '@type': 'ShippingDeliveryTime', handlingTime: zeroDays, transitTime: zeroDays },
+};
