@@ -1,200 +1,84 @@
 {
-  "syncedAt": "2026-11-09T09:42:43.653Z",
+  "syncedAt": "2026-11-12T22:20:47.436Z",
   "profile": "https://hanx-games.itch.io/",
   "assets": [
     {
-      "slug": "low-poly-japan-village-pack",
-      "id": 5327097,
-      "title": "Low Poly Japan Village Pack",
-      "itchTitle": "Low Poly Japan Village Pack - HanX Assets",
-      "headline": "🌾 Low Poly Japan Village Pack — 40 game-ready models",
-      "shortDescription": "40 low poly Japanese countryside models: rice paddies, kura, farmhouse, water mill, bus stop, kei truck, scarecrow.",
-      "descriptionHtml": "<h3>🌾 Low Poly Japan Village Pack &mdash; 40 game-ready models</h3>\r\n<p>Build the sleepy anime countryside of summer holidays: a two-storey farmhouse with an engawa veranda and futons airing on the balcony, a white kura storehouse with a black-and-white namako base and family crest, a tin-roofed barn full of tools and a power tiller, a water-wheel mill fed by a wooden flume, a village hall (kominkan) with a notice board and loudspeaker pole, a little post office with a postal scooter, a dagashi candy shop with gachapon machines and an ice freezer, a wooden rural bus stop with cushions on the bench, a roadside hokora shrine with a tiny torii, a rice drying shed, a chicken coop with hens and a persimmon drying rack. Farm life comes with a straw-hat scarecrow, an unmanned honesty vegetable stand with a coin box, hasa-gake rice racks, rice sacks and tawara bales, a firewood shelter, bamboo baskets, a rice transplanter and a kei farm truck loaded with cabbages and daikon, plus a wooden utility pole with a streetlight, an andon lantern stand and a village signpost. Nature adds Japanese cedars, a persimmon tree heavy with fruit, a golden ginkgo, susuki pampas grass, sunflowers and a dry-stone terrace wall, and the 8 m ground tiles cover flooded young-rice paddies, golden ripe rice, harvested fields with drying racks, terraced paddies, a vegetable field, an irrigation channel with a sluice gate, a stone-walled stream, a concrete road bridge and dirt roads. All models share <strong>one material and one palette texture</strong>, so a whole scene can be batched into a single draw call &mdash; and every HanX Japan pack mixes with the others.</p>\r\n<h3>✨ What&#x27;s inside</h3>\r\n<ul>\r\n<li><strong>Village Buildings (11):</strong> Two-Storey Farmhouse, Kura Storehouse, Barn &amp; Tool Shed, Water-Wheel Mill (Suisha), Village Hall (Kominkan), Village Post Office, Dagashi Candy Shop, Rural Bus Stop Shelter, Rice Drying Shed, Chicken Coop, Roadside Hokora Shrine</li>\r\n<li><strong>Farm Life (7):</strong> Scarecrow (Kakashi), Unmanned Vegetable Stand, Hoshigaki Persimmon Rack, Hasa-Gake Rice Drying Rack, Rice Bags &amp; Tawara, Firewood Shelter, Bamboo Baskets &amp; Harvest</li>\r\n<li><strong>Vehicles &amp; Roadside (5):</strong> Rice Transplanter, Kei Farm Truck, Wooden Utility Pole &amp; Streetlight, Andon Lantern Stand, Village Signpost</li>\r\n<li><strong>Countryside Nature (6):</strong> Japanese Cedar (Sugi), Persimmon Tree (Kaki), Ginkgo Tree, Susuki Pampas Grass, Sunflower Patch, Stone Wall Terrace</li>\r\n<li><strong>Ground (11):</strong> Ground Country Grass, Ground Dirt Road Straight, Ground Dirt Road Corner, Ground Dirt Road Bridge, Ground River Stream, Ground Irrigation Channel, Ground Paddy Young Rice, Ground Paddy Golden Rice, Ground Paddy Harvested, Ground Terraced Paddies, Ground Vegetable Field</li>\r\n</ul>\r\n<h3>🎮 Game-ready</h3>\r\n<ul>\r\n<li><strong>GLB, FBX, OBJ + Blender .blend</strong> (all models marked as Assets for the Asset Browser, with catalogs)</li>\r\n<li>Real-world scale in meters, pivot at the base, clean English names</li>\r\n<li>Low poly: 234–3,712 triangles per model</li>\r\n<li>One 1024×1024 palette texture + roughness/metal and emission maps (paper lanterns, windows, vending machines and stone lanterns glow)</li>\r\n<li>Works in Godot, Unity, Unreal, Blender, three.js and any engine that reads glTF/FBX/OBJ</li>\r\n<li>512 px preview image of every model and a README with triangle counts and sizes</li>\r\n</ul>\r\n<h3>🧩 The HanX Japan series</h3>\r\n<p>Same palette, same scale, same 8 m grid: Town · Neighborhood · School · Gas Station · Hospital · City · <strong>Village</strong> · Shop &amp; Market · Park &amp; Nature · Traffic · Construction.</p>\r\n<h3>📜 License</h3>\r\n<p>Use in unlimited personal and commercial projects (games, apps, videos, client work). No attribution required. Please don&#x27;t resell or redistribute the assets themselves. Full text in LICENSE.txt.</p>",
+      "slug": "low-poly-japan-city-mega-pack",
+      "id": 5349262,
+      "title": "Low Poly Japan City Mega Pack - 466 Models",
+      "itchTitle": "Low Poly Japan City Mega Pack - 466 Models - HanX Assets",
+      "headline": "466 models in the Low Poly Japan City Mega Pack",
+      "shortDescription": "466 Japanese 3D models across 11 collections. Cities, homes, villages, shrines, vehicles and more in one download.",
+      "descriptionHtml": "<p></p><h3>466 models in the Low Poly Japan City Mega Pack</h3><p>Build Japanese cities and rural settings with neon streets, family homes, shrines, a castle, shops, schools, hospitals, construction sites, farms and vehicles. This complete collection brings together <strong>11 HanX asset packs</strong> in one organized download.</p><p><strong>466 distinct model files</strong> with GLB, FBX, OBJ and Blender formats, textures and individual previews. Use the included collections together or import the pieces your project needs.</p><h3>Included collections</h3><table><thead><tr><th>Collection</th><th>Models</th></tr></thead><tbody><tr><td>City</td><td>38</td></tr><tr><td>Construction</td><td>40</td></tr><tr><td>Gas Station</td><td>39</td></tr><tr><td>Hospital</td><td>37</td></tr><tr><td>Neighborhood</td><td>65</td></tr><tr><td>Park Nature</td><td>40</td></tr><tr><td>School</td><td>39</td></tr><tr><td>Shop Market</td><td>38</td></tr><tr><td>Town</td><td>50</td></tr><tr><td>Traffic</td><td>40</td></tr><tr><td>Village</td><td>40</td></tr></tbody></table><h3>Files and workflow</h3><ul><li>Individual GLB, FBX and OBJ models, plus Blender source libraries</li><li>Textures, materials and a preview image for each model</li><li>Clearly named category folders, a model inventory and the original technical READMEs</li><li>Compatible with Godot, Unity, Unreal, Blender and tools that support the included formats</li><li>Use nearest or point texture filtering for crisp palette and pixel textures</li></ul><h3>Scene building</h3><p>Combine buildings, roads, vehicles, nature and smaller props to create complete locations. The collection READMEs document model scale, pivots, emission materials, triangle counts and engine setup.</p><h3>Existing collection owners</h3><p>This mega pack combines models from the individual HanX packs listed above. Check the included collection names against your library before purchasing.</p><h3>License</h3><p>Use in unlimited personal and commercial projects. Attribution is optional. Redistribution or resale of the source assets is prohibited. The full license accompanies every collection.</p><p>Created by <strong>HanX Games</strong>.</p>",
       "series": "japan",
-      "modelCount": 40,
-      "triangles": {
-        "min": 234,
-        "max": 3712
-      },
+      "modelCount": 466,
+      "triangles": null,
       "tags": [
         "3d",
-        "anime",
         "asset-pack",
-        "countryside",
-        "farming",
+        "city",
         "godot",
         "japan",
         "japanese",
         "low-poly",
+        "modular",
         "no-ai",
-        "unity"
+        "unity",
+        "unreal"
       ],
       "engines": [
         "unity",
         "godot",
         "unreal",
-        "blender",
-        "threejs"
+        "blender"
       ],
       "formats": [
         "GLB",
         "FBX",
-        "OBJ",
-        "BLEND"
+        "OBJ"
       ],
-      "price": "$0.99",
-      "priceValue": 0.99,
-      "originalPrice": "$1.99",
-      "originalPriceValue": 1.99,
+      "price": "$7.99",
+      "priceValue": 7.99,
+      "originalPrice": "$19.98",
+      "originalPriceValue": 19.98,
       "sale": {
-        "id": "216846",
-        "title": "HanX Japan Collection – 11-Pack Bundle",
-        "rate": 50,
-        "ends": "2026-12-09T08:29:00.000Z",
-        "starts": "2026-11-09T08:29:00.000Z"
+        "id": "217547",
+        "title": "HanX Mega Packs Launch Sale",
+        "rate": 60,
+        "ends": "2026-12-12T21:03:00.000Z"
       },
-      "published": "2026-11-09T08:30:00.000Z",
-      "updated": "2026-11-09T08:30:00.000Z",
-      "url": "https://hanx-games.itch.io/low-poly-japan-village-pack",
-      "buyUrl": "https://hanx-games.itch.io/low-poly-japan-village-pack/purchase",
-      "bundleIds": [
-        "216846",
-        "216846"
-      ],
-      "bundleRefs": [
-        {
-          "id": "216846",
-          "path": "hanx-japan-collection-11-pack-bundle"
-        },
-        {
-          "id": "216846",
-          "path": "hanx-japan-collection-11-pack-bundle"
-        }
-      ],
+      "published": "2026-11-12T21:01:00.000Z",
+      "updated": "2026-11-12T21:01:00.000Z",
+      "url": "https://hanx-games.itch.io/low-poly-japan-city-mega-pack",
+      "buyUrl": "https://hanx-games.itch.io/low-poly-japan-city-mega-pack/purchase",
+      "bundleIds": [],
+      "bundleRefs": [],
       "cover": {
-        "src": "/img/assets/low-poly-japan-village-pack/87a34eac0c.webp",
-        "sm": "/img/assets/low-poly-japan-village-pack/87a34eac0c-sm.webp",
-        "width": 630,
-        "height": 500
+        "src": "/img/assets/low-poly-japan-city-mega-pack/932ab4b4ce.webp",
+        "sm": "/img/assets/low-poly-japan-city-mega-pack/932ab4b4ce-sm.webp",
+        "width": 1200,
+        "height": 952
       },
       "screenshots": [
         {
-          "src": "/img/assets/low-poly-japan-village-pack/ee30307370.webp",
-          "sm": "/img/assets/low-poly-japan-village-pack/ee30307370-sm.webp"
+          "src": "/img/assets/low-poly-japan-city-mega-pack/c9d543e7c9.webp",
+          "sm": "/img/assets/low-poly-japan-city-mega-pack/c9d543e7c9-sm.webp"
         },
         {
-          "src": "/img/assets/low-poly-japan-village-pack/ea240fde5f.webp",
-          "sm": "/img/assets/low-poly-japan-village-pack/ea240fde5f-sm.webp"
+          "src": "/img/assets/low-poly-japan-city-mega-pack/fe3b1e19f3.webp",
+          "sm": "/img/assets/low-poly-japan-city-mega-pack/fe3b1e19f3-sm.webp"
         },
         {
-          "src": "/img/assets/low-poly-japan-village-pack/362d0bad69.webp",
-          "sm": "/img/assets/low-poly-japan-village-pack/362d0bad69-sm.webp"
+          "src": "/img/assets/low-poly-japan-city-mega-pack/75949bc135.webp",
+          "sm": "/img/assets/low-poly-japan-city-mega-pack/75949bc135-sm.webp"
         },
         {
-          "src": "/img/assets/low-poly-japan-village-pack/2853cbf1c9.webp",
-          "sm": "/img/assets/low-poly-japan-village-pack/2853cbf1c9-sm.webp"
+          "src": "/img/assets/low-poly-japan-city-mega-pack/50b4742fa5.webp",
+          "sm": "/img/assets/low-poly-japan-city-mega-pack/50b4742fa5-sm.webp"
         },
         {
-          "src": "/img/assets/low-poly-japan-village-pack/f1e1fef3af.webp",
-          "sm": "/img/assets/low-poly-japan-village-pack/f1e1fef3af-sm.webp"
-        }
-      ]
-    },
-    {
-      "slug": "low-poly-japan-traffic-pack",
-      "id": 5327094,
-      "title": "Low Poly Japan Traffic Pack",
-      "itchTitle": "Low Poly Japan Traffic Pack - HanX Assets",
-      "headline": "🚦 Low Poly Japan Traffic Pack — 40 game-ready models",
-      "shortDescription": "40 low poly Japanese traffic models: kei cars, bus, police car, fire engine, trains, railway crossing, road signs.",
-      "descriptionHtml": "<h3>🚦 Low Poly Japan Traffic Pack &mdash; 40 game-ready models</h3>\r\n<p>Bring an anime-style Japanese street to life: two Showa-era retro kei cars with round headlights and chrome bumpers, a compact hatchback, a family minivan, a classic Cub moped with a front basket and a three-wheel delivery canopy scooter &mdash; plus a black-and-white police patrol car with its red light bar, a red fire engine with a folded aerial ladder, a garbage packer truck, a parcel delivery van, a green city route bus with a glowing destination sign and rabbit-ear mirrors, and a highway express coach. On the rails: a retro streetcar tram with a pantograph, a cream-and-vermilion local-line diesel railcar and a bullet train lead car. The railway side brings a fumikiri crossing gate with a striped barrier arm and flashing red lamps, a crossing signal, a small station platform with a shelter, benches and a name board, and a wooden rural station house with a tiled roof. The roadside is full of Japanese details: a vertical snow-country traffic signal, a pedestrian signal with a walking figure, a blue overhead direction sign, speed limit, crossing, school zone and railway-ahead signs, white guardrails, a road-works barricade with a bowing worker board, a coin parking sign and pay station, a highway sound wall and road light poles &mdash; and 8 m ground tiles for a two-lane road, a curved corner, a T-junction, a crossroads with zebra crossings, a railway track, a level crossing with painted TOMARE, a coin parking lot and a station forecourt. All models share <strong>one material and one palette texture</strong>, so a whole scene can be batched into a single draw call &mdash; and every HanX Japan pack mixes with the others.</p>\r\n<h3>✨ What&#x27;s inside</h3>\r\n<ul>\r\n<li><strong>Cars &amp; Two-Wheelers (6):</strong> Retro Kei Car Cream, Retro Kei Car Sky Blue, Compact Hatchback, Family Minivan, Classic Cub Moped, Delivery Canopy Scooter</li>\r\n<li><strong>Service &amp; Public Vehicles (6):</strong> Police Patrol Car, Fire Engine with Ladder, Garbage Truck, Parcel Delivery Van, City Route Bus, Highway Express Coach</li>\r\n<li><strong>Trams &amp; Trains (3):</strong> Retro Streetcar Tram, Local Line Diesel Railcar, Bullet Train Lead Car</li>\r\n<li><strong>Railway (4):</strong> Rural Station House, Station Platform with Shelter, Fumikiri Crossing Gate, Crossing Signal</li>\r\n<li><strong>Signs &amp; Signals (7):</strong> Vertical Traffic Signal, Pedestrian Walk Signal, Overhead Direction Sign, Speed Limit 40 &amp; No Parking Signs, Pedestrian Crossing Sign, School Zone Sign &amp; Crossing Flags, Railway Crossing Ahead Sign</li>\r\n<li><strong>Road Props (6):</strong> Guardrail Straight, Guardrail Curved Corner, Road Works Barricade &amp; Bowing Sign, Coin Parking Sign &amp; Pay Station, Highway Sound Wall, Road Light Pole</li>\r\n<li><strong>Ground (8):</strong> Ground Road Straight, Ground Road Corner, Ground Road T-Junction, Ground Road Crossroads, Ground Railway Track, Ground Railway Crossing, Ground Coin Parking, Ground Station Forecourt</li>\r\n</ul>\r\n<h3>🎮 Game-ready</h3>\r\n<ul>\r\n<li><strong>GLB, FBX, OBJ + Blender .blend</strong> (all models marked as Assets for the Asset Browser, with catalogs)</li>\r\n<li>Real-world scale in meters, pivot at the base, clean English names</li>\r\n<li>Low poly: 180–3,520 triangles per model</li>\r\n<li>One 1024×1024 palette texture + roughness/metal and emission maps (paper lanterns, windows, vending machines and stone lanterns glow)</li>\r\n<li>Works in Godot, Unity, Unreal, Blender, three.js and any engine that reads glTF/FBX/OBJ</li>\r\n<li>512 px preview image of every model and a README with triangle counts and sizes</li>\r\n</ul>\r\n<h3>🧩 The HanX Japan series</h3>\r\n<p>Same palette, same scale, same 8 m grid: Town · Neighborhood · School · Gas Station · Hospital · City · Village · Shop &amp; Market · Park &amp; Nature · <strong>Traffic</strong> · Construction.</p>\r\n<h3>📜 License</h3>\r\n<p>Use in unlimited personal and commercial projects (games, apps, videos, client work). No attribution required. Please don&#x27;t resell or redistribute the assets themselves. Full text in LICENSE.txt.</p>",
-      "series": "japan",
-      "modelCount": 40,
-      "triangles": {
-        "min": 180,
-        "max": 3520
-      },
-      "tags": [
-        "3d",
-        "anime",
-        "asset-pack",
-        "cars",
-        "godot",
-        "japan",
-        "low-poly",
-        "no-ai",
-        "traffic",
-        "trains",
-        "unity"
-      ],
-      "engines": [
-        "unity",
-        "godot",
-        "unreal",
-        "blender",
-        "threejs"
-      ],
-      "formats": [
-        "GLB",
-        "FBX",
-        "OBJ",
-        "BLEND"
-      ],
-      "price": "$0.99",
-      "priceValue": 0.99,
-      "originalPrice": "$1.99",
-      "originalPriceValue": 1.99,
-      "sale": {
-        "id": "216846",
-        "title": "HanX Japan Collection – 11-Pack Bundle",
-        "rate": 50,
-        "ends": "2026-12-09T08:29:00.000Z",
-        "starts": "2026-11-09T08:29:00.000Z"
-      },
-      "published": "2026-11-09T08:30:00.000Z",
-      "updated": "2026-11-09T08:30:00.000Z",
-      "url": "https://hanx-games.itch.io/low-poly-japan-traffic-pack",
-      "buyUrl": "https://hanx-games.itch.io/low-poly-japan-traffic-pack/purchase",
-      "bundleIds": [
-        "216846",
-        "216846"
-      ],
-      "bundleRefs": [
-        {
-          "id": "216846",
-          "path": "hanx-japan-collection-11-pack-bundle"
-        },
-        {
-          "id": "216846",
-          "path": "hanx-japan-collection-11-pack-bundle"
-        }
-      ],
-      "cover": {
-        "src": "/img/assets/low-poly-japan-traffic-pack/171e780649.webp",
-        "sm": "/img/assets/low-poly-japan-traffic-pack/171e780649-sm.webp",
-        "width": 630,
-        "height": 500
-      },
-      "screenshots": [
-        {
-          "src": "/img/assets/low-poly-japan-traffic-pack/41271882b0.webp",
-          "sm": "/img/assets/low-poly-japan-traffic-pack/41271882b0-sm.webp"
-        },
-        {
-          "src": "/img/assets/low-poly-japan-traffic-pack/d829bdfd5d.webp",
-          "sm": "/img/assets/low-poly-japan-traffic-pack/d829bdfd5d-sm.webp"
-        },
-        {
-          "src": "/img/assets/low-poly-japan-traffic-pack/5ac7bd0ea0.webp",
-          "sm": "/img/assets/low-poly-japan-traffic-pack/5ac7bd0ea0-sm.webp"
-        },
-        {
-          "src": "/img/assets/low-poly-japan-traffic-pack/841c424c16.webp",
-          "sm": "/img/assets/low-poly-japan-traffic-pack/841c424c16-sm.webp"
-        },
-        {
-          "src": "/img/assets/low-poly-japan-traffic-pack/d7a41c77e6.webp",
-          "sm": "/img/assets/low-poly-japan-traffic-pack/d7a41c77e6-sm.webp"
+          "src": "/img/assets/low-poly-japan-city-mega-pack/8158d74804.webp",
+          "sm": "/img/assets/low-poly-japan-city-mega-pack/8158d74804-sm.webp"
         }
       ]
     },
@@ -881,104 +765,6 @@
         {
           "src": "/img/assets/low-poly-japan-construction-pack/0496a1abb1.webp",
           "sm": "/img/assets/low-poly-japan-construction-pack/0496a1abb1-sm.webp"
-        }
-      ]
-    },
-    {
-      "slug": "low-poly-japan-city-pack",
-      "id": 5327086,
-      "title": "Low Poly Japan City Pack",
-      "itchTitle": "Low Poly Japan City Pack - HanX Assets",
-      "headline": "🌃 Low Poly Japan City Pack — 38 game-ready models",
-      "shortDescription": "38 low poly neon Tokyo models: game center, karaoke, broadcast tower, station, train, scramble crossing.",
-      "descriptionHtml": "<h3>🌃 Low Poly Japan City Pack &mdash; 38 game-ready models</h3>\r\n<p>Light up a neon Tokyo night: narrow mixed-use buildings stacked with vertical neon signs, tenant lightboxes and side video screens, a game center with UFO-catcher claw machines and a pixel mascot on the roof, a karaoke building crowned by a giant microphone, the bulb-framed Pinball Palace with opening flower wreaths, a capsule inn with pod windows, a manga cafe with a comic-page mural, a department store with a rooftop Ferris wheel and an office tower with a helipad &mdash; all watched over by a red-and-white lattice broadcast tower. Transit comes with an EKI train station with ticket machines and a platform canopy, a brick railway viaduct with a yakitori and an oden bar under the tracks, a silver commuter train, a Tokyo taxi, a metro entrance and a pedestrian footbridge. The street side adds a giant billboard screen, a rooftop neon sign, a vertical sign stack, digital ad pillars, a tissue promo stand, a yakitori stall, a taxi stand, a green phone booth, ginkgo street trees, a bike rack, a smoking area, crowd barriers, city street lamps, horizontal Japanese traffic signals, AC unit clusters and rooftop water tanks &mdash; plus 8 m ground tiles for a wide avenue, a scramble crossing with diagonal zebra stripes, a sidewalk plaza and a station square with a clock. All models share <strong>one material and one palette texture</strong>, so a whole scene can be batched into a single draw call &mdash; and every HanX Japan pack mixes with the others.</p>\r\n<h3>✨ What&#x27;s inside</h3>\r\n<ul>\r\n<li><strong>Neon Buildings (3):</strong> Neon Building Narrow, Neon Building Balcony, Neon Building Slim</li>\r\n<li><strong>Entertainment (5):</strong> Game Center Arcade, Karaoke Building, Pinball Palace, Capsule Hotel, Manga Cafe</li>\r\n<li><strong>Towers &amp; Stores (3):</strong> Broadcast Tower, Office Tower, Department Store</li>\r\n<li><strong>Station &amp; Transit (4):</strong> Train Station Eki, Railway Viaduct with Shops, Subway Entrance, Pedestrian Bridge</li>\r\n<li><strong>Vehicles (2):</strong> Commuter Train Car, Tokyo Taxi</li>\r\n<li><strong>Signs &amp; Screens (6):</strong> Giant Billboard Screen, Rooftop Neon Sign, Neon Street Gate, Vertical Sign Stack, Digital Ad Pillar, Tissue Promo Stand</li>\r\n<li><strong>Street Props (9):</strong> Yakitori Street Stall, Taxi Stand, Phone Booth, Ginkgo Street Tree, City Bike Rack, Smoking Area, Crowd Barriers, City Street Lamp, Traffic &amp; Pedestrian Signal</li>\r\n<li><strong>Rooftop Props (2):</strong> AC Unit Cluster, Rooftop Water Tank</li>\r\n<li><strong>Ground (4):</strong> Ground Avenue, Ground Scramble Crossing, Ground Sidewalk Plaza, Ground Station Square</li>\r\n</ul>\r\n<h3>🎮 Game-ready</h3>\r\n<ul>\r\n<li><strong>GLB, FBX, OBJ + Blender .blend</strong> (all models marked as Assets for the Asset Browser, with catalogs)</li>\r\n<li>Real-world scale in meters, pivot at the base, clean English names</li>\r\n<li>Low poly: 348–5,916 triangles per model</li>\r\n<li>One 1024×1024 palette texture + roughness/metal and emission maps (paper lanterns, windows, vending machines and stone lanterns glow)</li>\r\n<li>Works in Godot, Unity, Unreal, Blender, three.js and any engine that reads glTF/FBX/OBJ</li>\r\n<li>512 px preview image of every model and a README with triangle counts and sizes</li>\r\n</ul>\r\n<h3>🧩 The HanX Japan series</h3>\r\n<p>Same palette, same scale, same 8 m grid: Town · Neighborhood · School · Gas Station · Hospital · <strong>City</strong> · Village · Shop &amp; Market · Park &amp; Nature · Traffic · Construction.</p>\r\n<h3>📜 License</h3>\r\n<p>Use in unlimited personal and commercial projects (games, apps, videos, client work). No attribution required. Please don&#x27;t resell or redistribute the assets themselves. Full text in LICENSE.txt.</p>",
-      "series": "japan",
-      "modelCount": 38,
-      "triangles": {
-        "min": 348,
-        "max": 5916
-      },
-      "tags": [
-        "3d",
-        "anime",
-        "asset-pack",
-        "city",
-        "godot",
-        "japan",
-        "low-poly",
-        "neon",
-        "no-ai",
-        "tokyo",
-        "unity"
-      ],
-      "engines": [
-        "unity",
-        "godot",
-        "unreal",
-        "blender",
-        "threejs"
-      ],
-      "formats": [
-        "GLB",
-        "FBX",
-        "OBJ",
-        "BLEND"
-      ],
-      "price": "$0.99",
-      "priceValue": 0.99,
-      "originalPrice": "$1.99",
-      "originalPriceValue": 1.99,
-      "sale": {
-        "id": "216846",
-        "title": "HanX Japan Collection – 11-Pack Bundle",
-        "rate": 50,
-        "ends": "2026-12-09T08:29:00.000Z",
-        "starts": "2026-11-09T08:29:00.000Z"
-      },
-      "published": "2026-11-09T08:29:00.000Z",
-      "updated": "2026-11-09T08:29:00.000Z",
-      "url": "https://hanx-games.itch.io/low-poly-japan-city-pack",
-      "buyUrl": "https://hanx-games.itch.io/low-poly-japan-city-pack/purchase",
-      "bundleIds": [
-        "216846",
-        "216846"
-      ],
-      "bundleRefs": [
-        {
-          "id": "216846",
-          "path": "hanx-japan-collection-11-pack-bundle"
-        },
-        {
-          "id": "216846",
-          "path": "hanx-japan-collection-11-pack-bundle"
-        }
-      ],
-      "cover": {
-        "src": "/img/assets/low-poly-japan-city-pack/454d092549.webp",
-        "sm": "/img/assets/low-poly-japan-city-pack/454d092549-sm.webp",
-        "width": 630,
-        "height": 500
-      },
-      "screenshots": [
-        {
-          "src": "/img/assets/low-poly-japan-city-pack/1102140aaf.webp",
-          "sm": "/img/assets/low-poly-japan-city-pack/1102140aaf-sm.webp"
-        },
-        {
-          "src": "/img/assets/low-poly-japan-city-pack/158648a1ab.webp",
-          "sm": "/img/assets/low-poly-japan-city-pack/158648a1ab-sm.webp"
-        },
-        {
-          "src": "/img/assets/low-poly-japan-city-pack/e9965f4f25.webp",
-          "sm": "/img/assets/low-poly-japan-city-pack/e9965f4f25-sm.webp"
-        },
-        {
-          "src": "/img/assets/low-poly-japan-city-pack/a2bbe2693c.webp",
-          "sm": "/img/assets/low-poly-japan-city-pack/a2bbe2693c-sm.webp"
-        },
-        {
-          "src": "/img/assets/low-poly-japan-city-pack/468fb24a12.webp",
-          "sm": "/img/assets/low-poly-japan-city-pack/468fb24a12-sm.webp"
         }
       ]
     },
@@ -5353,35 +5139,33 @@
       "url": "https://itch.io/s/216846/hanx-japan-collection-11-pack-bundle",
       "title": "HanX Japan Collection – 11-Pack Bundle",
       "description": "Build a Japanese town, a neon city or a quiet farming village with 466 low poly 3D models across 11 asset packs.The collection includes Town, City, Construction, Gas Station, Hospital, Neighborhood, Park & Nature, School, Shop & Market, Traffic and Village. All packs share a palette, real-world scale and an 8 m grid. Each pack includes GLB, FBX, OBJ and Blender .blend files.",
+      "starts": "2026-11-09T08:29:00.000Z",
       "bundlePrice": "$7.99",
       "bundlePriceValue": 7.99,
-      "regularPrice": "$22.89",
-      "regularPriceValue": 22.89,
+      "regularPrice": "$16.92",
+      "regularPriceValue": 16.92,
       "rate": 50,
       "members": [
         "low-poly-japan-town-pack",
-        "low-poly-japan-city-pack",
         "low-poly-japan-gas-station-pack",
         "low-poly-japan-construction-pack",
         "low-poly-japan-park-nature-pack",
         "low-poly-japan-neighborhood-pack",
         "low-poly-japan-hospital-pack",
-        "low-poly-japan-traffic-pack",
         "low-poly-japan-school-pack",
-        "low-poly-japan-shop-market-pack",
-        "low-poly-japan-village-pack"
+        "low-poly-japan-shop-market-pack"
       ],
       "slug": "japan-collection-11-pack",
       "ends": "2026-12-09T08:29:00.000Z",
       "og": "/og/bundle-japan-collection-11-pack.jpg",
-      "modelCount": 466,
-      "starts": "2026-11-09T08:29:00.000Z"
+      "modelCount": 348
     },
     {
       "id": "213390",
       "url": "https://itch.io/s/213390/hanx-assets-launch-sale",
       "title": "HanX Assets Launch Sale",
       "description": "Launch prices for the HanX Assets series: 9 low poly 3D asset packs (traffic, city, village, school, shop & market, construction, park & nature, gas station and the brand-new SWAT pack with a rigged team, armory, vehicles and a full compound). Every pack shares one palette texture, one scale and one 8 m grid. 50% off during the Halloween Sale 2026 and our launch, or grab them all together as a bundle.",
+      "starts": "2026-10-28T20:45:00.000Z",
       "bundlePrice": "$8.51",
       "bundlePriceValue": 8.51,
       "regularPrice": "$17.02",
@@ -5401,14 +5185,14 @@
       "slug": "assets",
       "ends": "2027-01-31T20:59:00.000Z",
       "og": "/og/bundle-assets.jpg",
-      "modelCount": 506,
-      "starts": "2026-10-28T20:45:00.000Z"
+      "modelCount": 506
     },
     {
       "id": "215986",
       "url": "https://itch.io/s/215986/hanx-pixel-launch-sale-8-pack-3d-pixel-art-bundle",
       "title": "HanX Pixel Launch Sale: 8-Pack 3D Pixel Art Bundle",
       "description": "Launch week for the HanX Pixel series: 8 packs, 669 low poly 3D pixel art models with crisp 16 px/m textures (GLB, FBX, OBJ, Blend). Grab them one by one or get the whole bundle.",
+      "starts": "2026-11-04T20:09:00.000Z",
       "bundlePrice": "$7.49",
       "bundlePriceValue": 7.49,
       "regularPrice": "$10.03",
@@ -5427,14 +5211,14 @@
       "slug": "pixel",
       "ends": "2027-02-04T20:59:00.000Z",
       "og": "/og/bundle-pixel.jpg",
-      "modelCount": 669,
-      "starts": "2026-11-04T20:09:00.000Z"
+      "modelCount": 669
     },
     {
       "id": "213919",
       "url": "https://itch.io/s/213919/halloween-sale-2026-hanx-halloween-bundle",
       "title": "Halloween Sale 2026: HanX Halloween Bundle",
       "description": "The whole HanX Halloween series in one bundle: haunted neighborhood, school, hospital, gas station, city, village, shop & market, park & nature, traffic and construction. 350+ absurdly spooky low poly models that share one palette texture, real-world scale and the same 8 m grid. GLB, FBX, OBJ + Blender .blend in every pack.",
+      "starts": "2026-10-25T17:00:00.000Z",
       "bundlePrice": "$7.99",
       "bundlePriceValue": 7.99,
       "regularPrice": "$20.90",
@@ -5455,14 +5239,14 @@
       "slug": "halloween-halloween",
       "ends": "2026-12-04T18:00:00.000Z",
       "og": "/og/bundle-halloween-halloween.jpg",
-      "modelCount": 396,
-      "starts": "2026-10-25T17:00:00.000Z"
+      "modelCount": 396
     },
     {
       "id": "215960",
       "url": "https://itch.io/s/215960/christmas-sale-2026-hanx-christmas-bundle",
       "title": "Christmas Sale 2026: HanX Christmas Bundle",
       "description": "The HanX Christmas series in one bundle: snow-covered houses, gift-wrapped shops, a candy-cane city, a gingerbread village, festive traffic, a winter park and a peppermint construction site. 350+ over-the-top festive low poly models that share one palette texture, real-world scale and the same 8 m grid. GLB, FBX, OBJ + Blender .blend in every pack.",
+      "starts": "2026-11-04T19:00:00.000Z",
       "bundlePrice": "$7.99",
       "bundlePriceValue": 7.99,
       "regularPrice": "$20.90",
@@ -5483,8 +5267,7 @@
       "slug": "christmas-christmas",
       "ends": "2026-12-26T21:00:00.000Z",
       "og": "/og/bundle-christmas-christmas.jpg",
-      "modelCount": 387,
-      "starts": "2026-11-04T19:00:00.000Z"
+      "modelCount": 387
     }
   ]
 }
