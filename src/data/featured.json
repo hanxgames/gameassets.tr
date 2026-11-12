@@ -1,5 +1,14 @@
 {
   "heroPack": "low-poly-japan-city-mega-pack",
   "heroBundle": "216846",
-  "rail": []
+  "rail": [
+    "low-poly-japan-city-mega-pack",
+    "low-poly-swat-pack",
+    "low-poly-construction-pack",
+    "3d-pixel-rpg-items-pack",
+    "3d-pixel-dungeon-pack",
+    "3d-pixel-swat-pack",
+    "low-poly-gas-station-pack",
+    "3d-pixel-medieval-town-pack"
+  ]
 }
