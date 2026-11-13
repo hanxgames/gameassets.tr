@@ -1,5 +1,5 @@
 {
-  "syncedAt": "2026-11-12T22:20:47.436Z",
+  "syncedAt": "2026-11-13T20:07:23.749Z",
   "profile": "https://hanx-games.itch.io/",
   "assets": [
     {
@@ -471,300 +471,6 @@
         {
           "src": "/img/assets/low-poly-japan-neighborhood-pack/022b2aec1a.webp",
           "sm": "/img/assets/low-poly-japan-neighborhood-pack/022b2aec1a-sm.webp"
-        }
-      ]
-    },
-    {
-      "slug": "low-poly-japan-hospital-pack",
-      "id": 5327092,
-      "title": "Low Poly Japan Hospital Pack",
-      "itchTitle": "Low Poly Japan Hospital Pack - HanX Assets",
-      "headline": "🏥 Low Poly Japan Hospital Pack — 37 game-ready models",
-      "shortDescription": "37 low poly Japanese hospital models: general hospital, ER, clinic, pharmacy, ambulance, taxi, medical props.",
-      "descriptionHtml": "<h3>🏥 Low Poly Japan Hospital Pack &mdash; 37 game-ready models</h3>\r\n<p>Build a cozy anime-style Japanese hospital campus: a four-storey general hospital with ribbon windows, a glazed pilotis entrance, a tategaki BYOIN sign and a rooftop helipad, an emergency center with a glowing EMERGENCY canopy and red beacons, a multi-level parking garage with a ramp and a lit P sign, a staff dormitory with laundry and futons on the balconies, a healing-garden pavilion under a sakura tree &mdash; plus a tiled-roof family clinic (iin), a KUSURI pharmacy with a big green cross and a cozy nursing home with a flower balcony. On the road: a Japanese ambulance, a doctor car, a deep-indigo taxi with its roof lamp and a wheelchair care van with the ramp down. Inside: wheelchair, ambulance stretcher, IV drip stand, hospital bed with privacy curtain, reception counter, waiting benches, medical cart, oxygen cylinders and an AED. Around the campus: taxi stand, bus stop, guide map, tulip bed, parking gate with ticket machine, bicycle shelter, vending machine corner, flag poles, lantern lamp posts, a sakura planter bench and modular ground tiles (lawn, plaza, parking lot, ambulance bay, road and crossing). All models share <strong>one material and one palette texture</strong>, so a whole scene can be batched into a single draw call &mdash; and every HanX Japan pack mixes with the others.</p>\r\n<h3>✨ What&#x27;s inside</h3>\r\n<ul>\r\n<li><strong>Hospital Campus (5):</strong> General Hospital, Emergency Center, Parking Garage, Staff Dormitory, Healing Garden Pavilion</li>\r\n<li><strong>Clinics &amp; Care (3):</strong> Family Clinic (Iin), Pharmacy (Kusuri), Nursing Home</li>\r\n<li><strong>Vehicles (4):</strong> Ambulance, Doctor Car, Japanese Taxi, Wheelchair Care Van</li>\r\n<li><strong>Medical Props (9):</strong> Wheelchair, Ambulance Stretcher, IV Drip Stand, Hospital Bed with Curtain, Reception Counter, Waiting Room Benches, Medical Cart, Oxygen Cylinder Cart, AED Box on Stand</li>\r\n<li><strong>Campus Props (10):</strong> Taxi Stand, Bus Stop, Hospital Guide Map, Tulip Flower Bed, Parking Gate &amp; Ticket Machine, Bicycle Parking Shelter, Vending Machine Corner, Flag Poles, Campus Lamp Post, Sakura Planter Bench</li>\r\n<li><strong>Ground (6):</strong> Ground Campus Lawn, Ground Hospital Plaza, Ground Parking Lot, Ground Ambulance Bay, Ground Campus Road, Ground Campus Crossing</li>\r\n</ul>\r\n<h3>🎮 Game-ready</h3>\r\n<ul>\r\n<li><strong>GLB, FBX, OBJ + Blender .blend</strong> (all models marked as Assets for the Asset Browser, with catalogs)</li>\r\n<li>Real-world scale in meters, pivot at the base, clean English names</li>\r\n<li>Low poly: 324–5,620 triangles per model</li>\r\n<li>One 1024×1024 palette texture + roughness/metal and emission maps (paper lanterns, windows, vending machines and stone lanterns glow)</li>\r\n<li>Works in Godot, Unity, Unreal, Blender, three.js and any engine that reads glTF/FBX/OBJ</li>\r\n<li>512 px preview image of every model and a README with triangle counts and sizes</li>\r\n</ul>\r\n<h3>🧩 The HanX Japan series</h3>\r\n<p>Same palette, same scale, same 8 m grid: Town · Neighborhood · School · Gas Station · <strong>Hospital</strong> · City · Village · Shop &amp; Market · Park &amp; Nature · Traffic · Construction.</p>\r\n<h3>📜 License</h3>\r\n<p>Use in unlimited personal and commercial projects (games, apps, videos, client work). No attribution required. Please don&#x27;t resell or redistribute the assets themselves. Full text in LICENSE.txt.</p>",
-      "series": "japan",
-      "modelCount": 37,
-      "triangles": {
-        "min": 324,
-        "max": 5620
-      },
-      "tags": [
-        "3d",
-        "ambulance",
-        "anime",
-        "asset-pack",
-        "godot",
-        "hospital",
-        "japan",
-        "low-poly",
-        "medical",
-        "no-ai",
-        "unity"
-      ],
-      "engines": [
-        "unity",
-        "godot",
-        "unreal",
-        "blender",
-        "threejs"
-      ],
-      "formats": [
-        "GLB",
-        "FBX",
-        "OBJ",
-        "BLEND"
-      ],
-      "price": "$0.99",
-      "priceValue": 0.99,
-      "originalPrice": "$1.99",
-      "originalPriceValue": 1.99,
-      "sale": {
-        "id": "216846",
-        "title": "HanX Japan Collection – 11-Pack Bundle",
-        "rate": 50,
-        "ends": "2026-12-09T08:29:00.000Z",
-        "starts": "2026-11-09T08:29:00.000Z"
-      },
-      "published": "2026-11-09T08:29:00.000Z",
-      "updated": "2026-11-09T08:29:00.000Z",
-      "url": "https://hanx-games.itch.io/low-poly-japan-hospital-pack",
-      "buyUrl": "https://hanx-games.itch.io/low-poly-japan-hospital-pack/purchase",
-      "bundleIds": [
-        "216846",
-        "216846"
-      ],
-      "bundleRefs": [
-        {
-          "id": "216846",
-          "path": "hanx-japan-collection-11-pack-bundle"
-        },
-        {
-          "id": "216846",
-          "path": "hanx-japan-collection-11-pack-bundle"
-        }
-      ],
-      "cover": {
-        "src": "/img/assets/low-poly-japan-hospital-pack/7241818787.webp",
-        "sm": "/img/assets/low-poly-japan-hospital-pack/7241818787-sm.webp",
-        "width": 630,
-        "height": 500
-      },
-      "screenshots": [
-        {
-          "src": "/img/assets/low-poly-japan-hospital-pack/19bc56ed72.webp",
-          "sm": "/img/assets/low-poly-japan-hospital-pack/19bc56ed72-sm.webp"
-        },
-        {
-          "src": "/img/assets/low-poly-japan-hospital-pack/6c4d4313e3.webp",
-          "sm": "/img/assets/low-poly-japan-hospital-pack/6c4d4313e3-sm.webp"
-        },
-        {
-          "src": "/img/assets/low-poly-japan-hospital-pack/c755e2111f.webp",
-          "sm": "/img/assets/low-poly-japan-hospital-pack/c755e2111f-sm.webp"
-        },
-        {
-          "src": "/img/assets/low-poly-japan-hospital-pack/29dc24fcb4.webp",
-          "sm": "/img/assets/low-poly-japan-hospital-pack/29dc24fcb4-sm.webp"
-        },
-        {
-          "src": "/img/assets/low-poly-japan-hospital-pack/c2bcf59f8b.webp",
-          "sm": "/img/assets/low-poly-japan-hospital-pack/c2bcf59f8b-sm.webp"
-        }
-      ]
-    },
-    {
-      "slug": "low-poly-japan-gas-station-pack",
-      "id": 5327087,
-      "title": "Low Poly Japan Gas Station Pack",
-      "itchTitle": "Low Poly Japan Gas Station Pack - HanX Assets",
-      "headline": "⛽ Low Poly Japan Gas Station Pack — 39 game-ready models",
-      "shortDescription": "39 low poly Japanese gas station models: overhead-hose canopy, kei trucks, car wash, tanker, rest stop, signs.",
-      "descriptionHtml": "<h3>⛽ Low Poly Japan Gas Station Pack &mdash; 39 game-ready models</h3>\r\n<p>Open a cozy Japanese roadside service station, HANX OIL: a big glowing forecourt canopy with ceiling-hung retractable fuel hoses colour-coded red / yellow / green for regular, high-octane and diesel, self-service pay consoles on striped pump islands, a staff shop with a blue tiled pent roof and paper lanterns, a gantry car wash with pink and mint brushes and soap foam, a pit-service garage with a two-post lift, a tall price tower with LED prices and a roadside pole sign &mdash; plus a Showa-era retro fuel stand with glowing globe pumps, a michi-no-eki rest stop selling local produce and a vending machine shelter. Service gear includes floor dispensers, a full-service pump island, a portable air tank, an EV charger, a kerosene (toyu) dispenser with red polytanks, a self vacuum, a car-mat washer, a tire storage rack, a motor-oil shelf and waste-oil drums; forecourt props add nobori banners, cones, tire stacks, a cleaning cart, recycle bins, bollards, a fire extinguisher stand, a welcome board and a waving station attendant. Vehicles: a cab-over fuel tanker, a kei truck with crates of vegetables, a HANX OIL kei service van and a mint kei tall wagon. Concrete forecourt, marked lanes with TOMARE, roadside asphalt with tactile paving, an entrance apron and a grass verge snap on the 8 m grid. All models share <strong>one material and one palette texture</strong>, so a whole scene can be batched into a single draw call &mdash; and every HanX Japan pack mixes with the others.</p>\r\n<h3>✨ What&#x27;s inside</h3>\r\n<ul>\r\n<li><strong>Station Buildings (5):</strong> Fuel Canopy with Overhead Hoses, Station Shop &amp; Office, Gantry Car Wash Bay, Pit Service Garage, Showa Retro Fuel Stand</li>\r\n<li><strong>Rest Stop (2):</strong> Michi-no-Eki Rest Stop, Vending Machine Shelter</li>\r\n<li><strong>Signs &amp; Lights (6):</strong> Price Sign Tower, Roadside Pole Sign, Forecourt Light Pole, Nobori Banners, Welcome Board, Guide Light</li>\r\n<li><strong>Pumps &amp; Service (10):</strong> Fuel Dispenser, Full-Service Pump Island, Portable Air Tank, EV Charger, Kerosene Dispenser &amp; Polytanks, Self Car Vacuum, Car Mat Washer, Tire Storage Rack, Oil &amp; Car Care Shelf, Waste Oil Drums</li>\r\n<li><strong>Forecourt Props (7):</strong> Traffic Cones &amp; Cone Bar, Tire Stack, Window Cleaning Cart, Recycle Bins, Bollards with Chain, Fire Extinguisher Stand, Station Attendant</li>\r\n<li><strong>Vehicles (4):</strong> Fuel Tanker Truck, Kei Truck, Kei Service Van, Kei Tall Wagon</li>\r\n<li><strong>Ground (5):</strong> Ground Forecourt Concrete, Ground Forecourt Markings, Ground Roadside Asphalt, Ground Station Entrance, Ground Grass Verge</li>\r\n</ul>\r\n<h3>🎮 Game-ready</h3>\r\n<ul>\r\n<li><strong>GLB, FBX, OBJ + Blender .blend</strong> (all models marked as Assets for the Asset Browser, with catalogs)</li>\r\n<li>Real-world scale in meters, pivot at the base, clean English names</li>\r\n<li>Low poly: 152–5,040 triangles per model</li>\r\n<li>One 1024×1024 palette texture + roughness/metal and emission maps (paper lanterns, windows, vending machines and stone lanterns glow)</li>\r\n<li>Works in Godot, Unity, Unreal, Blender, three.js and any engine that reads glTF/FBX/OBJ</li>\r\n<li>512 px preview image of every model and a README with triangle counts and sizes</li>\r\n</ul>\r\n<h3>🧩 The HanX Japan series</h3>\r\n<p>Same palette, same scale, same 8 m grid: Town · Neighborhood · School · <strong>Gas Station</strong> · Hospital · City · Village · Shop &amp; Market · Park &amp; Nature · Traffic · Construction.</p>\r\n<h3>📜 License</h3>\r\n<p>Use in unlimited personal and commercial projects (games, apps, videos, client work). No attribution required. Please don&#x27;t resell or redistribute the assets themselves. Full text in LICENSE.txt.</p>",
-      "series": "japan",
-      "modelCount": 39,
-      "triangles": {
-        "min": 152,
-        "max": 5040
-      },
-      "tags": [
-        "3d",
-        "anime",
-        "asset-pack",
-        "gas-station",
-        "godot",
-        "japan",
-        "japanese",
-        "low-poly",
-        "no-ai",
-        "unity",
-        "vehicles"
-      ],
-      "engines": [
-        "unity",
-        "godot",
-        "unreal",
-        "blender",
-        "threejs"
-      ],
-      "formats": [
-        "GLB",
-        "FBX",
-        "OBJ",
-        "BLEND"
-      ],
-      "price": "$0.99",
-      "priceValue": 0.99,
-      "originalPrice": "$1.99",
-      "originalPriceValue": 1.99,
-      "sale": {
-        "id": "216846",
-        "title": "HanX Japan Collection – 11-Pack Bundle",
-        "rate": 50,
-        "ends": "2026-12-09T08:29:00.000Z",
-        "starts": "2026-11-09T08:29:00.000Z"
-      },
-      "published": "2026-11-09T08:29:00.000Z",
-      "updated": "2026-11-09T08:29:00.000Z",
-      "url": "https://hanx-games.itch.io/low-poly-japan-gas-station-pack",
-      "buyUrl": "https://hanx-games.itch.io/low-poly-japan-gas-station-pack/purchase",
-      "bundleIds": [
-        "216846",
-        "216846"
-      ],
-      "bundleRefs": [
-        {
-          "id": "216846",
-          "path": "hanx-japan-collection-11-pack-bundle"
-        },
-        {
-          "id": "216846",
-          "path": "hanx-japan-collection-11-pack-bundle"
-        }
-      ],
-      "cover": {
-        "src": "/img/assets/low-poly-japan-gas-station-pack/26a3cd3501.webp",
-        "sm": "/img/assets/low-poly-japan-gas-station-pack/26a3cd3501-sm.webp",
-        "width": 630,
-        "height": 500
-      },
-      "screenshots": [
-        {
-          "src": "/img/assets/low-poly-japan-gas-station-pack/d765793e7e.webp",
-          "sm": "/img/assets/low-poly-japan-gas-station-pack/d765793e7e-sm.webp"
-        },
-        {
-          "src": "/img/assets/low-poly-japan-gas-station-pack/bdc0683d79.webp",
-          "sm": "/img/assets/low-poly-japan-gas-station-pack/bdc0683d79-sm.webp"
-        },
-        {
-          "src": "/img/assets/low-poly-japan-gas-station-pack/907e625a52.webp",
-          "sm": "/img/assets/low-poly-japan-gas-station-pack/907e625a52-sm.webp"
-        },
-        {
-          "src": "/img/assets/low-poly-japan-gas-station-pack/0776cfe57a.webp",
-          "sm": "/img/assets/low-poly-japan-gas-station-pack/0776cfe57a-sm.webp"
-        },
-        {
-          "src": "/img/assets/low-poly-japan-gas-station-pack/7a6ed08def.webp",
-          "sm": "/img/assets/low-poly-japan-gas-station-pack/7a6ed08def-sm.webp"
-        }
-      ]
-    },
-    {
-      "slug": "low-poly-japan-construction-pack",
-      "id": 5327089,
-      "title": "Low Poly Japan Construction Pack",
-      "itchTitle": "Low Poly Japan Construction Pack - HanX Assets",
-      "headline": "🚧 Low Poly Japan Construction Pack — 40 game-ready models",
-      "shortDescription": "40 low poly Japanese construction models: animal barricades, scaffolding, tower crane, excavators, site office.",
-      "descriptionHtml": "<h3>🚧 Low Poly Japan Construction Pack &mdash; 40 game-ready models</h3>\r\n<p>Build a cheerful anime-style Japanese construction site: the famous cute safety barricades &mdash; frog, monkey, rabbit, panda and giraffe holding striped bars &mdash; a bowing worker apology board (SORRY FOR THE INCONVENIENCE), a solar LED arrow board, a flashing warning-light string and a traffic guard waving his red light baton. On the site: a building wrapped in scaffolding with mint and white mesh sheets and a SAKURA RESIDENCE banner, a red steel-frame skeleton, a yellow tower crane carrying H-beams, a two-storey prefab site office with outside stairs, glowing windows and the green-cross safety flag, pastel portable toilets, a tool container, a balloon light tower, temporary hoardings with a Mt Fuji and sakura mural or a building-plan notice, and an accordion-gate site entrance under a SAFETY FIRST banner. Machines: a hydraulic excavator, a mini excavator, a cab-over dump truck, a candy-striped concrete mixer, a rough-terrain mobile crane, a small road roller, a forklift with cement bags and a builder&#x27;s kei truck. Materials: H-beams (with a sleeping calico cat), colour-coded rebar, culvert and PVC pipes, cement and plywood pallets, a blue-tarp pile, a neko-guruma wheelbarrow, a generator with fuel drums and a hard-hat rack &mdash; plus dirt, gravel, foundation-pad, road and road-works ground tiles on the 8 m grid. All models share <strong>one material and one palette texture</strong>, so a whole scene can be batched into a single draw call &mdash; and every HanX Japan pack mixes with the others.</p>\r\n<h3>✨ What&#x27;s inside</h3>\r\n<ul>\r\n<li><strong>Cute Barriers &amp; Signs (9):</strong> Frog Barricade, Monkey Barricade, Rabbit Barricade, Panda Barricade, Giraffe Barricade, Bowing Apology Sign, LED Arrow Board, Flashing Warning Light String, Traffic Guard with Light Baton</li>\r\n<li><strong>Site Buildings (5):</strong> Building Under Construction, Steel Frame Skeleton, Prefab Site Office, Tool Storage Container, Portable Toilets (Pair)</li>\r\n<li><strong>Crane, Fences &amp; Gates (5):</strong> Tower Crane, Fence with Mural, Fence with Notice Board, Site Entrance Gate, Balloon Light Tower</li>\r\n<li><strong>Construction Vehicles (8):</strong> Hydraulic Excavator, Mini Excavator, Dump Truck, Concrete Mixer Truck, Mobile Crane (Rough Terrain), Small Road Roller, Forklift with Cement Bags, Kei Truck with Tools</li>\r\n<li><strong>Materials &amp; Props (8):</strong> Steel H-Beam Pile, Rebar Bundles, Culvert &amp; PVC Pipe Stack, Pallets of Cement Bags &amp; Plywood, Blue Tarp Covered Pile, Wheelbarrow (Neko-Guruma), Generator &amp; Fuel Drums, Hard Hat &amp; Vest Rack</li>\r\n<li><strong>Ground (5):</strong> Ground Dirt Site, Ground Gravel Yard, Ground Concrete Foundation Pad, Ground Road Asphalt, Ground Road Works Lane</li>\r\n</ul>\r\n<h3>🎮 Game-ready</h3>\r\n<ul>\r\n<li><strong>GLB, FBX, OBJ + Blender .blend</strong> (all models marked as Assets for the Asset Browser, with catalogs)</li>\r\n<li>Real-world scale in meters, pivot at the base, clean English names</li>\r\n<li>Low poly: 284–4,904 triangles per model</li>\r\n<li>One 1024×1024 palette texture + roughness/metal and emission maps (paper lanterns, windows, vending machines and stone lanterns glow)</li>\r\n<li>Works in Godot, Unity, Unreal, Blender, three.js and any engine that reads glTF/FBX/OBJ</li>\r\n<li>512 px preview image of every model and a README with triangle counts and sizes</li>\r\n</ul>\r\n<h3>🧩 The HanX Japan series</h3>\r\n<p>Same palette, same scale, same 8 m grid: Town · Neighborhood · School · Gas Station · Hospital · City · Village · Shop &amp; Market · Park &amp; Nature · Traffic · <strong>Construction</strong>.</p>\r\n<h3>📜 License</h3>\r\n<p>Use in unlimited personal and commercial projects (games, apps, videos, client work). No attribution required. Please don&#x27;t resell or redistribute the assets themselves. Full text in LICENSE.txt.</p>",
-      "series": "japan",
-      "modelCount": 40,
-      "triangles": {
-        "min": 284,
-        "max": 4904
-      },
-      "tags": [
-        "3d",
-        "anime",
-        "asset-pack",
-        "construction",
-        "godot",
-        "japan",
-        "kawaii",
-        "low-poly",
-        "no-ai",
-        "unity",
-        "vehicles"
-      ],
-      "engines": [
-        "unity",
-        "godot",
-        "unreal",
-        "blender",
-        "threejs"
-      ],
-      "formats": [
-        "GLB",
-        "FBX",
-        "OBJ",
-        "BLEND"
-      ],
-      "price": "$0.99",
-      "priceValue": 0.99,
-      "originalPrice": "$1.99",
-      "originalPriceValue": 1.99,
-      "sale": {
-        "id": "216846",
-        "title": "HanX Japan Collection – 11-Pack Bundle",
-        "rate": 50,
-        "ends": "2026-12-09T08:29:00.000Z",
-        "starts": "2026-11-09T08:29:00.000Z"
-      },
-      "published": "2026-11-09T08:29:00.000Z",
-      "updated": "2026-11-09T08:29:00.000Z",
-      "url": "https://hanx-games.itch.io/low-poly-japan-construction-pack",
-      "buyUrl": "https://hanx-games.itch.io/low-poly-japan-construction-pack/purchase",
-      "bundleIds": [
-        "216846",
-        "216846"
-      ],
-      "bundleRefs": [
-        {
-          "id": "216846",
-          "path": "hanx-japan-collection-11-pack-bundle"
-        },
-        {
-          "id": "216846",
-          "path": "hanx-japan-collection-11-pack-bundle"
-        }
-      ],
-      "cover": {
-        "src": "/img/assets/low-poly-japan-construction-pack/2fbd88956b.webp",
-        "sm": "/img/assets/low-poly-japan-construction-pack/2fbd88956b-sm.webp",
-        "width": 630,
-        "height": 500
-      },
-      "screenshots": [
-        {
-          "src": "/img/assets/low-poly-japan-construction-pack/f2c92621e2.webp",
-          "sm": "/img/assets/low-poly-japan-construction-pack/f2c92621e2-sm.webp"
-        },
-        {
-          "src": "/img/assets/low-poly-japan-construction-pack/3e5d6a6429.webp",
-          "sm": "/img/assets/low-poly-japan-construction-pack/3e5d6a6429-sm.webp"
-        },
-        {
-          "src": "/img/assets/low-poly-japan-construction-pack/75c5204c18.webp",
-          "sm": "/img/assets/low-poly-japan-construction-pack/75c5204c18-sm.webp"
-        },
-        {
-          "src": "/img/assets/low-poly-japan-construction-pack/b5e65c1f01.webp",
-          "sm": "/img/assets/low-poly-japan-construction-pack/b5e65c1f01-sm.webp"
-        },
-        {
-          "src": "/img/assets/low-poly-japan-construction-pack/0496a1abb1.webp",
-          "sm": "/img/assets/low-poly-japan-construction-pack/0496a1abb1-sm.webp"
         }
       ]
     },
@@ -5142,23 +4848,20 @@
       "starts": "2026-11-09T08:29:00.000Z",
       "bundlePrice": "$7.99",
       "bundlePriceValue": 7.99,
-      "regularPrice": "$16.92",
-      "regularPriceValue": 16.92,
+      "regularPrice": "$10.95",
+      "regularPriceValue": 10.95,
       "rate": 50,
       "members": [
         "low-poly-japan-town-pack",
-        "low-poly-japan-gas-station-pack",
-        "low-poly-japan-construction-pack",
         "low-poly-japan-park-nature-pack",
         "low-poly-japan-neighborhood-pack",
-        "low-poly-japan-hospital-pack",
         "low-poly-japan-school-pack",
         "low-poly-japan-shop-market-pack"
       ],
       "slug": "japan-collection-11-pack",
       "ends": "2026-12-09T08:29:00.000Z",
       "og": "/og/bundle-japan-collection-11-pack.jpg",
-      "modelCount": 348
+      "modelCount": 232
     },
     {
       "id": "213390",
