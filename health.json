@@ -1,24 +1,43 @@
 {
-  "checkedAt": "2026-11-09T09:27:00.099Z",
-  "durationSec": 275,
+  "checkedAt": "2026-11-16T14:33:19.527Z",
+  "durationSec": 108,
   "counts": {
-    "pages": 770,
-    "images": 758,
-    "itch": 37
+    "pages": 882,
+    "images": 832,
+    "itch": 43
   },
-  "problems": [],
+  "problems": [
+    {
+      "type": "itch",
+      "slug": "low-poly-japan-shop-market-pack",
+      "url": "https://hanx-games.itch.io/low-poly-japan-shop-market-pack",
+      "status": 404
+    },
+    {
+      "type": "itch",
+      "slug": "low-poly-japan-school-pack",
+      "url": "https://hanx-games.itch.io/low-poly-japan-school-pack",
+      "status": 404
+    },
+    {
+      "type": "itch",
+      "slug": "low-poly-japan-park-nature-pack",
+      "url": "https://hanx-games.itch.io/low-poly-japan-park-nature-pack",
+      "status": 404
+    },
+    {
+      "type": "itch",
+      "slug": "low-poly-japan-neighborhood-pack",
+      "url": "https://hanx-games.itch.io/low-poly-japan-neighborhood-pack",
+      "status": 404
+    },
+    {
+      "type": "itch",
+      "slug": "low-poly-japan-town-pack",
+      "url": "https://hanx-games.itch.io/low-poly-japan-town-pack",
+      "status": 404
+    }
+  ],
   "skipped": [],
-  "newOnItch": [
-    "low-poly-japan-village-pack",
-    "low-poly-japan-traffic-pack",
-    "low-poly-japan-shop-market-pack",
-    "low-poly-japan-school-pack",
-    "low-poly-japan-park-nature-pack",
-    "low-poly-japan-neighborhood-pack",
-    "low-poly-japan-hospital-pack",
-    "low-poly-japan-gas-station-pack",
-    "low-poly-japan-construction-pack",
-    "low-poly-japan-city-pack",
-    "low-poly-japan-town-pack"
-  ]
+  "newOnItch": []
 }
