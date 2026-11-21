@@ -1,0 +1,11 @@
+{
+  "_note": "itch.io'dan kaldırılan/birleştirilen paketlerin eski adresleri → yerine geçen sayfa (astro.config.mjs her dil için yönlendirme sayfası üretir). Yeni bir paket kalkınca buraya ekle.",
+  "assets": {
+    "low-poly-japan-city-pack": "low-poly-japan-city-mega-pack",
+    "low-poly-japan-traffic-pack": "low-poly-japan-city-mega-pack",
+    "low-poly-japan-village-pack": "low-poly-japan-city-mega-pack",
+    "low-poly-japan-gas-station-pack": "low-poly-japan-city-mega-pack",
+    "low-poly-japan-hospital-pack": "low-poly-japan-city-mega-pack",
+    "low-poly-japan-construction-pack": "low-poly-japan-city-mega-pack"
+  }
+}

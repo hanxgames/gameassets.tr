@@ -1,10 +1,21 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+import { readFileSync } from 'node:fs';
+
+// itch.io'dan kalkan paketlerin eski adresleri (Search Console 404) → yerine geçen paket; her dil öneki için yönlendirme sayfası
+const RETIRED = JSON.parse(readFileSync(new URL('./src/data/retired.json', import.meta.url), 'utf8')).assets;
+const PREFIXES = ['', '/tr', '/de', '/fr', '/es', '/it', '/pt', '/pl', '/ru', '/ja', '/ko', '/zh', '/id', '/vi'];
+const redirects = Object.fromEntries(
+  Object.entries(RETIRED).flatMap(([from, to]) =>
+    PREFIXES.map((p) => [`${p}/assets/${from}/`, { status: 301, destination: `${p}/assets/${to}/` }]),
+  ),
+);
 
 export default defineConfig({
   site: 'https://gameassets.tr',
   trailingSlash: 'always',
+  redirects,
   build: { format: 'directory', inlineStylesheets: 'auto' },
   prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
   integrations: [
