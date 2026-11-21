@@ -4,10 +4,13 @@ import sitemap from '@astrojs/sitemap';
 import { readFileSync } from 'node:fs';
 
 // itch.io'dan kalkan paketlerin eski adresleri (Search Console 404) → yerine geçen paket; her dil öneki için yönlendirme sayfası
+// Katalogda hâlâ duran paket için yönlendirme üretilmez (sayfasıyla çakışmasın): itch'ten kalkan paket retired.json'a önceden
+// eklenebilir, günlük eşitleme onu katalogdan düşürünce yönlendirme kendiliğinden devreye girer.
 const RETIRED = JSON.parse(readFileSync(new URL('./src/data/retired.json', import.meta.url), 'utf8')).assets;
+const CATALOG = new Set(JSON.parse(readFileSync(new URL('./src/data/catalog.json', import.meta.url), 'utf8')).assets.map((a) => a.slug));
 const PREFIXES = ['', '/tr', '/de', '/fr', '/es', '/it', '/pt', '/pl', '/ru', '/ja', '/ko', '/zh', '/id', '/vi'];
 const redirects = Object.fromEntries(
-  Object.entries(RETIRED).flatMap(([from, to]) =>
+  Object.entries(RETIRED).filter(([from, to]) => !CATALOG.has(from) && CATALOG.has(to)).flatMap(([from, to]) =>
     PREFIXES.map((p) => [`${p}/assets/${from}/`, { status: 301, destination: `${p}/assets/${to}/` }]),
   ),
 );
