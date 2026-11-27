@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import AssetCard from '../components/AssetCard.astro';
+import Social from '../components/Social.astro';
 import { absolute, SITE } from '../data/site';
 import { listingsBy, popular, creatorTotals, type Creator } from '../data/market';
 import { useT, href, fmtNum, fmtDate } from '../i18n';
@@ -60,6 +61,7 @@ const ld = [
             {twitter && <li><a class="link" href={`https://x.com/${twitter}`} target="_blank" rel="noopener nofollow ugc">@{twitter}</a></li>}
             {c.house && <li><a class="link" href={L('/about/')}>{t('footer.about')}</a></li>}
           </ul>
+          <Social lang={lang} url={absolute(L(path))} text={t('social.creatorShare', { name: c.name })} />
         </div>
       </div>
     </div>

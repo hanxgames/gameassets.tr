@@ -106,17 +106,54 @@ service cloud.firestore {
           && dayOk(nd, od, dayKeys()[2]);
       }
 
-      allow create: if request.resource.data.keys().hasOnly(['v', 'c', 'd'])
+      function delta(k) { return request.resource.data.get(k, 0) - resource.data.get(k, 0); }
+      function slugOk() { return id.matches('^[a-z0-9][a-z0-9-]{1,119}$'); }
+
+      allow create: if slugOk()
+        && request.resource.data.keys().hasOnly(['v', 'c', 'd', 'l', 'dl'])
         && request.resource.data.get('v', 0) in [0, 1]
         && request.resource.data.get('c', 0) in [0, 1]
+        && request.resource.data.get('l', 0) in [0, 1]
+        && request.resource.data.get('dl', 0) in [0, 1]
         && daysOk(request.resource.data.get('d', {}), {});
+      // One view or one buy click at a time.
       allow update: if changed().hasOnly(['v', 'c', 'd'])
         && (
-          (request.resource.data.get('v', 0) == resource.data.get('v', 0) + 1 && request.resource.data.get('c', 0) == resource.data.get('c', 0))
-          || (request.resource.data.get('c', 0) == resource.data.get('c', 0) + 1 && request.resource.data.get('v', 0) == resource.data.get('v', 0))
+          (delta('v') == 1 && delta('c') == 0)
+          || (delta('c') == 1 && delta('v') == 0)
         )
         && daysOk(request.resource.data.get('d', {}), resource.data.get('d', {}));
+      // Likes / dislikes: each moves by at most one (switching a vote moves both), never below zero.
+      allow update: if changed().hasOnly(['l', 'dl'])
+        && delta('l') in [-1, 0, 1] && delta('dl') in [-1, 0, 1]
+        && request.resource.data.get('l', 0) >= 0 && request.resource.data.get('dl', 0) >= 0;
       allow delete: if false;
+    }
+
+    // Comments: public to read; posting needs a confirmed e-mail and a free account in good standing.
+    // A per-user guard document, written in the same batch, allows one comment every 20 seconds.
+    match /commentGuards/{uid} {
+      allow read: if isMe(uid);
+      allow create: if isMe(uid) && request.resource.data.keys().hasOnly(['at']) && request.resource.data.at == request.time;
+      allow update: if isMe(uid) && request.resource.data.keys().hasOnly(['at']) && request.resource.data.at == request.time
+        && request.time > resource.data.at + duration.value(20, 's');
+      allow delete: if false;
+    }
+    match /comments/{cid} {
+      allow read: if true;
+      allow create: if signedIn()
+        && request.auth.token.email_verified == true
+        && request.resource.data.keys().hasOnly(['slug', 'uid', 'name', 'text', 'createdAt'])
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.slug is string && request.resource.data.slug.matches('^[a-z0-9][a-z0-9-]{1,119}$')
+        && str(request.resource.data.name, 60) && request.resource.data.name.size() > 0
+        && str(request.resource.data.text, 1000) && request.resource.data.text.size() > 0
+        && request.resource.data.createdAt == request.time
+        && getAfter(/databases/$(db)/documents/commentGuards/$(request.auth.uid)).data.at == request.time
+        && !(exists(/databases/$(db)/documents/creators/$(request.auth.uid))
+             && get(/databases/$(db)/documents/creators/$(request.auth.uid)).data.status in ['suspended', 'banned']);
+      allow update: if false;
+      allow delete: if signedIn() && (resource.data.uid == request.auth.uid || isAdmin());
     }
   }
 }

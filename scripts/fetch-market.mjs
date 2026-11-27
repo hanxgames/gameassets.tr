@@ -34,7 +34,7 @@ async function list(collection) {
   const out = [];
   let token = '';
   do {
-    const url = `${BASE}/${collection}?pageSize=300&key=${FIREBASE.apiKey}${token ? `&pageToken=${encodeURIComponent(token)}` : ''}`;
+    const url = `${BASE}/${collection}?pageSize=300${token ? `&pageToken=${encodeURIComponent(token)}` : ''}`;
     const res = await fetch(url);
     if (!res.ok) throw new Error(`${collection}: HTTP ${res.status} ${await res.text()}`);
     const j = await res.json();

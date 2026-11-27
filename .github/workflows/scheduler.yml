@@ -30,7 +30,6 @@ jobs:
       - name: Decide what to run
         env:
           GH_TOKEN: ${{ github.token }}
-          API_KEY: AIzaSyAwUeXOD28AO9HD6YShosP6CDRO1sSOJpE
         run: |
           MIN=$(date -u +%-M)
           HOUR_TR=$(( ( $(date -u +%-H) + 3 ) % 24 ))
@@ -44,7 +43,7 @@ jobs:
           ACTIVE=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow deploy.yml --limit 5 --json status --jq '[.[] | select(.status != "completed")] | length')
           if [ "$ACTIVE" != "0" ]; then echo "A deploy is already running."; exit 0; fi
           LAST=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow deploy.yml --limit 1 --json createdAt --jq '.[0].createdAt // "1970-01-01T00:00:00Z"')
-          CHANGED=$(curl -s "https://firestore.googleapis.com/v1/projects/gameassets-tr/databases/(default)/documents/meta/site?key=$API_KEY" | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{try{process.stdout.write(JSON.parse(s).fields.changedAt.timestampValue)}catch{process.stdout.write('1970-01-01T00:00:00Z')}})")
+          CHANGED=$(curl -s "https://firestore.googleapis.com/v1/projects/gameassets-tr/databases/(default)/documents/meta/site" | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{try{process.stdout.write(JSON.parse(s).fields.changedAt.timestampValue)}catch{process.stdout.write('1970-01-01T00:00:00Z')}})")
           NOW=$(date -u +%s)
           LAST_S=$(date -u -d "$LAST" +%s)
           CHANGED_S=$(date -u -d "$CHANGED" +%s)

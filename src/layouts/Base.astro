@@ -3,7 +3,7 @@ import '../styles/global.css';
 import { SITE, seriesOrder, absolute } from '../data/site';
 import { CATEGORIES, listings, activeCreators } from '../data/market';
 import { LOCALES, localeOf, localePath, DEFAULT_LOCALE } from '../i18n/locales';
-import { useT, fmtDate } from '../i18n';
+import { useT, fmtDate, safeJson } from '../i18n';
 import campaign from '../data/campaign.json';
 
 interface Props {
@@ -140,9 +140,9 @@ const campaignHref = campaign.link ? (campaign.link.startsWith('/') ? localePath
     )}
     <slot name="head" />
 
-    <script type="application/ld+json" set:html={JSON.stringify(org)} />
-    <script type="application/ld+json" set:html={JSON.stringify(website)} />
-    {jsonld.map((j) => <script type="application/ld+json" set:html={JSON.stringify(j)} />)}
+    <script type="application/ld+json" set:html={safeJson(org)} />
+    <script type="application/ld+json" set:html={safeJson(website)} />
+    {jsonld.map((j) => <script type="application/ld+json" set:html={safeJson(j)} />)}
   </head>
   <body>
     <a class="skip visually-hidden-focusable" href="#main">{t('nav.skip')}</a>
@@ -229,7 +229,7 @@ const campaignHref = campaign.link ? (campaign.link.startsWith('/') ? localePath
           </div>
         </div>
         <div class="footer-legal">
-          <span>{t('footer.legal', { year, packs: listings.length, creators: activeCreators.length })}</span>
+          <span>{(activeCreators.length > 1 ? t('footer.legal', { year, packs: listings.length, creators: activeCreators.length }) : t('footer.legalOne', { year }))}</span>
           <span>{t('footer.made')}</span>
         </div>
       </div>
@@ -263,7 +263,7 @@ const campaignHref = campaign.link ? (campaign.link.startsWith('/') ? localePath
         try { if (sessionStorage.getItem(key)) return; sessionStorage.setItem(key, '1'); } catch {}
         const day = Math.floor(Date.now() / 864e5);
         const doc = `projects/gameassets-tr/databases/(default)/documents/stats/${slug}`;
-        fetch('https://firestore.googleapis.com/v1/projects/gameassets-tr/databases/(default)/documents:commit?key=AIzaSyAwUeXOD28AO9HD6YShosP6CDRO1sSOJpE', {
+        fetch('https://firestore.googleapis.com/v1/projects/gameassets-tr/databases/(default)/documents:commit', {
           method: 'POST',
           keepalive: true,
           headers: { 'content-type': 'application/json' },

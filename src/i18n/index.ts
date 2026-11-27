@@ -68,3 +68,7 @@ export function packSeoDescription(t: T, lang: string, a: Asset) {
   const d = t('pack.desc', { short, formats, price });
   return d.length > 170 ? t('pack.descShort', { short, formats, price }) : d;
 }
+
+/** JSON for inline <script> blocks: '<' is escaped so creator text can never close the tag. */
+export const safeJson = (v: unknown) =>
+  JSON.stringify(v).replace(/</g, '\\u003c').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029');

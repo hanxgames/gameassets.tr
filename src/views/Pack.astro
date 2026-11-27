@@ -3,9 +3,11 @@ import Base from '../layouts/Base.astro';
 import AssetCard from '../components/AssetCard.astro';
 import BuyButton from '../components/BuyButton.astro';
 import Countdown from '../components/Countdown.astro';
+import Social from '../components/Social.astro';
+import Comments from '../components/Comments.astro';
 import { SITE, ENGINES, assets, bundlesFor, bundleSavings, absolute, digitalShipping, type Asset, type EngineKey } from '../data/site';
 import { creatorByHandle, categoryByKey, listingsBy, inCategory, statOf, HOUSE, type Listing } from '../data/market';
-import { useT, href, packText, packDescription, packSeoTitle, packSeoDescription, fmtDate, fmtNum, bundleLabel } from '../i18n';
+import { useT, href, safeJson, packText, packDescription, packSeoTitle, packSeoDescription, fmtDate, fmtNum, bundleLabel } from '../i18n';
 
 interface Props { lang: string; asset: Listing }
 const { lang, asset: a } = Astro.props;
@@ -124,6 +126,7 @@ const breadcrumb = {
         {onSale && a.sale && <Countdown ends={a.sale.ends} label={t('pack.saleUntil', { rate: a.sale.rate })} lang={lang} />}
         <BuyButton asset={a} lang={lang} variant="primary" block label={a.priceValue ? t('buy.onItch') : t('buy.free')} />
         <p class="small">{t('pack.secure')}</p>
+        <Social lang={lang} url={absolute(L(pagePath))} text={t('social.shareText', { title: a.title, creator: creator.name })} slug={a.slug} />
         <dl class="specs">
           <div><dt>{t('pack.creator')}</dt><dd><a class="link" href={L(`/creators/${creator.handle}/`)}>{creator.name}</a></dd></div>
           <div><dt>{t('pack.category')}</dt><dd><a class="link" href={L(`/category/${cat.slug}/`)}>{catName}</a></dd></div>
@@ -160,6 +163,8 @@ const breadcrumb = {
       </aside>
     </section>
 
+    <Comments lang={lang} slug={a.slug} />
+
     {related.length > 0 && (
       <section class="section">
         <div class="section-head"><h2>{community ? t('pack.moreFrom', { name: creator.name }) : t('pack.related')}</h2><p><a class="link" href={L('/assets/')}>{t('pack.seeAll')}</a></p></div>
@@ -180,7 +185,7 @@ const breadcrumb = {
     <button class="btn btn--sm lb-close" id="lb-close" type="button">{t('pack.close')}</button>
     <p class="lb-count small" id="lb-count"></p>
   </dialog>
-  <script is:inline type="application/json" id="gallery-data" set:html={JSON.stringify(gallery.map((g) => g.src))} />
+  <script is:inline type="application/json" id="gallery-data" set:html={safeJson(gallery.map((g) => g.src))} />
 </Base>
 
 <style>

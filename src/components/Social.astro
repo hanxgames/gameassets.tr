@@ -1,0 +1,101 @@
+---
+/**
+ * Reaction + share bar. With `slug`: like / dislike counters and a comment count that jumps
+ * to the comments. Share opens X, Reddit, Facebook, WhatsApp, Telegram, copy link and the
+ * phone's own share sheet (Instagram, TikTok and the rest live there).
+ */
+import Icon from './Icon.astro';
+import { useT } from '../i18n';
+interface Props { lang: string; url: string; text: string; slug?: string; image?: string }
+const { lang, url, text, slug, image } = Astro.props;
+const t = useT(lang);
+const u = encodeURIComponent(url);
+const tx = encodeURIComponent(text);
+const nets = [
+  { k: 'x', name: 'X', href: `https://x.com/intent/post?url=${u}&text=${tx}` },
+  { k: 'reddit', name: 'Reddit', href: `https://www.reddit.com/submit?url=${u}&title=${tx}` },
+  { k: 'facebook', name: 'Facebook', href: `https://www.facebook.com/sharer/sharer.php?u=${u}` },
+  { k: 'whatsapp', name: 'WhatsApp', href: `https://wa.me/?text=${encodeURIComponent(`${text} ${url}`)}` },
+  { k: 'telegram', name: 'Telegram', href: `https://t.me/share/url?url=${u}&text=${tx}` },
+] as const;
+---
+<div class="social" data-social data-slug={slug} data-url={url} data-text={text} data-copied={t('social.copied')}>
+  {slug && (
+    <div class="react" role="group" aria-label={t('social.reactions')}>
+      <button class="sbtn" type="button" data-react="l" aria-pressed="false" aria-label={t('social.like')}><Icon name="like" /><span data-count="l">0</span></button>
+      <button class="sbtn" type="button" data-react="dl" aria-pressed="false" aria-label={t('social.dislike')}><Icon name="dislike" /><span data-count="dl">0</span></button>
+      <a class="sbtn" href="#comments" aria-label={t('social.comments')}><Icon name="comment" /><span data-count="cm">0</span></a>
+    </div>
+  )}
+  <div class="share" role="group" aria-label={t('social.share')}>
+    {nets.map((n) => <a class="sbtn sq" href={n.href} target="_blank" rel="noopener nofollow" aria-label={t('social.shareOn', { network: n.name })} title={n.name}><Icon name={n.k} /></a>)}
+    <button class="sbtn sq" type="button" data-copy aria-label={t('social.copy')} title={t('social.copy')}><Icon name="link" /></button>
+    <button class="sbtn sq" type="button" data-native aria-label={t('social.more')} title={t('social.more')} hidden><Icon name="share" /></button>
+  </div>
+  <span class="small copied" role="status" data-copied-msg></span>
+</div>
+
+<style>
+  .social { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-sm) var(--space-md); width: 100%; }
+  .react, .share { display: flex; flex-wrap: wrap; gap: var(--space-xs); }
+  .sbtn { display: inline-flex; align-items: center; gap: var(--space-2xs); min-height: 40px; min-width: 40px; padding: 0 var(--space-sm); border: var(--rule-bar) solid var(--color-ink); border-radius: var(--radius-pill); background: var(--color-paper); color: var(--color-ink); font: 500 var(--text-sm)/1 var(--font-body); font-variant-numeric: tabular-nums; text-decoration: none; cursor: pointer; transition: background-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out); }
+  .sbtn.sq { justify-content: center; padding: 0; width: 40px; }
+  .sbtn:hover { background: var(--color-ink); color: var(--color-paper); }
+  .sbtn:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
+  .sbtn:active { background: var(--color-ink-2); color: var(--color-paper); }
+  .sbtn[aria-pressed='true'] { background: var(--color-accent); color: var(--color-accent-ink); }
+  .sbtn[data-react='dl'][aria-pressed='true'] { background: var(--color-accent-2); color: var(--color-on-accent-2); }
+  .sbtn[hidden] { display: none; }
+  .copied:empty { display: none; }
+</style>
+
+<script>
+  import { FIREBASE } from '../data/firebase.config.mjs';
+  const DOCS = `https://firestore.googleapis.com/v1/projects/${FIREBASE.projectId}/databases/(default)/documents`;
+  const bot = /bot|crawl|spider|slurp|lighthouse|headless/i.test(navigator.userAgent);
+
+  for (const box of document.querySelectorAll<HTMLElement>('[data-social]')) {
+    const slug = box.dataset.slug;
+    const msg = box.querySelector<HTMLElement>('[data-copied-msg]')!;
+    const native = box.querySelector<HTMLButtonElement>('[data-native]')!;
+    if (navigator.share) native.hidden = false;
+    native.addEventListener('click', () => navigator.share({ title: box.dataset.text, text: box.dataset.text, url: box.dataset.url }).catch(() => {}));
+    box.querySelector('[data-copy]')!.addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(box.dataset.url!); } catch { prompt('', box.dataset.url); }
+      msg.textContent = box.dataset.copied!;
+      setTimeout(() => (msg.textContent = ''), 2500);
+    });
+    if (!slug) continue;
+
+    const setCount = (k: string, n: number) => { const el = box.querySelector(`[data-count="${k}"]`); if (el) el.textContent = String(Math.max(0, n)); };
+    const counts: Record<string, number> = { l: 0, dl: 0 };
+    fetch(`${DOCS}/stats/${slug}?mask.fieldPaths=l&mask.fieldPaths=dl`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j) => { if (!j?.fields) return; for (const k of ['l', 'dl']) { counts[k] = Number(j.fields[k]?.integerValue || 0); setCount(k, counts[k]); } })
+      .catch(() => {});
+    window.addEventListener('ga:comments', (e: Event) => setCount('cm', (e as CustomEvent).detail));
+
+    const key = `ga_react_${slug}`;
+    let mine = '';
+    try { mine = localStorage.getItem(key) || ''; } catch {}
+    const paint = () => box.querySelectorAll<HTMLButtonElement>('[data-react]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.react === mine)));
+    paint();
+    box.querySelectorAll<HTMLButtonElement>('[data-react]').forEach((b) => b.addEventListener('click', () => {
+      if (bot) return;
+      const k = b.dataset.react!;
+      const delta: Record<string, number> = { l: 0, dl: 0 };
+      if (mine === k) { delta[k] = -1; mine = ''; }
+      else { if (mine) delta[mine] = -1; delta[k] = 1; mine = k; }
+      try { localStorage.setItem(key, mine); } catch {}
+      for (const f of ['l', 'dl']) { counts[f] = Math.max(0, counts[f] + delta[f]); setCount(f, counts[f]); }
+      paint();
+      const fieldTransforms = Object.entries(delta).filter(([, d]) => d).map(([f, d]) => ({ fieldPath: f, increment: { integerValue: String(d) } }));
+      fetch(`${DOCS}:commit`, {
+        method: 'POST',
+        keepalive: true,
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ writes: [{ transform: { document: `projects/${FIREBASE.projectId}/databases/(default)/documents/stats/${slug}`, fieldTransforms } }] }),
+      }).catch(() => {});
+    }));
+  }
+</script>

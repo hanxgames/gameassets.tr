@@ -61,21 +61,33 @@ export const HOUSE: Creator = {
 type MarketPack = (typeof market.packs)[number] & Record<string, any>;
 const houseSlugs = new Set(hanxAssets.map((a) => a.slug));
 
+/** Second line of defence: descriptions are sanitized on import, and again here. */
+function cleanHtml(html: string) {
+  return String(html || '')
+    .replace(/<(script|style|iframe|object|embed|form|input|textarea|svg|math)\b[^]*?(<\/\1\s*>|$)/gi, '')
+    .replace(/<\/?(script|style|iframe|object|embed|form|input|textarea|svg|math|link|meta|base)\b[^>]*>/gi, '')
+    .replace(/\son\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, '')
+    .replace(/(href|src)\s*=\s*("|')\s*(javascript|data|vbscript):[^"']*\2/gi, '$1="#"');
+}
+const str = (v: unknown, max: number) => (typeof v === 'string' ? v.slice(0, max) : '');
+const httpsUrl = (v: unknown) => (typeof v === 'string' && /^https:\/\/[^\s"'<>]+$/.test(v) ? v : '');
+
 function fromMarket(p: MarketPack): Listing | null {
+  if (!/^[a-z0-9][a-z0-9_-]{1,119}$/.test(p.id) || !httpsUrl(p.buyUrl) || !/^https:\/\/[a-z0-9_-]+\.itch\.io\//.test(p.buyUrl)) return null;
   if (houseSlugs.has(p.id)) return null; // never shadow a house URL
   const cover = p.cover || { src: '', sm: '' };
   return {
     slug: p.id,
     id: p.storeId,
-    title: p.title,
-    itchTitle: p.title,
+    title: str(p.title, 80),
+    itchTitle: str(p.title, 80),
     headline: '',
-    shortDescription: p.short || '',
-    descriptionHtml: p.descriptionHtml || '',
+    shortDescription: str(p.short, 200),
+    descriptionHtml: cleanHtml(p.descriptionHtml),
     series: null,
     modelCount: null,
     triangles: null,
-    tags: p.tags || [],
+    tags: (Array.isArray(p.tags) ? p.tags : []).filter((t: unknown) => typeof t === 'string').map((t: string) => t.slice(0, 30)).slice(0, 12),
     engines: [],
     formats: [],
     price: p.free ? 'Free' : p.price,
@@ -89,8 +101,8 @@ function fromMarket(p: MarketPack): Listing | null {
     buyUrl: p.buyUrl,
     bundleIds: [],
     bundleRefs: [],
-    cover: { src: cover.src, sm: cover.sm || cover.src, width: 630, height: 500 },
-    screenshots: (p.screenshots || []).map((s: any) => ({ src: s.src, sm: s.sm || s.src })),
+    cover: { src: httpsUrl(cover.src), sm: httpsUrl(cover.sm) || httpsUrl(cover.src), width: 630, height: 500 },
+    screenshots: (p.screenshots || []).map((s: any) => ({ src: httpsUrl(s?.src), sm: httpsUrl(s?.sm) || httpsUrl(s?.src) })).filter((s: any) => s.src),
     community: true,
     category: categoryByKey(p.category).key,
     creator: p.creatorHandle,
@@ -102,7 +114,18 @@ const house: Listing[] = hanxAssets.map((a) => ({ ...a, category: '3d', creator:
 const community = (market.packs as MarketPack[]).map(fromMarket).filter(Boolean) as Listing[];
 
 export const listings: Listing[] = [...house, ...community];
-export const creators: Creator[] = [HOUSE, ...(market.creators as Creator[]).filter((c) => c.handle !== HOUSE.handle)];
+const cleanCreator = (c: Creator): Creator => ({
+  ...c,
+  name: str(c.name, 60) || c.handle,
+  bio: str(c.bio, 600),
+  website: /^https?:\/\/[^\s"'<>]+$/.test(c.website || '') ? c.website : '',
+  twitter: str(c.twitter, 40).replace(/[^A-Za-z0-9_]/g, ''),
+  avatar: httpsUrl(c.avatar),
+});
+export const creators: Creator[] = [
+  HOUSE,
+  ...(market.creators as Creator[]).filter((c) => /^[a-z0-9-]{3,30}$/.test(c.handle) && c.handle !== HOUSE.handle).map(cleanCreator),
+];
 export const creatorByHandle = (h: string) => creators.find((c) => c.handle === h);
 export const listingsBy = (h: string) => listings.filter((l) => l.creator === h);
 export const listingBySlug = (s: string) => listings.find((l) => l.slug === s);
