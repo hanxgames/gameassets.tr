@@ -104,6 +104,9 @@ const CATEGORY_HINTS = [
 ];
 export function guessCategory(tags, text) {
   const t = tags.join(' ').toLowerCase();
+  // An explicit 3D / 2D tag wins: mixed packs usually lead with their visuals.
+  if (tags.includes('3d') || tags.includes('low-poly')) return '3d';
+  if (tags.includes('2d') || tags.includes('pixel-art') || tags.includes('sprites')) return '2d';
   for (const [k, re] of CATEGORY_HINTS) if (re.test(t)) return k;
   const hay = String(text).toLowerCase();
   for (const [k, re] of CATEGORY_HINTS) if (re.test(hay)) return k;

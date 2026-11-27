@@ -12,7 +12,9 @@ import { FIREBASE } from '../src/data/firebase.config.mjs';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const OUT = path.join(ROOT, 'src', 'data', 'market.json');
-const BASE = `https://firestore.googleapis.com/v1/projects/${FIREBASE.projectId}/databases/(default)/documents`;
+// FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 reads the local emulator instead (testing).
+const EMU = process.env.FIRESTORE_EMULATOR_HOST;
+const BASE = `${EMU ? `http://${EMU}` : 'https://firestore.googleapis.com'}/v1/projects/${FIREBASE.projectId}/databases/(default)/documents`;
 
 function value(v) {
   if (!v || typeof v !== 'object') return null;

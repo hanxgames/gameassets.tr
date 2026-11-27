@@ -74,10 +74,10 @@ const ld = [
   </div>
 </Base>
 <style>
-  .profile { display: flex; gap: var(--space-xl); align-items: center; min-width: 0; }
+  .profile { grid-column: 1 / -1; display: flex; gap: var(--space-xl); align-items: center; min-width: 0; }
   .avatar { width: 120px; height: 120px; flex: none; object-fit: cover; border: var(--rule-bar) solid var(--color-ink); box-shadow: var(--shadow-card); background: var(--color-paper-2); }
   .profile-text { display: grid; gap: var(--space-sm); min-width: 0; }
-  .profile-text h1 { overflow-wrap: break-word; min-width: 0; }
+  .profile-text h1 { overflow-wrap: break-word; min-width: 0; max-width: 22ch; }
   .profile-text .lead { max-width: 60ch; white-space: pre-line; }
   .meta { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-xs) var(--space-lg); font-size: var(--text-sm); font-weight: 500; align-items: center; }
   .badge { padding: var(--space-2xs) var(--space-sm); background: var(--color-accent); color: var(--color-accent-ink); border: var(--rule-bar) solid var(--color-ink); }

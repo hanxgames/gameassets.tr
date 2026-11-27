@@ -1,8 +1,15 @@
 {
- "fetchedAt": "2026-11-27T10:15:47.226Z",
+ "fetchedAt": "2026-11-27T10:36:23.582Z",
  "creators": [],
  "packs": [],
  "stats": {
+  "pixel-atolye-sirin-kenney-game-assets": {
+   "v": 1,
+   "c": 0,
+   "v7": 1,
+   "c7": 0,
+   "c30": 0
+  },
   "test-slug": {
    "v": 2,
    "c": 0,

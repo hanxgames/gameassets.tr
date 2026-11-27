@@ -36,7 +36,7 @@ const ld = [
   },
 ];
 ---
-<Base lang={lang} path={path} title={t('catpage.metaTitle', { title, n: list.length })} description={t('catpage.description', { n: list.length, name, lead })} jsonld={ld} noindex={list.length === 0}>
+<Base lang={lang} path={path} image={`/og/category-${cat.key}.jpg`} imageAlt={title} title={t('catpage.metaTitle', { title, n: list.length })} description={t('catpage.description', { n: list.length, name, lead })} jsonld={ld} noindex={list.length === 0}>
   <ListingHero title={title} crumbs={[{ href: L('/'), label: t('nav.home') }, { href: L('/assets/'), label: t('nav.allPacks') }, { label: name }]}>
     <p>{lead}</p>
   </ListingHero>

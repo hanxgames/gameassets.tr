@@ -90,7 +90,7 @@ const itemList = {
         {cats.map((c, i) => (
           <li>
             <a class={`cat-tile cat-${i % 4}`} href={L(`/category/${c.slug}/`)}>
-              <span class="cat-img">{c.list[0] && <img src={c.list[0].cover.sm} alt="" width="630" height="500" loading="lazy" decoding="async" referrerpolicy="no-referrer" />}</span>
+              <span class="cat-img"><img src={`/img/categories/${c.key}.webp`} alt="" width="630" height="500" loading="lazy" decoding="async" /></span>
               <span class="cat-text"><span class="cat-name">{t(`catg.${c.key}.name`)}</span><span>{t('home.catN', { n: c.list.length })}</span></span>
             </a>
           </li>

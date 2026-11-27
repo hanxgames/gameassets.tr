@@ -168,11 +168,11 @@ const privacy = `<a class="link" href="${L('/privacy/')}">${t('footer.privacy')}
 <script>
   import { initializeApp } from 'firebase/app';
   import {
-    getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword,
+    connectAuthEmulator, getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword,
     createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, signOut, type User,
   } from 'firebase/auth';
-  import { getFirestore, doc, onSnapshot, collection, query, where, getDoc, updateDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
-  import { getFunctions, httpsCallable } from 'firebase/functions';
+  import { connectFirestoreEmulator, getFirestore, doc, onSnapshot, collection, query, where, getDoc, updateDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
+  import { connectFunctionsEmulator, getFunctions, httpsCallable } from 'firebase/functions';
   import { FIREBASE, FUNCTIONS_REGION } from '../data/firebase.config.mjs';
 
   const cfg = JSON.parse(document.getElementById('dash-cfg')!.textContent || '{}');
@@ -183,14 +183,30 @@ const privacy = `<a class="link" href="${L('/privacy/')}">${t('footer.privacy')}
   auth.languageCode = cfg.lang;
   const db = getFirestore(app);
   const fns = getFunctions(app, FUNCTIONS_REGION);
-  const call = (name: string, data: unknown) => httpsCallable(fns, name)(data).then((r) => r.data as any);
+  // Local testing against the Firebase emulators: open /dashboard/?emu on localhost.
+  if (location.hostname === 'localhost' && (location.search.includes('emu') || sessionStorage.getItem('ga_emu'))) {
+    sessionStorage.setItem('ga_emu', '1');
+    connectAuthEmulator(auth, 'http://127.0.0.1:9099', { disableWarnings: true });
+    connectFirestoreEmulator(db, '127.0.0.1', 8080);
+    connectFunctionsEmulator(fns, '127.0.0.1', 5001);
+  }
+  const call = async (name: string, data: unknown) => {
+    // A freshly confirmed e-mail only reaches the server after the ID token is refreshed.
+    const u = auth.currentUser;
+    if (u) {
+      await u.reload().catch(() => {});
+      const tok = await u.getIdTokenResult();
+      if (u.emailVerified && tok.claims.email_verified !== true) await u.getIdToken(true);
+    }
+    return httpsCallable(fns, name)(data).then((r) => r.data as any);
+  };
 
   const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
   const show = (id: string, on = true) => { $(id).hidden = !on; };
   let toastTimer = 0;
   const toast = (msg: string) => { const el = $('toast'); el.textContent = msg; el.hidden = false; clearTimeout(toastTimer); toastTimer = window.setTimeout(() => (el.hidden = true), 5000); };
   const fail = (e: any) => {
-    const code = String(e?.message || e?.code || '').replace(/^auth\//, '');
+    const code = String(e?.message || e?.code || '').replace(/^auth\//, '').replace(/\s*\[\d+\]\s*$/, '').trim();
     const k = S[`err.${code}`] ? `err.${code}` : /auth\//.test(String(e?.code)) ? 'err.auth' : '';
     toast(k ? tr(k) : tr('dash.error', { msg: code || 'unknown' }));
   };
