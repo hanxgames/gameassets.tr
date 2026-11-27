@@ -61,7 +61,7 @@ h2 { max-width: 22ch; }
 .masthead .container { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; min-height: var(--nav-height); gap: var(--space-lg); }
 .masthead nav { display: flex; gap: var(--space-lg); }
 .masthead nav:last-of-type { justify-content: flex-end; }
-.masthead nav a { font-size: var(--text-sm); font-weight: 500; text-decoration: none; padding-block: var(--space-xs); border-bottom: var(--rule-bar) solid transparent; transition: border-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out); }
+.masthead nav a { font-size: var(--text-sm); font-weight: 500; white-space: nowrap; text-decoration: none; padding-block: var(--space-xs); border-bottom: var(--rule-bar) solid transparent; transition: border-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out); }
 .masthead nav a:hover, .masthead nav a[aria-current='page'] { border-color: var(--color-accent-2); }
 .masthead nav a:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
 .masthead nav a:active { color: var(--color-accent-2); }
@@ -78,14 +78,14 @@ h2 { max-width: 22ch; }
 .masthead nav a.join-link:active, .join-btn:active { background: var(--color-ink-2); color: var(--color-paper); }
 .join-btn { display: none; min-height: 44px; font-size: var(--text-sm); line-height: 1; }
 .mobile-nav { display: none; }
-@media (max-width: 60rem) {
+/* The header switches to the phone layout while the two link groups would wrap (long labels in some languages). */
+@media (max-width: 80rem) {
   .masthead .container { grid-template-columns: minmax(0, 1fr) auto auto; gap: var(--space-sm); }
   .masthead nav { display: none; }
   .join-btn { display: inline-flex; align-items: center; justify-self: end; }
-  .menu-btn { justify-content: center; min-width: 44px; padding: var(--space-xs); }
+  .menu-btn { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; padding: var(--space-xs); }
   .menu-btn .mi-close, .menu-btn[aria-expanded='true'] .mi-open { display: none; }
   .menu-btn[aria-expanded='true'] .mi-close { display: block; }
-  .menu-btn { display: inline-flex; align-items: center; }
   .mobile-nav { border-top: var(--rule-bar) solid var(--color-ink); background: var(--color-paper-2); }
   .mobile-nav.open { display: block; }
   .mobile-nav ul { list-style: none; margin: 0; padding: var(--space-md) var(--gutter); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2xs) var(--space-lg); }

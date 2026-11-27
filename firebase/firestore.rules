@@ -40,6 +40,25 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    // Private member details asked once after sign-up: who they are and their studio.
+    match /users/{uid} {
+      function roleOk(d) {
+        return d.role in ['creator', 'developer', 'both', 'player']
+          && optStr(d, 'studio', 60);
+      }
+      allow read: if isMe(uid) || isAdmin();
+      allow create: if isMe(uid)
+        && request.resource.data.keys().hasOnly(['role', 'studio', 'createdAt', 'updatedAt'])
+        && roleOk(request.resource.data)
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.updatedAt == request.time;
+      allow update: if isMe(uid)
+        && changed().hasOnly(['role', 'studio', 'updatedAt'])
+        && roleOk(request.resource.data)
+        && request.resource.data.updatedAt == request.time;
+      allow delete: if false;
+    }
+
     match /creators/{uid} {
       allow read: if true;
       // Profile text the creator may edit. Status, verification and handle are server-side.

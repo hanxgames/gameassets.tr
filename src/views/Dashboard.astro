@@ -8,6 +8,7 @@ interface Props { lang: string }
 const { lang } = Astro.props;
 const t = useT(lang);
 const L = (p: string) => href(lang, p);
+const ROLES = ['creator', 'developer', 'both', 'player'];
 // Every dashboard string the client script needs, in this page's language.
 const keys = Object.keys(en).filter((k) => /^(dash|join|err)\./.test(k));
 const strings = Object.fromEntries(keys.map((k) => [k, t(k)]));
@@ -38,13 +39,48 @@ const privacy = `<a class="link" href="${L('/privacy/')}">${t('footer.privacy')}
       <p class="small" set:html={t('join.agree', { terms, privacy })} />
     </section>
 
+    <!-- Who are you? Asked once after the first sign-in. -->
+    <section class="panel" id="v-role" hidden>
+      <h1>{t('join.role.h1')}</h1>
+      <p class="lead">{t('join.role.lead')}</p>
+      <form id="role-form" class="form" novalidate>
+        <fieldset class="roles">
+          <legend>{t('join.role.legend')}</legend>
+          {ROLES.map((r) => <label class="choice"><input type="radio" name="role" value={r} required /><span>{t(`join.role.${r}`)}</span></label>)}
+        </fieldset>
+        <label id="studio-field">{t('join.role.studio')}<input name="studio" maxlength="60" autocomplete="organization" /></label>
+        <p class="row">
+          <button class="btn btn--primary" type="submit">{t('join.role.continue')}</button>
+          <button class="btn" type="button" id="role-back" hidden>{t('join.back')}</button>
+        </p>
+      </form>
+    </section>
+
+    <!-- Signed-in member without a creator profile -->
+    <section class="panel" id="v-member" hidden>
+      <h1 id="member-hello"></h1>
+      <p class="lead">{t('join.member.lead')}</p>
+      <p class="small" id="member-role"></p>
+      <p class="row">
+        <a class="btn btn--primary" href={L('/assets/')}>{t('join.member.browse')}</a>
+        <button class="btn" type="button" id="member-sell">{t('join.member.sell')}</button>
+      </p>
+      <p class="row small">
+        <button class="linkish" type="button" id="member-edit">{t('join.member.edit')}</button>
+        <button class="linkish" type="button" id="member-out">{t('dash.signOut')}</button>
+      </p>
+    </section>
+
     <!-- First profile -->
     <section class="panel" id="v-onboard" hidden>
       <h1>{t('join.profileH2')}</h1>
       <form id="onboard-form" class="form" novalidate>
         <label>{t('join.displayName')}<input name="displayName" maxlength="60" required /></label>
         <label>{t('join.handle')}<input name="handle" maxlength="30" pattern="[a-z0-9][a-z0-9-]{1,28}[a-z0-9]" autocapitalize="off" spellcheck="false" required /><span class="hint small">{t('join.handleHint')}</span></label>
-        <button class="btn btn--primary" type="submit">{t('join.create')}</button>
+        <p class="row">
+          <button class="btn btn--primary" type="submit">{t('join.create')}</button>
+          <button class="btn" type="button" id="onboard-back" hidden>{t('join.back')}</button>
+        </p>
       </form>
     </section>
 
@@ -132,6 +168,15 @@ const privacy = `<a class="link" href="${L('/privacy/')}">${t('footer.privacy')}
   .panel h2 { font-size: var(--text-title); }
   .auth { max-width: 30rem; }
   .or { text-align: center; }
+  .roles { display: grid; gap: var(--space-sm); margin: 0; padding: 0; border: 0; min-width: 0; }
+  .roles legend { padding: 0; margin-bottom: var(--space-xs); font-weight: 500; }
+  .form .choice { display: flex; gap: var(--space-sm); align-items: center; min-height: 48px; padding: var(--space-xs) var(--space-md); border: var(--rule-bar) solid var(--color-ink); background: var(--color-paper); font-size: var(--text-md); font-weight: 400; cursor: pointer; transition: background-color var(--dur-micro) var(--ease-out); }
+  .form .choice:hover { background: var(--color-paper-2); }
+  .form .choice:has(input:checked) { background: var(--color-accent); color: var(--color-accent-ink); font-weight: 500; }
+  .form .choice:has(input:focus-visible) { outline: 3px solid var(--color-focus); outline-offset: 0; }
+  .form .choice input { width: 20px; height: 20px; min-height: 0; margin: 0; padding: 0; flex: none; accent-color: var(--color-ink); }
+  #v-role, #v-member, #v-onboard { max-width: 36rem; }
+  #member-hello { overflow-wrap: break-word; min-width: 0; }
   .form { display: grid; gap: var(--space-md); }
   .form.inline { grid-template-columns: minmax(0, 1fr) auto; align-items: end; }
   .form label { display: grid; gap: var(--space-2xs); font-size: var(--text-sm); font-weight: 500; }
@@ -171,7 +216,7 @@ const privacy = `<a class="link" href="${L('/privacy/')}">${t('footer.privacy')}
     connectAuthEmulator, getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword,
     createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, signOut, type User,
   } from 'firebase/auth';
-  import { connectFirestoreEmulator, getFirestore, doc, onSnapshot, collection, query, where, getDoc, updateDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
+  import { connectFirestoreEmulator, getFirestore, doc, onSnapshot, collection, query, where, getDoc, setDoc, updateDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
   import { connectFunctionsEmulator, getFunctions, httpsCallable } from 'firebase/functions';
   import { FIREBASE, FUNCTIONS_REGION } from '../data/firebase.config.mjs';
 
@@ -250,6 +295,69 @@ const privacy = `<a class="link" href="${L('/privacy/')}">${t('footer.privacy')}
   });
   $('sign-out').addEventListener('click', () => signOut(auth));
   $('resend').addEventListener('click', (e) => busy(e.currentTarget as HTMLButtonElement, async () => { if (auth.currentUser) await sendEmailVerification(auth.currentUser); toast(tr('dash.saved')); }));
+
+  // ---------- who are you ----------
+  let account: any = undefined; // users/{uid}: role and studio; null when not asked yet
+  let creatorDoc: any = undefined; // creators/{uid}; null when there is no creator profile
+  let editingRole = false;
+  let wantCreator = false;
+  const roleForm = $<HTMLFormElement>('role-form');
+  const studioField = $('studio-field');
+  const syncStudio = () => {
+    const r = (roleForm.elements.namedItem('role') as RadioNodeList).value;
+    studioField.hidden = r === 'player';
+  };
+  roleForm.addEventListener('change', syncStudio);
+  roleForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const user = auth.currentUser;
+    const role = (roleForm.elements.namedItem('role') as RadioNodeList).value;
+    if (!user) return;
+    if (!role) return (roleForm.querySelector('input[name=role]') as HTMLInputElement).focus();
+    const studio = role === 'player' ? '' : String((roleForm.elements.namedItem('studio') as HTMLInputElement).value).trim().slice(0, 60);
+    busy(roleForm.querySelector('button[type=submit]'), async () => {
+      const data: Record<string, unknown> = { role, studio, updatedAt: serverTimestamp() };
+      if (!account) data.createdAt = serverTimestamp();
+      await setDoc(doc(db, 'users', user.uid), data, { merge: true });
+      editingRole = false;
+      wantCreator = role === 'creator' || role === 'both';
+      if (wantCreator && studio && !nameInput.value) { nameInput.value = studio; nameInput.dispatchEvent(new Event('input')); }
+    });
+  });
+  $('role-back').addEventListener('click', () => { editingRole = false; decide(); });
+  $('member-edit').addEventListener('click', () => { editingRole = true; decide(); });
+  $('member-sell').addEventListener('click', () => {
+    wantCreator = true;
+    if (account?.studio && !nameInput.value) { nameInput.value = account.studio; nameInput.dispatchEvent(new Event('input')); }
+    decide();
+  });
+  $('onboard-back').addEventListener('click', () => { wantCreator = false; decide(); });
+  $('member-out').addEventListener('click', () => signOut(auth));
+
+  function decide() {
+    const user = auth.currentUser;
+    if (!user || account === undefined || creatorDoc === undefined) return;
+    if (creatorDoc) return view('dash');
+    if (!account || editingRole) {
+      if (account) {
+        for (const r of roleForm.querySelectorAll<HTMLInputElement>('input[name=role]')) r.checked = r.value === account.role;
+        (roleForm.elements.namedItem('studio') as HTMLInputElement).value = account.studio || '';
+      }
+      $('role-back').hidden = !account;
+      syncStudio();
+      return view('role');
+    }
+    const sells = account.role === 'creator' || account.role === 'both';
+    if (sells || wantCreator) {
+      $('onboard-back').hidden = sells;
+      return view('onboard');
+    }
+    const name = account.studio || user.displayName || (user.email || '').split('@')[0];
+    $('member-hello').textContent = tr('dash.h1', { name });
+    const role = tr(`join.role.short.${account.role}`);
+    $('member-role').textContent = tr('join.member.you', { role: account.studio ? `${role}, ${account.studio}` : role });
+    view('member');
+  }
 
   // ---------- onboarding ----------
   $('onboard-form').addEventListener('submit', (e) => {
@@ -401,9 +509,11 @@ const privacy = `<a class="link" href="${L('/privacy/')}">${t('footer.privacy')}
   // ---------- state ----------
   let unsubs: (() => void)[] = [];
   const reset = () => { unsubs.forEach((u) => u()); unsubs = []; };
-  function view(name: 'auth' | 'onboard' | 'dash') {
+  function view(name: 'auth' | 'role' | 'member' | 'onboard' | 'dash') {
     show('loading', false);
     show('v-auth', name === 'auth');
+    show('v-role', name === 'role');
+    show('v-member', name === 'member');
     show('v-onboard', name === 'onboard');
     show('v-dash', name === 'dash');
   }
@@ -433,11 +543,16 @@ const privacy = `<a class="link" href="${L('/privacy/')}">${t('footer.privacy')}
     if (!user) return view('auth');
     if (!user.emailVerified) user.reload().then(() => (user.emailVerified ? user.getIdToken(true) : null)).catch(() => {});
     let creator: any = null;
+    account = undefined; creatorDoc = undefined; editingRole = false; wantCreator = false;
+    unsubs.push(onSnapshot(doc(db, 'users', user.uid), (snap) => {
+      account = snap.exists() ? snap.data() : null;
+      decide();
+    }, (e) => { account = null; fail(e); decide(); }));
     unsubs.push(onSnapshot(doc(db, 'creators', user.uid), (snap) => {
-      if (!snap.exists()) { creator = null; return view('onboard'); }
-      creator = snap.data();
-      renderCreator(user, creator);
-      view('dash');
+      creator = snap.exists() ? snap.data() : null;
+      creatorDoc = creator;
+      if (creator) renderCreator(user, creator);
+      decide();
     }, fail));
     unsubs.push(onSnapshot(query(collection(db, 'packs'), where('ownerUid', '==', user.uid)), (snap) => {
       const list = snap.docs.map((d) => ({ id: d.id, ...d.data() })).sort((a: any, b: any) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
