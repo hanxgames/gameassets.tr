@@ -5,5 +5,6 @@ interface Props { asset: Asset; lang?: string; variant?: 'primary' | 'outline'; 
 const { asset, lang = 'en', variant = 'outline', size = 'md', label, block = false } = Astro.props;
 const t = useT(lang);
 const cls = ['btn', variant === 'primary' && 'btn--primary', size === 'sm' && 'btn--sm', block && 'btn--block'].filter(Boolean).join(' ');
+const price = asset.priceValue ? asset.price : t('price.free');
 ---
-<a class={cls} href={asset.buyUrl} data-buy data-popup={`${asset.buyUrl}?popup=1`} target="_blank" rel="noopener" aria-label={t('buy.aria', { title: asset.title, price: asset.price })}>{label ?? t('buy.onItch')}</a>
+<a class={cls} href={asset.buyUrl} data-buy data-slug={asset.slug} data-popup={`${asset.buyUrl}?popup=1`} target="_blank" rel="noopener sponsored" aria-label={t('buy.aria', { title: asset.title, price })}>{label ?? (asset.priceValue ? t('buy.onItch') : t('buy.free'))}</a>

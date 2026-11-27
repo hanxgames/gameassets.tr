@@ -7,14 +7,14 @@ export type Bundle = (typeof catalog.bundles)[number];
 export const SITE = {
   url: 'https://gameassets.tr',
   name: 'GameAssets.tr',
-  brand: 'HanX Assets',
+  brand: 'Game Assets',
   studio: 'HanX Games',
   itch: catalog.profile,
   twitter: '@Hanxgames_',
   twitterUrl: 'https://x.com/Hanxgames_',
-  tagline: 'Low Poly & 3D Pixel Game Assets for Unity, Godot & Unreal',
+  tagline: 'Game Assets from Indie Creators: 3D, 2D, UI, Audio & More',
   description:
-    'Game-ready low poly and 3D pixel art asset packs for Unity, Godot, Unreal & Blender. One palette, one scale, one draw call. Commercial license, from $0.69.',
+    'Game assets from independent creators: 3D models, 2D art, UI, audio, VFX, shaders, fonts and tools for Unity, Godot, Unreal and Blender.',
 };
 
 /** Pack slugs hidden from the site from the admin panel (src/data/hidden.json). */
@@ -32,7 +32,7 @@ export const SERIES = {
     title: 'Low Poly 3D Asset Packs',
     seoTitle: 'Low Poly 3D Asset Packs for Unity, Godot & Unreal',
     blurb: 'Modular low poly cities, traffic, villages, schools, SWAT teams and more, all on one palette texture, one scale and one 8 m grid.',
-    long: 'The core HanX Assets series: stylized low poly 3D models built to snap together. Every pack shares a single 1024×1024 palette texture and one material, so an entire city scene batches into a single draw call. Perfect for mobile games, prototypes, city builders, driving games, simulators and tactical shooters.',
+    long: 'The core HanX Games series: stylized low poly 3D models built to snap together. Every pack shares a single 1024×1024 palette texture and one material, so an entire city scene batches into a single draw call. Perfect for mobile games, prototypes, city builders, driving games, simulators and tactical shooters.',
     accent: '#67fb60',
     emoji: '🏙️',
   },
@@ -52,7 +52,7 @@ export const SERIES = {
     title: 'Halloween Low Poly Asset Packs',
     seoTitle: 'Halloween Low Poly 3D Asset Packs: Spooky Game-Ready Models',
     blurb: 'Pumpkins, haunted houses, spooky streets and seasonal props: the full HanX city dressed up for Halloween.',
-    long: 'Ship a seasonal update in an afternoon. The Halloween editions re-skin the HanX Assets series with jack-o’-lanterns, cobwebs, gravestones, fog-ready lighting and spooky decorations while keeping the same grid and palette workflow.',
+    long: 'Ship a seasonal update in an afternoon. The Halloween editions re-skin the HanX Games low poly series with jack-o’-lanterns, cobwebs, gravestones, fog-ready lighting and spooky decorations while keeping the same grid and palette workflow.',
     accent: '#ff8a1f',
     emoji: '🎃',
   },
@@ -62,7 +62,7 @@ export const SERIES = {
     title: 'Christmas Low Poly Asset Packs',
     seoTitle: 'Christmas Low Poly 3D Asset Packs: Snowy Winter Game Models',
     blurb: 'Snowy rooftops, string lights, Christmas trees and winter props for cozy holiday scenes and seasonal events.',
-    long: 'The Christmas editions cover the whole HanX Assets world in snow: glowing string lights, decorated trees, gift boxes, snowmen and winter streets, ideal for holiday events, cozy games and winter levels.',
+    long: 'The Christmas editions cover the whole HanX Games low poly world in snow: glowing string lights, decorated trees, gift boxes, snowmen and winter streets, ideal for holiday events, cozy games and winter levels.',
     accent: '#ff3b6b',
     emoji: '🎄',
   },
@@ -72,7 +72,7 @@ export const SERIES = {
     title: 'Japan Low Poly Asset Packs',
     seoTitle: 'Japan Low Poly 3D Asset Packs: Tokyo, Shrines, Anime Towns',
     blurb: 'Shrines, konbini, neon Tokyo streets, kei cars, anime schools and rice paddies on the same palette and grid.',
-    long: 'The Japan editions rebuild the HanX Assets world in Japanese style: torii gates, pagodas and onsen, neon game centers and scramble crossings, an anime high school, shotengai shops, kei trucks and trains, a castle park under sakura and a quiet farming village. They share the palette, scale and grid of every other low poly pack.',
+    long: 'The Japan editions rebuild the HanX Games low poly world in Japanese style: torii gates, pagodas and onsen, neon game centers and scramble crossings, an anime high school, shotengai shops, kei trucks and trains, a castle park under sakura and a quiet farming village. They share the palette, scale and grid of every other low poly pack.',
     accent: '#e8453c',
     emoji: '🗾',
   },

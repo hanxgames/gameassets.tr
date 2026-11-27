@@ -1,8 +1,8 @@
 ---
 import View from '../../views/Pack.astro';
-import { assets, bundles, seriesOrder, bySeries, ENGINES } from '../../data/site';
+import { listings } from '../../data/market';
 export function getStaticPaths() {
-  return assets.map((a) => ({ params: { slug: a.slug }, props: { asset: a } }));
+  return listings.map((a) => ({ params: { slug: a.slug }, props: { asset: a } }));
 }
 ---
 <View lang="en" asset={Astro.props.asset} />

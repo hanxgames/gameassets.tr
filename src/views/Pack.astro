@@ -4,28 +4,41 @@ import AssetCard from '../components/AssetCard.astro';
 import BuyButton from '../components/BuyButton.astro';
 import Countdown from '../components/Countdown.astro';
 import { SITE, ENGINES, assets, bundlesFor, bundleSavings, absolute, digitalShipping, type Asset, type EngineKey } from '../data/site';
+import { creatorByHandle, categoryByKey, listingsBy, inCategory, statOf, HOUSE, type Listing } from '../data/market';
 import { useT, href, packText, packDescription, packSeoTitle, packSeoDescription, fmtDate, fmtNum, bundleLabel } from '../i18n';
 
-interface Props { lang: string; asset: Asset }
+interface Props { lang: string; asset: Listing }
 const { lang, asset: a } = Astro.props;
 const t = useT(lang);
 const L = (p: string) => href(lang, p);
-const seriesTitle = t(`series.${a.series}.title`);
+const community = Boolean(a.community);
+const creator = creatorByHandle(a.creator) ?? HOUSE;
+const cat = categoryByKey(a.category);
+const catName = t(`catg.${cat.key}.name`);
+const seriesTitle = community ? catName : t(`series.${a.series}.title`);
+const crumbHref = community ? L(`/category/${cat.slug}/`) : L(`/collections/${a.series}/`);
 const onSale = a.originalPrice && a.originalPriceValue > a.priceValue;
-const gallery = [a.cover, ...a.screenshots];
-const myBundles = bundlesFor(a);
+const priceLabel = a.priceValue ? a.price : t('price.free');
+const gallery = [a.cover, ...a.screenshots].filter((g) => g && g.src);
+const myBundles = community ? [] : bundlesFor(a);
 const themeOf = (x: Asset) => x.slug.replace(/^(low-poly|3d-pixel)-/, '').replace(/^(halloween|christmas)-/, '').replace(/-pack$/, '');
 const theme = themeOf(a);
-const related = [
-  ...assets.filter((x) => x.slug !== a.slug && themeOf(x) === theme),
-  ...assets.filter((x) => x.slug !== a.slug && x.series === a.series && themeOf(x) !== theme),
-].slice(0, 4);
+const related: Listing[] = community
+  ? [...listingsBy(a.creator).filter((x) => x.slug !== a.slug), ...inCategory(a.category).filter((x) => x.creator !== a.creator)].slice(0, 4)
+  : ([
+      ...assets.filter((x) => x.slug !== a.slug && themeOf(x) === theme),
+      ...assets.filter((x) => x.slug !== a.slug && x.series === a.series && themeOf(x) !== theme),
+    ].slice(0, 4) as Listing[]);
 const engines = (a.engines as string[]).filter((e) => e in ENGINES) as EngineKey[];
 const formats = (a.formats as string[]).filter((f) => f !== 'PNG');
 const { short, headline } = packText(lang, a);
 // Translated description when one exists; otherwise the owner's English text from itch.io.
 const desc = packDescription(lang, a);
 const pagePath = `/assets/${a.slug}/`;
+const views = statOf(a.slug).v;
+const [byPre, byPost = ''] = t('pack.by', { name: '|~|' }).split('|~|');
+const seoTitle = community ? t('pack.titleCommunity', { title: a.title, creator: creator.name, category: catName }) : packSeoTitle(t, a);
+const seoDesc = community ? t('pack.descCommunity', { short: short.replace(/[.。]\s*$/, '.'), category: catName, creator: creator.name, price: priceLabel }).slice(0, 300) : packSeoDescription(t, lang, a);
 
 const productLd = {
   '@context': 'https://schema.org',
@@ -35,25 +48,25 @@ const productLd = {
   description: short,
   inLanguage: lang,
   sku: String(a.id),
-  mpn: `HANX-${a.id}`,
-  category: 'Game Assets > 3D Models',
+  ...(community ? {} : { mpn: `HANX-${a.id}` }),
+  category: `Game Assets > ${t(`catg.${cat.key}.name`)}`,
   image: gallery.slice(0, 6).map((g) => absolute(g.src)),
-  brand: { '@type': 'Brand', name: SITE.brand },
-  manufacturer: { '@id': `${SITE.url}/#org` },
+  brand: { '@type': 'Brand', name: creator.name },
+  manufacturer: community ? { '@type': 'Organization', name: creator.name, url: absolute(L(`/creators/${creator.handle}/`)) } : { '@id': `${SITE.url}/#org` },
   url: absolute(L(pagePath)),
   keywords: (a.tags as string[]).join(', '),
   offers: {
     '@type': 'Offer',
-    url: a.url,
+    url: absolute(L(pagePath)),
     price: a.priceValue.toFixed(2),
     priceCurrency: 'USD',
     availability: 'https://schema.org/InStock',
     itemCondition: 'https://schema.org/NewCondition',
     priceValidUntil: (a.sale?.ends || new Date(Date.now() + 365 * 864e5).toISOString()).slice(0, 10),
-    // sale price: the itch.io sale's start (synced from the sale page) and end
+    // sale price: the store sale's start (synced from the sale page) and end
     ...(onSale && (a.sale as any)?.starts ? { validFrom: (a.sale as any).starts } : {}),
     shippingDetails: digitalShipping,
-    seller: { '@type': 'Organization', name: SITE.studio, url: SITE.itch },
+    seller: { '@type': 'Organization', name: creator.name, url: absolute(L(`/creators/${creator.handle}/`)) },
   },
 };
 const breadcrumb = {
@@ -61,7 +74,7 @@ const breadcrumb = {
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: t('nav.home'), item: absolute(L('/')) },
-    { '@type': 'ListItem', position: 2, name: seriesTitle, item: absolute(L(`/collections/${a.series}/`)) },
+    { '@type': 'ListItem', position: 2, name: seriesTitle, item: absolute(crumbHref) },
     { '@type': 'ListItem', position: 3, name: a.title, item: absolute(L(pagePath)) },
   ],
 };
@@ -69,8 +82,8 @@ const breadcrumb = {
 <Base
   lang={lang}
   path={pagePath}
-  title={packSeoTitle(t, a)}
-  description={packSeoDescription(t, lang, a)}
+  title={seoTitle}
+  description={seoDesc}
   image={a.cover.src}
   imageAlt={t('pack.previewAlt', { title: a.title })}
   type="product"
@@ -78,11 +91,11 @@ const breadcrumb = {
   jsonld={[productLd, breadcrumb]}
 >
   <Fragment slot="head"><link rel="preload" as="image" href={a.cover.src} fetchpriority="high" /></Fragment>
-  <div class="container">
+  <div class="container" data-track-view={a.slug}>
     <nav class="crumbs" aria-label="Breadcrumb">
       <ol>
         <li><a href={L('/')}>{t('nav.home')}</a></li>
-        <li><a href={L(`/collections/${a.series}/`)}>{seriesTitle}</a></li>
+        <li><a href={crumbHref}>{seriesTitle}</a></li>
         <li><span aria-current="page">{a.title}</span></li>
       </ol>
     </nav>
@@ -90,13 +103,13 @@ const breadcrumb = {
     <section class="pdp">
       <div class="gallery">
         <button class="frame main-shot" id="main-shot" type="button" aria-label={t('pack.galleryOpen')}>
-          <img id="main-img" src={a.cover.src} width={a.cover.width} height={a.cover.height} alt={`${a.title}: ${short}`} fetchpriority="high" decoding="async" />
+          <img id="main-img" src={a.cover.src} width={a.cover.width} height={a.cover.height} alt={`${a.title}: ${short}`} fetchpriority="high" decoding="async" referrerpolicy="no-referrer" />
         </button>
         {gallery.length > 1 && (
           <ul class="thumbs" aria-label={t('pack.shots', { title: a.title })}>
             {gallery.map((g, i) => (
               <li><button class={`thumb ${i === 0 ? 'active' : ''}`} type="button" data-index={i} data-src={g.src} aria-label={t('pack.showImage', { i: i + 1, n: gallery.length })}>
-                <img src={g.sm} alt="" loading="lazy" decoding="async" width="160" height="120" />
+                <img src={g.sm} alt="" loading="lazy" decoding="async" width="160" height="120" referrerpolicy="no-referrer" />
               </button></li>
             ))}
           </ul>
@@ -105,17 +118,21 @@ const breadcrumb = {
 
       <div class="buy">
         <h1>{a.title}</h1>
+        <p class="byline">{byPre}<a class="link" href={L(`/creators/${creator.handle}/`)}>{creator.name}</a>{byPost}</p>
         {headline && <p class="lead">{headline.replace(/[.。]$/, '')}{lang === 'ja' || lang === 'zh' ? '。' : '.'}</p>}
-        <p class="buy-price"><span class="price-figure">{a.price}</span>{onSale && <span class="was">{a.originalPrice}</span>}</p>
+        <p class="buy-price"><span class="price-figure">{priceLabel}</span>{onSale && <span class="was">{a.originalPrice}</span>}</p>
         {onSale && a.sale && <Countdown ends={a.sale.ends} label={t('pack.saleUntil', { rate: a.sale.rate })} lang={lang} />}
-        <BuyButton asset={a} lang={lang} variant="primary" block label={t('buy.onItch')} />
+        <BuyButton asset={a} lang={lang} variant="primary" block label={a.priceValue ? t('buy.onItch') : t('buy.free')} />
         <p class="small">{t('pack.secure')}</p>
         <dl class="specs">
+          <div><dt>{t('pack.creator')}</dt><dd><a class="link" href={L(`/creators/${creator.handle}/`)}>{creator.name}</a></dd></div>
+          <div><dt>{t('pack.category')}</dt><dd><a class="link" href={L(`/category/${cat.slug}/`)}>{catName}</a></dd></div>
           {a.modelCount && <div><dt>{t('spec.models')}</dt><dd>{a.modelCount}</dd></div>}
           {a.triangles && <div><dt>{t('spec.triangles')}</dt><dd>{t('spec.trianglesVal', { min: fmtNum(lang, a.triangles.min), max: fmtNum(lang, a.triangles.max) })}</dd></div>}
           {formats.length > 0 && <div><dt>{t('spec.formats')}</dt><dd>{formats.map((f) => (f === 'BLEND' ? '.blend' : f)).join(', ')}</dd></div>}
           {engines.length > 0 && <div><dt>{t('spec.engines')}</dt><dd>{engines.map((e, i) => <>{i > 0 && ', '}<a class="link" href={L(`/engines/${e}/`)}>{ENGINES[e].name}</a></>)}</dd></div>}
-          <div><dt>{t('spec.license')}</dt><dd><a class="link" href={L('/license/')}>{t('spec.licenseVal')}</a></dd></div>
+          <div><dt>{t('spec.license')}</dt><dd>{community ? t('pack.licenseCreator') : <a class="link" href={L('/license/')}>{t('spec.licenseVal')}</a>}</dd></div>
+          {views > 0 && <div><dt>{t('dash.colViews')}</dt><dd>{fmtNum(lang, views)}</dd></div>}
           {a.published && <div><dt>{t('spec.released')}</dt><dd><time datetime={a.published}>{fmtDate(lang, a.published)}</time></dd></div>}
         </dl>
         {myBundles.map((b) => (
@@ -131,28 +148,28 @@ const breadcrumb = {
     <section class="details">
       <article class="prose">
         <h2>{t('pack.about', { title: a.title })}</h2>
-        {lang !== 'en' && !desc.translated && <p class="small">{t('pack.descNote')}</p>}
-        <div lang={desc.translated ? undefined : 'en'}><Fragment set:html={desc.html} /></div>
+        {!community && lang !== 'en' && !desc.translated && <p class="small">{t('pack.descNote')}</p>}
+        <div lang={community || desc.translated ? undefined : 'en'}><Fragment set:html={desc.html} /></div>
       </article>
       <aside class="side">
         <h2>{t('pack.tags')}</h2>
         <ul class="tags">{(a.tags as string[]).map((tag) => <li><a href={`${L('/assets/')}?q=${encodeURIComponent(tag.replace(/-/g, ' '))}`}>{tag.replace(/-/g, ' ')}</a></li>)}</ul>
-        <h2>{t('pack.quickStart')}</h2>
-        {engines.slice(0, 3).map((e) => <p><strong>{ENGINES[e].name}.</strong> {t(`engine.${e}.how`)}</p>)}
-        <BuyButton asset={a} lang={lang} block label={t('pack.getFor', { price: a.price })} />
+        {!community && engines.length > 0 && <h2>{t('pack.quickStart')}</h2>}
+        {!community && engines.slice(0, 3).map((e) => <p><strong>{ENGINES[e].name}.</strong> {t(`engine.${e}.how`)}</p>)}
+        <BuyButton asset={a} lang={lang} block label={a.priceValue ? t('pack.getFor', { price: a.price }) : t('buy.free')} />
       </aside>
     </section>
 
     {related.length > 0 && (
       <section class="section">
-        <div class="section-head"><h2>{t('pack.related')}</h2><p><a class="link" href={L('/assets/')}>{t('pack.seeAll')}</a></p></div>
+        <div class="section-head"><h2>{community ? t('pack.moreFrom', { name: creator.name }) : t('pack.related')}</h2><p><a class="link" href={L('/assets/')}>{t('pack.seeAll')}</a></p></div>
         <div class="pack-grid">{related.map((r) => <AssetCard asset={r} lang={lang} />)}</div>
       </section>
     )}
   </div>
 
   <div class="sticky-buy" id="sticky-buy">
-    <p><strong>{a.title}</strong><span class="price-figure">{a.price}</span></p>
+    <p><strong>{a.title}</strong><span class="price-figure">{priceLabel}</span></p>
     <BuyButton asset={a} lang={lang} variant="primary" size="sm" label={t('buy.short')} />
   </div>
 
@@ -181,7 +198,8 @@ const breadcrumb = {
   .thumb:active { border-color: var(--color-accent-2); }
 
   .buy { position: sticky; top: calc(var(--nav-height) + var(--space-lg)); display: grid; gap: var(--space-md); justify-items: start; }
-  .buy h1 { font-size: var(--text-display); max-width: 12ch; text-wrap: balance; }
+  .buy h1 { font-size: var(--text-display); max-width: 12ch; text-wrap: balance; overflow-wrap: break-word; min-width: 0; }
+  .byline { font-weight: 500; color: var(--color-muted); margin-top: calc(-1 * var(--space-xs)); }
   .buy-price { display: flex; align-items: baseline; gap: var(--space-md); padding-top: var(--space-md); border-top: var(--rule-bar) solid var(--color-ink); width: 100%; }
   .buy-price .price-figure { font-size: var(--text-price); }
   .buy-price .was { font-size: var(--text-xl); }

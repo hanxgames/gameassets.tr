@@ -1,0 +1,8 @@
+---
+import View from '../../views/Category.astro';
+import { CATEGORIES } from '../../data/market';
+export function getStaticPaths() {
+  return CATEGORIES.map((c) => ({ params: { cat: c.slug }, props: { cat: c } }));
+}
+---
+<View lang="en" cat={Astro.props.cat} />

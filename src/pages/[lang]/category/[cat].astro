@@ -1,0 +1,9 @@
+---
+import View from '../../../views/Category.astro';
+import { OTHER_LOCALES } from '../../../i18n/locales';
+import { CATEGORIES } from '../../../data/market';
+export function getStaticPaths() {
+  return OTHER_LOCALES.flatMap((l) => CATEGORIES.map((c) => ({ params: { lang: l.code, cat: c.slug }, props: { cat: c } })));
+}
+---
+<View lang={Astro.params.lang!} cat={Astro.props.cat} />

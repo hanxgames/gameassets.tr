@@ -3,17 +3,19 @@
   "type": "module",
   "version": "1.0.0",
   "private": true,
-  "description": "HanX Assets showcase — low poly & 3D pixel game asset packs (gameassets.tr)",
+  "description": "GameAssets.tr \u2014 a free showcase for game assets from independent creators",
   "scripts": {
     "sync": "node scripts/sync-itch.mjs",
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "market": "node scripts/fetch-market.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "4.0.19",
     "@astrojs/sitemap": "3.7.4",
     "astro": "5.18.2",
+    "firebase": "13.2.0",
     "sharp": "0.34.5"
   },
   "overrides": {

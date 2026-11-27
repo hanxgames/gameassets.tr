@@ -1,0 +1,148 @@
+/**
+ * The marketplace model: every listing on the site (HanX Games' own packs from
+ * catalog.json plus packs creators publish through the dashboard, from market.json),
+ * the creators, the categories and the rankings computed from view / click stats.
+ */
+import market from './market.json';
+import featured from './featured.json';
+import { SITE, assets as hanxAssets, type Asset } from './site';
+
+export const CATEGORIES = [
+  { key: '3d', slug: '3d-models' },
+  { key: '2d', slug: '2d-art' },
+  { key: 'ui', slug: 'ui' },
+  { key: 'audio', slug: 'audio' },
+  { key: 'vfx', slug: 'vfx' },
+  { key: 'shaders', slug: 'shaders-materials' },
+  { key: 'fonts', slug: 'fonts' },
+  { key: 'tools', slug: 'tools' },
+] as const;
+export type CategoryKey = (typeof CATEGORIES)[number]['key'];
+export const categoryBySlug = (s: string) => CATEGORIES.find((c) => c.slug === s);
+export const categoryByKey = (k: string) => CATEGORIES.find((c) => c.key === k) ?? CATEGORIES[0];
+
+export interface Creator {
+  uid: string;
+  handle: string;
+  name: string;
+  bio: string;
+  website: string;
+  twitter: string;
+  avatar: string;
+  verified: boolean;
+  featured: boolean;
+  createdAt: string | null;
+  /** HanX Games: the house studio with translated copy and collections. */
+  house?: boolean;
+}
+
+/** A listing is an Asset-shaped record, so the existing cards and pack page render it. */
+export type Listing = Asset & {
+  community?: boolean;
+  category: CategoryKey;
+  creator: string;
+  createdAt?: string | null;
+};
+
+export const HOUSE: Creator = {
+  uid: 'hanx-games',
+  handle: 'hanx-games',
+  name: SITE.studio,
+  bio: '',
+  website: 'https://hanxgames.net',
+  twitter: SITE.twitter.replace('@', ''),
+  avatar: '/icon-192.png',
+  verified: true,
+  featured: false,
+  createdAt: '2025-01-01T00:00:00.000Z',
+  house: true,
+};
+
+type MarketPack = (typeof market.packs)[number] & Record<string, any>;
+const houseSlugs = new Set(hanxAssets.map((a) => a.slug));
+
+function fromMarket(p: MarketPack): Listing | null {
+  if (houseSlugs.has(p.id)) return null; // never shadow a house URL
+  const cover = p.cover || { src: '', sm: '' };
+  return {
+    slug: p.id,
+    id: p.storeId,
+    title: p.title,
+    itchTitle: p.title,
+    headline: '',
+    shortDescription: p.short || '',
+    descriptionHtml: p.descriptionHtml || '',
+    series: null,
+    modelCount: null,
+    triangles: null,
+    tags: p.tags || [],
+    engines: [],
+    formats: [],
+    price: p.free ? 'Free' : p.price,
+    priceValue: p.priceValue || 0,
+    originalPrice: p.originalPrice && p.originalPriceValue > p.priceValue ? p.originalPrice : null,
+    originalPriceValue: p.originalPriceValue || p.priceValue || 0,
+    sale: p.sale && p.originalPriceValue > p.priceValue ? { id: '', title: '', rate: p.sale.rate, ends: p.sale.ends } : null,
+    published: p.createdAt || p.published || null,
+    updated: p.updatedAt || null,
+    url: p.storeUrl,
+    buyUrl: p.buyUrl,
+    bundleIds: [],
+    bundleRefs: [],
+    cover: { src: cover.src, sm: cover.sm || cover.src, width: 630, height: 500 },
+    screenshots: (p.screenshots || []).map((s: any) => ({ src: s.src, sm: s.sm || s.src })),
+    community: true,
+    category: categoryByKey(p.category).key,
+    creator: p.creatorHandle,
+    createdAt: p.createdAt || null,
+  } as unknown as Listing;
+}
+
+const house: Listing[] = hanxAssets.map((a) => ({ ...a, category: '3d', creator: HOUSE.handle }) as Listing);
+const community = (market.packs as MarketPack[]).map(fromMarket).filter(Boolean) as Listing[];
+
+export const listings: Listing[] = [...house, ...community];
+export const creators: Creator[] = [HOUSE, ...(market.creators as Creator[]).filter((c) => c.handle !== HOUSE.handle)];
+export const creatorByHandle = (h: string) => creators.find((c) => c.handle === h);
+export const listingsBy = (h: string) => listings.filter((l) => l.creator === h);
+export const listingBySlug = (s: string) => listings.find((l) => l.slug === s);
+export const inCategory = (k: string) => listings.filter((l) => l.category === k);
+/** Creators shown publicly: the house plus anyone with at least one live pack. */
+export const activeCreators = creators.filter((c) => c.house || listingsBy(c.handle).length > 0);
+
+// ---------- stats & rankings ----------
+type Stat = { v: number; c: number; v7: number; c7: number; c30: number };
+const stats = market.stats as Record<string, Stat>;
+const zero: Stat = { v: 0, c: 0, v7: 0, c7: 0, c30: 0 };
+export const statOf = (slug: string) => stats[slug] ?? zero;
+const by = (k: keyof Stat) => (a: Listing, b: Listing) => statOf(b.slug)[k] - statOf(a.slug)[k];
+const hasAny = (k: keyof Stat) => listings.some((l) => statOf(l.slug)[k] > 0);
+
+const picks = ((featured.rail as string[]) || []).map(listingBySlug).filter(Boolean) as Listing[];
+const newestFirst = (a: Listing, b: Listing) => +new Date(b.published ?? 0) - +new Date(a.published ?? 0);
+
+export const newest = [...listings].sort(newestFirst);
+export const popular = hasAny('v') ? [...listings].sort(by('v')) : picks.length ? [...picks, ...newest.filter((l) => !picks.includes(l))] : newest;
+export const mostClicked = hasAny('c') ? [...listings].sort((a, b) => statOf(b.slug).c30 - statOf(a.slug).c30 || statOf(b.slug).c - statOf(a.slug).c) : [];
+export const freeListings = listings.filter((l) => !l.priceValue);
+export const paidListings = listings.filter((l) => l.priceValue > 0);
+
+export const assetOfWeek: Listing =
+  (hasAny('v7') ? [...listings].sort(by('v7'))[0] : null) ??
+  listingBySlug((featured as any).heroPack) ??
+  listings[0];
+
+function creatorScore(c: Creator, k: keyof Stat) {
+  return listingsBy(c.handle).reduce((n, l) => n + statOf(l.slug)[k], 0);
+}
+export const creatorOfWeek: Creator = (() => {
+  const pool = activeCreators.filter((c) => !c.house);
+  const scored = [...(pool.length ? pool : activeCreators)].sort((a, b) => creatorScore(b, 'v7') - creatorScore(a, 'v7') || creatorScore(b, 'v') - creatorScore(a, 'v'));
+  return activeCreators.find((c) => c.featured) ?? scored[0] ?? HOUSE;
+})();
+export const creatorTotals = (c: Creator) => ({
+  packs: listingsBy(c.handle).length,
+  views: creatorScore(c, 'v'),
+  clicks: creatorScore(c, 'c'),
+});
+export const marketFetchedAt = market.fetchedAt;

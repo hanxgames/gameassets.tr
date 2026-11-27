@@ -1,33 +1,47 @@
 ---
 import type { Asset } from '../data/site';
+import { creatorByHandle, statOf, type Listing } from '../data/market';
 import { useT, packText, href } from '../i18n';
 import BuyButton from './BuyButton.astro';
-interface Props { asset: Asset; lang?: string; eager?: boolean; headingLevel?: 'h2' | 'h3' }
-const { asset: a, lang = 'en', eager = false, headingLevel = 'h3' } = Astro.props;
+interface Props { asset: Asset | Listing; lang?: string; eager?: boolean; headingLevel?: 'h2' | 'h3' }
+const { asset, lang = 'en', eager = false, headingLevel = 'h3' } = Astro.props;
+const a = asset as Listing;
 const t = useT(lang);
 const H = headingLevel;
 const onSale = a.originalPrice && a.originalPriceValue > a.priceValue;
-const engines = (a.engines as string[]).filter((e) => e !== 'threejs').slice(0, 3);
+const engines = ((a.engines as string[]) || []).filter((e) => e !== 'threejs').slice(0, 3);
 const { short } = packText(lang, a);
-const search = [a.title, a.shortDescription, short, a.series, ...(a.tags as string[]), ...engines].join(' ').toLowerCase();
+const creator = creatorByHandle(a.creator ?? 'hanx-games');
+const price = a.priceValue ? a.price : t('price.free');
+const search = [a.title, a.shortDescription, short, a.series, creator?.name, ...((a.tags as string[]) || []), ...engines].filter(Boolean).join(' ').toLowerCase();
 ---
 <article
   class="pack"
-  data-series={a.series}
+  data-series={a.series ?? ''}
+  data-category={a.category ?? '3d'}
+  data-creator={a.creator ?? 'hanx-games'}
   data-engines={engines.join(' ')}
   data-price={a.priceValue}
   data-models={a.modelCount ?? 0}
+  data-views={statOf(a.slug).v}
   data-date={a.published}
   data-search={search}
 >
   <div class="frame frame--cover">
-    <img src={a.cover.sm} width="630" height="500" alt={t('card.coverAlt', { title: a.title })} loading={eager ? 'eager' : 'lazy'} decoding="async" fetchpriority={eager ? 'high' : 'auto'} />
+    <img src={a.cover.sm} width="630" height="500" alt={t('card.coverAlt', { title: a.title })} loading={eager ? 'eager' : 'lazy'} decoding="async" fetchpriority={eager ? 'high' : 'auto'} referrerpolicy="no-referrer" />
     {onSale && <span class="stamp">-{a.sale?.rate ?? Math.round((1 - a.priceValue / a.originalPriceValue) * 100)}%</span>}
   </div>
   <H><a href={href(lang, `/assets/${a.slug}/`)}>{a.title}</a></H>
+  {creator && <p class="by small"><a href={href(lang, `/creators/${creator.handle}/`)}>{t('card.by', { name: creator.name })}</a></p>}
   <p>{short}</p>
   <div class="pack-foot">
-    <span class="price"><span class="price-figure">{a.price}</span>{onSale && <span class="was small">{a.originalPrice}</span>}</span>
-    <BuyButton asset={a} lang={lang} size="sm" label={t('buy.short')} />
+    <span class="price"><span class="price-figure">{price}</span>{onSale && <span class="was small">{a.originalPrice}</span>}</span>
+    <BuyButton asset={a} lang={lang} size="sm" label={a.priceValue ? t('buy.short') : t('buy.free')} />
   </div>
 </article>
+<style>
+  .by { -webkit-line-clamp: 1; margin-top: calc(-1 * var(--space-xs)); }
+  .by a { position: relative; z-index: var(--z-raised); color: var(--color-muted); text-decoration: none; font-weight: 500; }
+  .by a:hover { color: var(--color-accent-2); text-decoration: underline; }
+  .by a:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+</style>

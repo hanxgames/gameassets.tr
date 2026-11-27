@@ -1,0 +1,85 @@
+---
+import Base from '../layouts/Base.astro';
+import AssetCard from '../components/AssetCard.astro';
+import { absolute, SITE } from '../data/site';
+import { listingsBy, popular, creatorTotals, type Creator } from '../data/market';
+import { useT, href, fmtNum, fmtDate } from '../i18n';
+
+interface Props { lang: string; creator: Creator }
+const { lang, creator: c } = Astro.props;
+const t = useT(lang);
+const L = (p: string) => href(lang, p);
+const packs = popular.filter((l) => l.creator === c.handle);
+const tot = creatorTotals(c);
+const path = `/creators/${c.handle}/`;
+const bio = c.house ? t('about.lead') : c.bio;
+const desc = bio ? t('creator.description', { n: packs.length, name: c.name, bio: bio.slice(0, 120) }) : t('creator.descriptionNoBio', { n: packs.length, name: c.name });
+const website = c.website && /^https?:\/\//.test(c.website) ? c.website : '';
+const twitter = c.twitter ? c.twitter.replace(/^@/, '').replace(/[^A-Za-z0-9_]/g, '') : '';
+const ld = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    url: absolute(L(path)),
+    inLanguage: lang,
+    mainEntity: {
+      '@type': 'Organization',
+      name: c.name,
+      url: absolute(L(path)),
+      ...(c.avatar ? { logo: absolute(c.avatar) } : {}),
+      ...(bio ? { description: bio } : {}),
+      sameAs: [website, twitter && `https://x.com/${twitter}`].filter(Boolean),
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: t('nav.home'), item: absolute(L('/')) },
+      { '@type': 'ListItem', position: 2, name: t('nav.creators'), item: absolute(L('/creators/')) },
+      { '@type': 'ListItem', position: 3, name: c.name, item: absolute(L(path)) },
+    ],
+  },
+];
+---
+<Base lang={lang} path={path} title={t('creator.metaTitle', { name: c.name })} description={desc} image={packs[0]?.cover.src?.startsWith('/') ? packs[0].cover.src : undefined} jsonld={ld} noindex={packs.length === 0}>
+  <header class="listing-head">
+    <div class="container">
+      <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href={L('/')}>{t('nav.home')}</a></li><li><a href={L('/creators/')}>{t('nav.creators')}</a></li><li><span aria-current="page">{c.name}</span></li></ol></nav>
+      <div class="profile">
+        {c.avatar && <img class="avatar" src={c.avatar} alt="" width="120" height="120" referrerpolicy="no-referrer" />}
+        <div class="profile-text">
+          <h1>{c.name}</h1>
+          {bio && <p class="lead">{bio}</p>}
+          <ul class="meta">
+            {c.verified && <li class="badge">{t('creator.verified')}</li>}
+            <li>{t('creator.packsN', { n: packs.length })}</li>
+            {tot.views > 0 && <li>{t('pack.views', { n: fmtNum(lang, tot.views) })}</li>}
+            {c.createdAt && !c.house && <li>{t('creator.since', { date: fmtDate(lang, c.createdAt) })}</li>}
+            {website && <li><a class="link" href={website} target="_blank" rel="noopener nofollow ugc">{t('creator.website')}</a></li>}
+            {twitter && <li><a class="link" href={`https://x.com/${twitter}`} target="_blank" rel="noopener nofollow ugc">@{twitter}</a></li>}
+            {c.house && <li><a class="link" href={L('/about/')}>{t('footer.about')}</a></li>}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div class="container">
+    <section class="section--s">
+      <h2 class="visually-hidden">{t('creator.packsH2', { name: c.name })}</h2>
+      {packs.length > 0
+        ? <div class="pack-grid">{packs.map((a, i) => <AssetCard asset={a} lang={lang} eager={i < 4} headingLevel="h3" />)}</div>
+        : <p class="lead">{t('creator.empty')}</p>}
+    </section>
+  </div>
+</Base>
+<style>
+  .profile { display: flex; gap: var(--space-xl); align-items: center; min-width: 0; }
+  .avatar { width: 120px; height: 120px; flex: none; object-fit: cover; border: var(--rule-bar) solid var(--color-ink); box-shadow: var(--shadow-card); background: var(--color-paper-2); }
+  .profile-text { display: grid; gap: var(--space-sm); min-width: 0; }
+  .profile-text h1 { overflow-wrap: break-word; min-width: 0; }
+  .profile-text .lead { max-width: 60ch; white-space: pre-line; }
+  .meta { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-xs) var(--space-lg); font-size: var(--text-sm); font-weight: 500; align-items: center; }
+  .badge { padding: var(--space-2xs) var(--space-sm); background: var(--color-accent); color: var(--color-accent-ink); border: var(--rule-bar) solid var(--color-ink); }
+  @media (max-width: 40rem) { .profile { flex-direction: column; align-items: start; } .avatar { width: 88px; height: 88px; } }
+</style>

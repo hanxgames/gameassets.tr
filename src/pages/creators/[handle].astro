@@ -1,0 +1,8 @@
+---
+import View from '../../views/Creator.astro';
+import { activeCreators } from '../../data/market';
+export function getStaticPaths() {
+  return activeCreators.map((c) => ({ params: { handle: c.handle }, props: { creator: c } }));
+}
+---
+<View lang="en" creator={Astro.props.creator} />

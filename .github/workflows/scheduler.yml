@@ -1,15 +1,23 @@
-name: Sync scheduler
+name: Scheduler
 
-# Runs every hour and starts the itch.io sync (deploy.yml) at the hours chosen in the
-# admin panel, stored in src/data/schedule.json as Türkiye time (UTC+3).
+# Every 10 minutes:
+#  - rebuilds the site when creators changed something (Firestore meta/site.changedAt
+#    is newer than the last deploy), so new packs go live within minutes;
+#  - rebuilds every 6 hours anyway, so rankings and view counts stay fresh;
+#  - at the hours chosen in the admin panel (src/data/schedule.json, Türkiye time UTC+3)
+#    starts the HanX Games itch.io catalog sync.
 on:
   schedule:
-    - cron: '7 * * * *'
+    - cron: '*/10 * * * *'
   workflow_dispatch:
 
 permissions:
   actions: write
   contents: read
+
+concurrency:
+  group: scheduler
+  cancel-in-progress: false
 
 jobs:
   check:
@@ -19,13 +27,32 @@ jobs:
         with:
           sparse-checkout: src/data/schedule.json
           sparse-checkout-cone-mode: false
-      - name: Start the sync if this hour is scheduled
+      - name: Decide what to run
         env:
           GH_TOKEN: ${{ github.token }}
+          API_KEY: AIzaSyAwUeXOD28AO9HD6YShosP6CDRO1sSOJpE
         run: |
+          MIN=$(date -u +%-M)
           HOUR_TR=$(( ( $(date -u +%-H) + 3 ) % 24 ))
-          RUN=$(node -e "const s=require('./src/data/schedule.json');process.stdout.write(String(s.enabled && (s.hoursTR||[]).includes(Number(process.argv[1]))))" "$HOUR_TR")
-          echo "Türkiye hour: $HOUR_TR, scheduled: $RUN"
-          if [ "$RUN" = "true" ]; then
+          SYNC=$(node -e "const s=require('./src/data/schedule.json');process.stdout.write(String(s.enabled && (s.hoursTR||[]).includes(Number(process.argv[1])) && Number(process.argv[2]) < 10))" "$HOUR_TR" "$MIN")
+          if [ "$SYNC" = "true" ]; then
+            echo "Scheduled catalog sync (Türkiye hour $HOUR_TR)."
             gh workflow run deploy.yml --repo "$GITHUB_REPOSITORY" --ref main -f sync=true -f reason=schedule
+            exit 0
+          fi
+
+          ACTIVE=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow deploy.yml --limit 5 --json status --jq '[.[] | select(.status != "completed")] | length')
+          if [ "$ACTIVE" != "0" ]; then echo "A deploy is already running."; exit 0; fi
+          LAST=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow deploy.yml --limit 1 --json createdAt --jq '.[0].createdAt // "1970-01-01T00:00:00Z"')
+          CHANGED=$(curl -s "https://firestore.googleapis.com/v1/projects/gameassets-tr/databases/(default)/documents/meta/site?key=$API_KEY" | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{try{process.stdout.write(JSON.parse(s).fields.changedAt.timestampValue)}catch{process.stdout.write('1970-01-01T00:00:00Z')}})")
+          NOW=$(date -u +%s)
+          LAST_S=$(date -u -d "$LAST" +%s)
+          CHANGED_S=$(date -u -d "$CHANGED" +%s)
+          echo "Last deploy: $LAST, marketplace changed: $CHANGED"
+          if [ "$CHANGED_S" -gt "$LAST_S" ]; then
+            echo "Marketplace changed since the last deploy."
+            gh workflow run deploy.yml --repo "$GITHUB_REPOSITORY" --ref main -f sync=false -f reason=market
+          elif [ $(( NOW - LAST_S )) -gt 21600 ]; then
+            echo "Six hours since the last deploy: refreshing rankings."
+            gh workflow run deploy.yml --repo "$GITHUB_REPOSITORY" --ref main -f sync=false -f reason=stats
           fi

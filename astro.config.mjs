@@ -23,7 +23,7 @@ export default defineConfig({
   prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
   integrations: [
     sitemap({
-      filter: (page) => !page.includes('/404'),
+      filter: (page) => !page.includes('/404') && !page.includes('/dashboard/'),
       changefreq: 'weekly',
       i18n: {
         defaultLocale: 'en',
@@ -31,7 +31,7 @@ export default defineConfig({
       },
       serialize(item) {
         if (item.url === 'https://gameassets.tr/') item.priority = 1.0;
-        else if (item.url.includes('/assets/') || item.url.includes('/bundles/')) item.priority = 0.9;
+        else if (item.url.includes('/assets/') || item.url.includes('/bundles/') || item.url.includes('/category/')) item.priority = 0.9;
         else item.priority = 0.7;
         item.lastmod = new Date().toISOString();
         return item;

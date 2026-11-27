@@ -1,0 +1,122 @@
+rules_version = '2';
+
+// GameAssets.tr marketplace.
+// Public data (creators, packs, stats, meta) is readable by anyone: the static
+// site is built from it. Everything that proves ownership (verification,
+// store import, slugs, handles) is written only by Cloud Functions.
+service cloud.firestore {
+  match /databases/{db}/documents {
+
+    function signedIn() { return request.auth != null; }
+    function isMe(uid) { return signedIn() && request.auth.uid == uid; }
+    // Admins are listed by e-mail in /admins/{email} (managed from the console).
+    function isAdmin() {
+      return signedIn()
+        && request.auth.token.email_verified == true
+        && exists(/databases/$(db)/documents/admins/$(request.auth.token.email));
+    }
+    function changed() { return request.resource.data.diff(resource.data).affectedKeys(); }
+    function str(v, max) { return v is string && v.size() <= max; }
+    function optStr(d, k, max) { return !(k in d) || str(d[k], max); }
+    function myCreator() { return get(/databases/$(db)/documents/creators/$(request.auth.uid)).data; }
+
+    match /admins/{email} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
+    match /meta/{doc} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /handles/{handle} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /storeUsers/{user} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
+    match /creators/{uid} {
+      allow read: if true;
+      // Profile text the creator may edit. Status, verification and handle are server-side.
+      allow update: if isMe(uid)
+        && resource.data.status in ['active', 'restricted']
+        && changed().hasOnly(['displayName', 'bio', 'website', 'twitter', 'updatedAt'])
+        && str(request.resource.data.displayName, 60)
+        && request.resource.data.displayName.size() >= 2
+        && optStr(request.resource.data, 'bio', 600)
+        && optStr(request.resource.data, 'website', 200)
+        && optStr(request.resource.data, 'twitter', 40);
+      allow update: if isAdmin()
+        && changed().hasOnly(['status', 'adminNote', 'featured', 'updatedAt']);
+      allow create, delete: if false;
+
+      match /private/{doc} {
+        allow read: if isMe(uid) || isAdmin();
+        allow write: if false;
+      }
+    }
+
+    match /packs/{id} {
+      allow read: if true;
+      allow create: if false;
+      // Owners edit the listing text; store data (images, price, description) comes from import.
+      allow update: if signedIn()
+        && resource.data.ownerUid == request.auth.uid
+        && myCreator().status == 'active'
+        && changed().hasOnly(['title', 'category', 'tags', 'short', 'ownerHidden', 'updatedAt'])
+        && str(request.resource.data.title, 80)
+        && request.resource.data.title.size() >= 2
+        && request.resource.data.category in ['3d', '2d', 'ui', 'audio', 'vfx', 'shaders', 'fonts', 'tools']
+        && request.resource.data.tags is list
+        && request.resource.data.tags.size() <= 12
+        && str(request.resource.data.short, 200)
+        && request.resource.data.ownerHidden is bool;
+      allow update: if isAdmin()
+        && changed().hasOnly(['status', 'adminNote', 'featured', 'updatedAt']);
+      allow delete: if isAdmin()
+        || (signedIn() && resource.data.ownerUid == request.auth.uid && myCreator().status in ['active', 'restricted']);
+    }
+
+    // Anonymous view / buy-click counters.
+    //   v, c: all-time views and clicks
+    //   d:    { "<day index since epoch>": { v, c } }, pruned by a scheduled function
+    match /stats/{id} {
+      allow read: if true;
+
+      function today() { return int(request.time.toMillis() / 86400000); }
+      function dayKeys() { return [string(today() - 1), string(today()), string(today() + 1)]; }
+      function dayOk(nd, od, k) {
+        return !(k in nd) || (
+          nd[k] is map
+          && nd[k].keys().hasOnly(['v', 'c'])
+          && nd[k].get('v', 0) <= od.get(k, {}).get('v', 0) + 1
+          && nd[k].get('c', 0) <= od.get(k, {}).get('c', 0) + 1
+        );
+      }
+      function daysOk(nd, od) {
+        return nd is map
+          && nd.diff(od).affectedKeys().hasOnly(dayKeys())
+          && dayOk(nd, od, dayKeys()[0])
+          && dayOk(nd, od, dayKeys()[1])
+          && dayOk(nd, od, dayKeys()[2]);
+      }
+
+      allow create: if request.resource.data.keys().hasOnly(['v', 'c', 'd'])
+        && request.resource.data.get('v', 0) in [0, 1]
+        && request.resource.data.get('c', 0) in [0, 1]
+        && daysOk(request.resource.data.get('d', {}), {});
+      allow update: if changed().hasOnly(['v', 'c', 'd'])
+        && (
+          (request.resource.data.get('v', 0) == resource.data.get('v', 0) + 1 && request.resource.data.get('c', 0) == resource.data.get('c', 0))
+          || (request.resource.data.get('c', 0) == resource.data.get('c', 0) + 1 && request.resource.data.get('v', 0) == resource.data.get('v', 0))
+        )
+        && daysOk(request.resource.data.get('d', {}), resource.data.get('d', {}));
+      allow delete: if false;
+    }
+  }
+}

@@ -1,0 +1,24 @@
+---
+import Base from '../layouts/Base.astro';
+import ListingHero from '../components/ListingHero.astro';
+import { LEGAL, LEGAL_UPDATED } from '../data/legal';
+import { useT, href, fmtDate } from '../i18n';
+
+interface Props { lang: string; doc: 'privacy' | 'terms' }
+const { lang, doc } = Astro.props;
+const t = useT(lang);
+const L = (p: string) => href(lang, p);
+const textLang = lang === 'tr' ? 'tr' : 'en';
+const d = LEGAL[doc][textLang];
+---
+<Base lang={lang} path={`/${doc}/`} title={d.title} description={d.description}>
+  <ListingHero title={d.h1} crumbs={[{ href: L('/'), label: t('nav.home') }, { label: t(`footer.${doc}`) }]}>
+    <p lang={textLang}>{d.lead}</p>
+  </ListingHero>
+  <div class="container">
+    <article class="section--s prose" lang={textLang}>
+      <p class="small">{t('legal.updated', { date: fmtDate(lang, LEGAL_UPDATED) })}</p>
+      {d.sections.map((s) => <><h2>{s.h}</h2>{s.p.map((p) => <p>{p}</p>)}</>)}
+    </article>
+  </div>
+</Base>

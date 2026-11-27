@@ -3,6 +3,8 @@ export function GET() {
     `User-agent: *
 Allow: /
 Disallow: /404/
+Disallow: /dashboard/
+Disallow: /*/dashboard/
 
 Sitemap: https://gameassets.tr/sitemap-index.xml
 `,

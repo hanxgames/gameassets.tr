@@ -6,3 +6,4 @@ dist/
 .hallmark/*
 !.hallmark/log.json
 admin-panel/
+functions/node_modules/

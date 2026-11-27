@@ -1,0 +1,9 @@
+---
+import View from '../../../views/Creator.astro';
+import { OTHER_LOCALES } from '../../../i18n/locales';
+import { activeCreators } from '../../../data/market';
+export function getStaticPaths() {
+  return OTHER_LOCALES.flatMap((l) => activeCreators.map((c) => ({ params: { lang: l.code, handle: c.handle }, props: { creator: c } })));
+}
+---
+<View lang={Astro.params.lang!} creator={Astro.props.creator} />

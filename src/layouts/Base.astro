@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
-import { SITE, seriesOrder, absolute, assets, bundles, minPrice } from '../data/site';
+import { SITE, seriesOrder, absolute } from '../data/site';
+import { CATEGORIES, listings, activeCreators } from '../data/market';
 import { LOCALES, localeOf, localePath, DEFAULT_LOCALE } from '../i18n/locales';
 import { useT, fmtDate } from '../i18n';
 import campaign from '../data/campaign.json';
@@ -32,9 +33,9 @@ const fullTitle = title.includes(SITE.brand) || title.includes(SITE.name) ? titl
 const current = Astro.url.pathname;
 const nav = [
   { href: L('/assets/'), label: t('nav.allPacks') },
+  { href: L('/creators/'), label: t('nav.creators') },
   { href: L('/bundles/'), label: t('nav.bundles') },
-  { href: L('/collections/low-poly/'), label: t('nav.lowPoly') },
-  { href: L('/collections/3d-pixel/'), label: t('nav.pixel') },
+  { href: L('/sell/'), label: t('nav.sell') },
   { href: L('/faq/'), label: t('nav.faq') },
 ];
 const fontFamilies = ['family=Big+Shoulders+Display:wght@800', 'family=Golos+Text:wght@400;500', loc.fonts].filter(Boolean).join('&');
@@ -46,7 +47,7 @@ const org = {
   alternateName: [SITE.brand, SITE.name],
   url: SITE.url,
   logo: absolute('/icon-512.png'),
-  sameAs: [SITE.itch, SITE.twitterUrl],
+  sameAs: [SITE.twitterUrl],
 };
 const website = {
   '@context': 'https://schema.org',
@@ -56,7 +57,7 @@ const website = {
   alternateName: SITE.brand,
   url: SITE.url,
   inLanguage: LOCALES.map((l) => l.hreflang),
-  description: t('site.description', { min: `$${minPrice.toFixed(2)}` }),
+  description: t('site.description'),
   publisher: { '@id': `${SITE.url}/#org` },
   potentialAction: {
     '@type': 'SearchAction',
@@ -109,7 +110,7 @@ const campaignHref = campaign.link ? (campaign.link.startsWith('/') ? localePath
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
-    <link rel="alternate" type="application/rss+xml" title="HanX Assets: new asset packs" href="/rss.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Game Assets: new asset packs" href="/rss.xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -165,9 +166,10 @@ const campaignHref = campaign.link ? (campaign.link.startsWith('/') ? localePath
         <nav aria-label="Shop">
           {nav.slice(0, 3).map((n) => <a href={n.href} aria-current={current.startsWith(n.href) ? 'page' : undefined}>{n.label}</a>)}
         </nav>
-        <a class="wordmark" href={L('/')} aria-label={t('nav.homeAria')}>HanX <b>Assets</b></a>
+        <a class="wordmark" href={L('/')} aria-label={t('nav.homeAria')}>Game <b>Assets</b></a>
         <nav aria-label="Info">
           {nav.slice(3).map((n) => <a href={n.href} aria-current={current.startsWith(n.href) ? 'page' : undefined}>{n.label}</a>)}
+          <a href={L('/dashboard/')} data-account data-signed-in={t('nav.dashboard')}>{t('nav.signIn')}</a>
           {localized && (
             <details class="lang-menu">
               <summary aria-label={t('nav.language')}>{lang.toUpperCase()}</summary>
@@ -182,7 +184,7 @@ const campaignHref = campaign.link ? (campaign.link.startsWith('/') ? localePath
       <div class="mobile-nav" id="mobile-nav">
         <ul class="container">
           {nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
-          <li><a href={SITE.itch} target="_blank" rel="noopener">{t('nav.itch')}</a></li>
+          <li><a href={L('/dashboard/')} data-account data-signed-in={t('nav.dashboard')}>{t('nav.signIn')}</a></li>
         </ul>
       </div>
     </header>
@@ -191,29 +193,31 @@ const campaignHref = campaign.link ? (campaign.link.startsWith('/') ? localePath
 
     <footer class="footer">
       <div class="container">
-        <p class="wordmark-xl" aria-hidden="true">HanX <b>Assets</b></p>
+        <p class="wordmark-xl" aria-hidden="true">Game <b>Assets</b></p>
         <div class="footer-links">
           <div>
-            <p class="footer-head">{t('footer.collections')}</p>
-            <ul>{seriesOrder.map((s) => <li><a href={L(`/collections/${s}/`)}>{t('footer.seriesPacks', { name: t(`series.${s}.name`) })}</a></li>)}</ul>
+            <p class="footer-head">{t('footer.marketplace')}</p>
+            <ul>{CATEGORIES.map((c) => <li><a href={L(`/category/${c.slug}/`)}>{t(`catg.${c.key}.name`)}</a></li>)}</ul>
           </div>
           <div>
-            <p class="footer-head">{t('footer.byEngine')}</p>
+            <p class="footer-head">{t('footer.collections')}</p>
             <ul>
+              {seriesOrder.map((s) => <li><a href={L(`/collections/${s}/`)}>{t('footer.seriesPacks', { name: t(`series.${s}.name`) })}</a></li>)}
+              <li><a href={L('/bundles/')}>{t('footer.bundleDeals')}</a></li>
               <li><a href={L('/engines/unity/')}>{t('footer.unity')}</a></li>
               <li><a href={L('/engines/godot/')}>{t('footer.godot')}</a></li>
-              <li><a href={L('/engines/unreal/')}>{t('footer.unreal')}</a></li>
-              <li><a href={L('/engines/blender/')}>{t('footer.blender')}</a></li>
             </ul>
           </div>
           <div>
             <p class="footer-head">{t('footer.brand')}</p>
             <ul>
-              <li><a href={L('/bundles/')}>{t('footer.bundleDeals')}</a></li>
+              <li><a href={L('/creators/')}>{t('nav.creators')}</a></li>
+              <li><a href={L('/sell/')}>{t('nav.sell')}</a></li>
               <li><a href={L('/faq/')}>{t('nav.faq')}</a></li>
               <li><a href={L('/license/')}>{t('footer.license')}</a></li>
               <li><a href={L('/about/')}>{t('footer.about')}</a></li>
-              <li><a href={SITE.itch} target="_blank" rel="noopener">{t('nav.itch')}</a></li>
+              <li><a href={L('/privacy/')}>{t('footer.privacy')}</a></li>
+              <li><a href={L('/terms/')}>{t('footer.terms')}</a></li>
               <li><a href={SITE.twitterUrl} target="_blank" rel="noopener">X (Twitter)</a></li>
             </ul>
           </div>
@@ -225,7 +229,7 @@ const campaignHref = campaign.link ? (campaign.link.startsWith('/') ? localePath
           </div>
         </div>
         <div class="footer-legal">
-          <span>{t('footer.legal', { year, studio: SITE.studio, packs: assets.length, bundles: bundles.length })}</span>
+          <span>{t('footer.legal', { year, packs: listings.length, creators: activeCreators.length })}</span>
           <span>{t('footer.made')}</span>
         </div>
       </div>
@@ -251,15 +255,40 @@ const campaignHref = campaign.link ? (campaign.link.startsWith('/') ? localePath
       document.addEventListener('click', (e) => { if (langMenu?.open && !langMenu.contains(e.target as Node)) langMenu.open = false; });
       document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && langMenu?.open) { langMenu.open = false; langMenu.querySelector('summary')?.focus(); } });
 
-      // Buy buttons open the itch.io checkout in a centred popup on desktop,
+      // Anonymous view / buy-click counters (no cookies, one count per page per session).
+      const bot = /bot|crawl|spider|slurp|lighthouse|headless/i.test(navigator.userAgent);
+      const track = (slug: string | undefined, field: 'v' | 'c') => {
+        if (!slug || bot || !/^[a-z0-9-]{2,120}$/.test(slug)) return;
+        const key = `ga_${field}_${slug}`;
+        try { if (sessionStorage.getItem(key)) return; sessionStorage.setItem(key, '1'); } catch {}
+        const day = Math.floor(Date.now() / 864e5);
+        const doc = `projects/gameassets-tr/databases/(default)/documents/stats/${slug}`;
+        fetch('https://firestore.googleapis.com/v1/projects/gameassets-tr/databases/(default)/documents:commit?key=AIzaSyAwUeXOD28AO9HD6YShosP6CDRO1sSOJpE', {
+          method: 'POST',
+          keepalive: true,
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ writes: [{ transform: { document: doc, fieldTransforms: [
+            { fieldPath: field, increment: { integerValue: '1' } },
+            { fieldPath: 'd.`' + day + '`.' + field, increment: { integerValue: '1' } },
+          ] } }] }),
+        }).catch(() => {});
+      };
+      const viewed = document.querySelector<HTMLElement>('[data-track-view]');
+      if (viewed) setTimeout(() => track(viewed.dataset.trackView, 'v'), 1500);
+
+      // Signed-in creators see "Dashboard" instead of "Sign in" (flag set by the dashboard).
+      try { if (localStorage.getItem('ga_signed_in') === '1') document.querySelectorAll<HTMLElement>('[data-account]').forEach((a) => (a.textContent = a.dataset.signedIn!)); } catch {}
+
+      // Buy buttons open the creator's checkout in a centred popup on desktop,
       // and navigate normally on phones or when popups are blocked.
       document.addEventListener('click', (ev) => {
         const a = (ev.target as HTMLElement).closest<HTMLAnchorElement>('a[data-buy]');
+        if (a) track(a.dataset.slug, 'c');
         if (!a || ev.metaKey || ev.ctrlKey || ev.shiftKey || window.innerWidth < 900) return;
         const w = 720, h = 760;
         const left = window.screenX + (window.outerWidth - w) / 2;
         const top = window.screenY + (window.outerHeight - h) / 2;
-        const win = window.open(a.dataset.popup || a.href, 'itch_purchase', `width=${w},height=${h},left=${left},top=${top},resizable=yes,scrollbars=yes`);
+        const win = window.open(a.dataset.popup || a.href, 'checkout', `width=${w},height=${h},left=${left},top=${top},resizable=yes,scrollbars=yes`);
         if (win) { ev.preventDefault(); win.focus(); }
       });
     </script>

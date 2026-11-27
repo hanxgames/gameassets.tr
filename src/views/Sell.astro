@@ -1,0 +1,49 @@
+---
+import Base from '../layouts/Base.astro';
+import ListingHero from '../components/ListingHero.astro';
+import { useT, href } from '../i18n';
+
+interface Props { lang: string }
+const { lang } = Astro.props;
+const t = useT(lang);
+const L = (p: string) => href(lang, p);
+const steps = [1, 2, 3].map((i) => ({ t: t(`sell.step${i}.t`), d: t(`sell.step${i}.d`) }));
+const facts = [1, 2, 3, 4].map((i) => ({ q: t(`sell.fact${i}.q`), a: t(`sell.fact${i}.a`) }));
+const howTo = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: t('sell.h1'),
+  inLanguage: lang,
+  step: steps.map((s, i) => ({ '@type': 'HowToStep', position: i + 1, name: s.t, text: s.d })),
+};
+---
+<Base lang={lang} path="/sell/" title={t('sell.title')} description={t('sell.description')} jsonld={[howTo]}>
+  <ListingHero title={t('sell.h1')} crumbs={[{ href: L('/'), label: t('nav.home') }, { label: t('nav.sell') }]}>
+    <p>{t('sell.lead')}</p>
+    <p class="cta"><a class="btn btn--primary" href={L('/dashboard/')} data-account data-signed-in={t('sell.ctaSignedIn')}>{t('sell.cta')}</a></p>
+  </ListingHero>
+  <div class="container">
+    <section class="section--s">
+      <h2>{t('sell.stepsH2')}</h2>
+      <ol class="steps">
+        {steps.map((s, i) => <li><span class="num" aria-hidden="true">{i + 1}</span><h3>{s.t}</h3><p>{s.d}</p></li>)}
+      </ol>
+    </section>
+    <section class="section">
+      <div class="section-head"><h2>{t('sell.factsH2')}</h2></div>
+      <dl class="rows">{facts.map((f) => <div><dt>{f.q}</dt><dd>{f.a}</dd></div>)}</dl>
+      <p class="after"><a class="btn btn--primary" href={L('/dashboard/')} data-account data-signed-in={t('sell.ctaSignedIn')}>{t('sell.cta')}</a></p>
+    </section>
+  </div>
+</Base>
+<style>
+  .cta { margin-top: var(--space-lg); }
+  .steps { list-style: none; margin: var(--space-xl) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap-columns); }
+  .steps li { display: grid; gap: var(--space-sm); align-content: start; padding: var(--space-lg); border: var(--rule-bar) solid var(--color-ink); box-shadow: var(--shadow-card); background: var(--color-paper-2); }
+  .steps li:nth-child(2) { background: var(--color-accent); color: var(--color-accent-ink); }
+  .num { font: var(--display-weight) var(--text-price)/1 var(--font-display); color: var(--color-accent-2); }
+  .steps li:nth-child(2) .num { color: inherit; }
+  .steps h3 { font-size: var(--text-xl); }
+  .after { margin-top: var(--space-2xl); }
+  @media (max-width: 60rem) { .steps { grid-template-columns: minmax(0, 1fr); } }
+</style>

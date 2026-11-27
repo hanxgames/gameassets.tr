@@ -1,0 +1,83 @@
+---
+import Base from '../layouts/Base.astro';
+import ListingHero from '../components/ListingHero.astro';
+import AssetCard from '../components/AssetCard.astro';
+import { absolute, SITE } from '../data/site';
+import { CATEGORIES, inCategory, popular } from '../data/market';
+import { useT, href } from '../i18n';
+
+interface Props { lang: string; cat: (typeof CATEGORIES)[number] }
+const { lang, cat } = Astro.props;
+const t = useT(lang);
+const L = (p: string) => href(lang, p);
+const list = popular.filter((l) => l.category === cat.key);
+const name = t(`catg.${cat.key}.name`);
+const title = t(`catg.${cat.key}.title`);
+const lead = t(`catg.${cat.key}.lead`);
+const path = `/category/${cat.slug}/`;
+const free = list.filter((l) => !l.priceValue).length;
+const ld = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: t('nav.home'), item: absolute(L('/')) },
+      { '@type': 'ListItem', position: 2, name: title, item: absolute(L(path)) },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: title,
+    url: absolute(L(path)),
+    inLanguage: lang,
+    isPartOf: { '@id': `${SITE.url}/#website` },
+    mainEntity: { '@type': 'ItemList', numberOfItems: list.length, itemListElement: list.slice(0, 50).map((a, i) => ({ '@type': 'ListItem', position: i + 1, url: absolute(L(`/assets/${a.slug}/`)), name: a.title })) },
+  },
+];
+---
+<Base lang={lang} path={path} title={t('catpage.metaTitle', { title, n: list.length })} description={t('catpage.description', { n: list.length, name, lead })} jsonld={ld} noindex={list.length === 0}>
+  <ListingHero title={title} crumbs={[{ href: L('/'), label: t('nav.home') }, { href: L('/assets/'), label: t('nav.allPacks') }, { label: name }]}>
+    <p>{lead}</p>
+  </ListingHero>
+  <div class="container">
+    {list.length > 0 && (
+      <div class="cat-tools" role="group" aria-label={t('cat.price')}>
+        <button class="fchip active" type="button" data-price="" aria-pressed="true">{t('cat.all', { n: list.length })}</button>
+        {free > 0 && <button class="fchip" type="button" data-price="free" aria-pressed="false">{t('cat.free')} {free}</button>}
+        {free < list.length && <button class="fchip" type="button" data-price="paid" aria-pressed="false">{t('cat.paid')} {list.length - free}</button>}
+      </div>
+    )}
+    {list.length > 0
+      ? <div class="pack-grid" id="grid">{list.map((a, i) => <AssetCard asset={a} lang={lang} eager={i < 4} headingLevel="h2" />)}</div>
+      : <p class="lead empty">{t('catpage.empty')} <a class="link" href={L('/sell/')}>{t('nav.sell')}</a></p>}
+    <nav class="others" aria-label={t('catpage.others')}>
+      <p class="small">{t('catpage.others')}</p>
+      <ul>{CATEGORIES.filter((c) => c.key !== cat.key).map((c) => <li><a href={L(`/category/${c.slug}/`)}>{t(`catg.${c.key}.name`)} <span class="small">{inCategory(c.key).length}</span></a></li>)}</ul>
+    </nav>
+  </div>
+</Base>
+<style>
+  .cat-tools { display: flex; flex-wrap: wrap; gap: var(--space-xs); padding-block: var(--space-lg); border-bottom: var(--rule-bar) solid var(--color-ink); margin-bottom: var(--space-2xl); }
+  .fchip { min-height: 44px; padding: 0 var(--space-md); border: var(--rule-bar) solid var(--color-ink); border-radius: var(--radius-pill); background: var(--color-paper); color: var(--color-ink); font-size: var(--text-sm); font-weight: 500; cursor: pointer; transition: background-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out); }
+  .fchip:hover { background: var(--color-paper-3); }
+  .fchip.active { background: var(--color-ink); color: var(--color-paper); }
+  .fchip:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
+  .fchip:active { background: var(--color-ink-2); color: var(--color-paper); }
+  .empty { padding-block: var(--space-3xl); }
+  .others { margin-top: var(--section-gap); display: grid; gap: var(--space-sm); }
+  .others ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-xs); }
+  .others a { display: inline-flex; gap: var(--space-xs); align-items: baseline; padding: var(--space-2xs) var(--space-md); border: var(--rule-bar) solid var(--color-ink); font-weight: 500; text-decoration: none; transition: background-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out); }
+  .others a:hover { background: var(--color-ink); color: var(--color-paper); }
+  .others a:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
+  .pack[hidden] { display: none; }
+</style>
+<script>
+  const chips = [...document.querySelectorAll<HTMLButtonElement>('.cat-tools .fchip')];
+  const cards = [...document.querySelectorAll<HTMLElement>('#grid .pack')];
+  chips.forEach((c) => c.addEventListener('click', () => {
+    const want = c.dataset.price;
+    chips.forEach((x) => { x.classList.toggle('active', x === c); x.setAttribute('aria-pressed', String(x === c)); });
+    cards.forEach((k) => { const p = Number(k.dataset.price || 0); k.hidden = want === 'free' ? p > 0 : want === 'paid' ? p === 0 : false; });
+  }));
+</script>
