@@ -350,6 +350,8 @@
   "catg.ui.title": "ゲームUIキット、アイコン、HUDアセット",
   "home.catsH2": "カテゴリーから探す。",
   "nav.signIn": "ログイン",
+  "nav.join": "ログイン / 登録",
+  "nav.joinShort": "登録",
   "sell.step2.t": "itch.ioストアを連携",
   "err.bad-handle": "このIDは使用できません。",
   "catg.vfx.title": "ゲーム用VFX、パーティクル、ビジュアルエフェクト",

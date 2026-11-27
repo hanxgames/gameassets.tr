@@ -350,6 +350,8 @@
   "catg.ui.title": "游戏 UI 套件、图标与 HUD 素材",
   "home.catsH2": "按分类选购。",
   "nav.signIn": "登录",
+  "nav.join": "登录 / 注册",
+  "nav.joinShort": "登录 / 注册",
   "sell.step2.t": "连接你的 itch.io 商店",
   "err.bad-handle": "该用户名无效。",
   "catg.vfx.title": "游戏 VFX、粒子与视觉特效",

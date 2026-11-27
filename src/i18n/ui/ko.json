@@ -350,6 +350,8 @@
   "catg.ui.title": "게임 UI 키트, 아이콘, HUD 에셋",
   "home.catsH2": "카테고리별로 둘러보기.",
   "nav.signIn": "로그인",
+  "nav.join": "로그인 / 가입",
+  "nav.joinShort": "로그인 / 가입",
   "sell.step2.t": "itch.io 스토어 연결",
   "err.bad-handle": "올바르지 않은 핸들입니다.",
   "catg.vfx.title": "게임용 VFX, 파티클, 시각 효과",

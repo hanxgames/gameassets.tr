@@ -169,7 +169,7 @@ const campaignHref = campaign.link ? (campaign.link.startsWith('/') ? localePath
         <a class="wordmark" href={L('/')} aria-label={t('nav.homeAria')}>Game <b>Assets</b></a>
         <nav aria-label="Info">
           {nav.slice(3).map((n) => <a href={n.href} aria-current={current.startsWith(n.href) ? 'page' : undefined}>{n.label}</a>)}
-          <a href={L('/dashboard/')} data-account data-signed-in={t('nav.dashboard')}>{t('nav.signIn')}</a>
+          <a class="join-link" href={L('/dashboard/')} data-account data-signed-in={t('nav.dashboard')}>{t('nav.join')}</a>
           {localized && (
             <details class="lang-menu">
               <summary aria-label={t('nav.language')}>{lang.toUpperCase()}</summary>
@@ -179,12 +179,12 @@ const campaignHref = campaign.link ? (campaign.link.startsWith('/') ? localePath
             </details>
           )}
         </nav>
-        <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav" data-open={t('nav.menu')} data-close={t('nav.close')}>{t('nav.menu')}</button>
+        <a class="join-btn" href={L('/dashboard/')} data-account data-signed-in={t('nav.dashboard')}>{t('nav.joinShort')}</a>
+        <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav" data-open={t('nav.menu')} data-close={t('nav.close')}><svg class="mi-open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16" /></svg><svg class="mi-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" /></svg><span class="visually-hidden" data-menu-label>{t('nav.menu')}</span></button>
       </div>
       <div class="mobile-nav" id="mobile-nav">
         <ul class="container">
           {nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
-          <li><a href={L('/dashboard/')} data-account data-signed-in={t('nav.dashboard')}>{t('nav.signIn')}</a></li>
         </ul>
       </div>
     </header>
@@ -241,7 +241,7 @@ const campaignHref = campaign.link ? (campaign.link.startsWith('/') ? localePath
       btn?.addEventListener('click', () => {
         const open = menu!.classList.toggle('open');
         btn.setAttribute('aria-expanded', String(open));
-        btn.textContent = open ? btn.dataset.close! : btn.dataset.open!;
+        btn.querySelector('[data-menu-label]')!.textContent = open ? btn.dataset.close! : btn.dataset.open!;
       });
 
       // Remember a language picked by hand, so the browser-language redirect never overrides it.

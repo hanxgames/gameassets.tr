@@ -350,6 +350,8 @@
   "catg.ui.title": "Bộ UI, icon và asset HUD cho game",
   "home.catsH2": "Mua theo danh mục.",
   "nav.signIn": "Đăng nhập",
+  "nav.join": "Đăng nhập / Đăng ký",
+  "nav.joinShort": "Đăng ký",
   "sell.step2.t": "Kết nối cửa hàng itch.io",
   "err.bad-handle": "Tên định danh đó không hợp lệ.",
   "catg.vfx.title": "VFX, hạt và hiệu ứng hình ảnh cho game",

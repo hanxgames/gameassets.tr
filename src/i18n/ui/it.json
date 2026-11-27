@@ -350,6 +350,8 @@
   "catg.ui.title": "Kit UI, icone e asset HUD per giochi",
   "home.catsH2": "Acquista per categoria.",
   "nav.signIn": "Accedi",
+  "nav.join": "Accedi / Iscriviti",
+  "nav.joinShort": "Iscriviti",
   "sell.step2.t": "Collega il tuo negozio itch.io",
   "err.bad-handle": "Questo handle non è valido.",
   "catg.vfx.title": "VFX, particelle ed effetti visivi per giochi",

@@ -350,6 +350,8 @@
   "catg.ui.title": "Oyun Arayüz Kitleri, İkonlar ve HUD Asset'leri",
   "home.catsH2": "Kategoriye göre keşfet.",
   "nav.signIn": "Giriş yap",
+  "nav.join": "Giriş / Üye ol",
+  "nav.joinShort": "Giriş / Üye ol",
   "sell.step2.t": "itch.io mağazanı bağla",
   "err.bad-handle": "Bu kullanıcı adı geçerli değil.",
   "catg.vfx.title": "Oyunlar için VFX, Parçacıklar ve Görsel Efektler",

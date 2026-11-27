@@ -350,6 +350,8 @@
   "catg.ui.title": "UI Kit, Ikon & Aset HUD untuk Game",
   "home.catsH2": "Belanja per kategori.",
   "nav.signIn": "Masuk",
+  "nav.join": "Masuk / Daftar",
+  "nav.joinShort": "Daftar",
   "sell.step2.t": "Hubungkan toko itch.io Anda",
   "err.bad-handle": "Handle itu tidak valid.",
   "catg.vfx.title": "VFX, Partikel & Efek Visual untuk Game",

@@ -350,6 +350,8 @@
   "catg.ui.title": "UI-киты, иконки и HUD для игр",
   "home.catsH2": "Покупки по категориям.",
   "nav.signIn": "Войти",
+  "nav.join": "Вход / Регистрация",
+  "nav.joinShort": "Регистрация",
   "sell.step2.t": "Подключите магазин itch.io",
   "err.bad-handle": "Недопустимый хэндл.",
   "catg.vfx.title": "VFX, частицы и визуальные эффекты для игр",

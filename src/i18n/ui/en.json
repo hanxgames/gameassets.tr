@@ -350,6 +350,8 @@
   "catg.ui.title": "Game UI Kits, Icons & HUD Assets",
   "home.catsH2": "Shop by category.",
   "nav.signIn": "Sign in",
+  "nav.join": "Sign in / Join",
+  "nav.joinShort": "Sign in / Join",
   "sell.step2.t": "Connect your itch.io store",
   "err.bad-handle": "That handle isn’t valid.",
   "catg.vfx.title": "VFX, Particles & Visual Effects for Games",
