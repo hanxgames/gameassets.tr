@@ -259,8 +259,8 @@ export const onHouseOverrideWritten = onDocumentWritten('houseOverrides/{slug}',
   if (Boolean(before?.hidden) !== Boolean(after?.hidden)) await touchSite('house');
 });
 
-// Site rebuild watcher: functions/deploy-watch.js. Re-export it here once the
-// GITHUB_DEPLOY_TOKEN secret is set:  export { deployWatch } from './deploy-watch.js';
+// Site rebuild watcher (every 5 minutes), see functions/deploy-watch.js.
+export { deployWatch } from './deploy-watch.js';
 
 // ---------- schedule ----------
 export const nightly = onSchedule({ schedule: 'every 2 hours', timeZone: 'Europe/Istanbul', timeoutSeconds: 540 }, async () => {

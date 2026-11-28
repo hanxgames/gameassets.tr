@@ -24,7 +24,7 @@ const gh = (path, init = {}) =>
     },
   });
 
-export const deployWatch = onSchedule({ schedule: 'every 5 minutes', timeZone: 'Europe/Istanbul', secrets: [GITHUB_DEPLOY_TOKEN], timeoutSeconds: 60, retryCount: 0 }, async () => {
+export const deployWatch = onSchedule({ region: 'europe-west1', schedule: 'every 5 minutes', timeZone: 'Europe/Istanbul', secrets: [GITHUB_DEPLOY_TOKEN], timeoutSeconds: 60, retryCount: 0 }, async () => {
   const [site, state, runsRes, schedRes] = await Promise.all([
     db.doc('meta/site').get(),
     db.doc('meta/deploy').get(),
