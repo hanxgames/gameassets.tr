@@ -535,5 +535,7 @@
   "dash.houseNote": "HanX Games paketleri itch.io senkronuyla otomatik eklenir. Buradan gizleyip gösterebilirsin.",
   "dash.hiddenByPanel": "Yönetim panelinden gizli",
   "dash.openStore": "itch.io’da aç",
-  "dash.viewPage": "Sayfayı gör"
+  "dash.viewPage": "Sayfayı gör",
+  "nav.themeDark": "Koyu tema",
+  "nav.themeLight": "Açık tema"
 }

@@ -535,5 +535,7 @@
   "dash.houseNote": "HanX Games 的资源包通过 itch.io 同步自动添加。可在此隐藏或显示。",
   "dash.hiddenByPanel": "已在管理面板中隐藏",
   "dash.openStore": "在 itch.io 打开",
-  "dash.viewPage": "查看页面"
+  "dash.viewPage": "查看页面",
+  "nav.themeDark": "深色主题",
+  "nav.themeLight": "浅色主题"
 }

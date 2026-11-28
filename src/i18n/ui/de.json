@@ -535,5 +535,7 @@
   "dash.houseNote": "HanX-Games-Packs kommen automatisch aus dem itch.io-Abgleich. Hier kannst du sie aus- oder einblenden.",
   "dash.hiddenByPanel": "Im Admin-Panel ausgeblendet",
   "dash.openStore": "Auf itch.io öffnen",
-  "dash.viewPage": "Seite ansehen"
+  "dash.viewPage": "Seite ansehen",
+  "nav.themeDark": "Dunkles Design",
+  "nav.themeLight": "Helles Design"
 }

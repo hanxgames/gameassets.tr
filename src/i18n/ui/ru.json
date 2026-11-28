@@ -535,5 +535,7 @@
   "dash.houseNote": "Паки HanX Games добавляются автоматически из синхронизации с itch.io. Здесь их можно скрыть или показать.",
   "dash.hiddenByPanel": "Скрыто в админ-панели",
   "dash.openStore": "Открыть на itch.io",
-  "dash.viewPage": "Открыть страницу"
+  "dash.viewPage": "Открыть страницу",
+  "nav.themeDark": "Тёмная тема",
+  "nav.themeLight": "Светлая тема"
 }

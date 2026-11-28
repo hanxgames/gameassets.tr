@@ -535,5 +535,7 @@
   "dash.houseNote": "Pack của HanX Games được thêm tự động từ đồng bộ itch.io. Ẩn hoặc hiện chúng tại đây.",
   "dash.hiddenByPanel": "Đã ẩn từ bảng quản trị",
   "dash.openStore": "Mở trên itch.io",
-  "dash.viewPage": "Xem trang"
+  "dash.viewPage": "Xem trang",
+  "nav.themeDark": "Giao diện tối",
+  "nav.themeLight": "Giao diện sáng"
 }

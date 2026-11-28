@@ -535,5 +535,7 @@
   "dash.houseNote": "HanX Games 팩은 itch.io 동기화로 자동 추가됩니다. 여기서 숨기거나 표시할 수 있습니다.",
   "dash.hiddenByPanel": "관리자 패널에서 숨김",
   "dash.openStore": "itch.io에서 열기",
-  "dash.viewPage": "페이지 보기"
+  "dash.viewPage": "페이지 보기",
+  "nav.themeDark": "다크 테마",
+  "nav.themeLight": "라이트 테마"
 }

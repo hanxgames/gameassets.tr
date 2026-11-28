@@ -535,5 +535,7 @@
   "dash.houseNote": "I pack di HanX Games arrivano in automatico dalla sincronizzazione con itch.io. Qui puoi nasconderli o mostrarli.",
   "dash.hiddenByPanel": "Nascosto dal pannello admin",
   "dash.openStore": "Apri su itch.io",
-  "dash.viewPage": "Vedi pagina"
+  "dash.viewPage": "Vedi pagina",
+  "nav.themeDark": "Tema scuro",
+  "nav.themeLight": "Tema chiaro"
 }

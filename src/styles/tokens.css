@@ -19,7 +19,20 @@
   --tracking-display: 0.015em; --display-weight: 800;
   --color-on-accent-2: oklch(94% 0.040 85); --color-scrim: oklch(20% 0.070 145 / 0.92);
   --shadow-press: 1px 1px 0 var(--color-ink); --nav-height: 76px;
+  --color-band: var(--color-ink); --color-on-band: var(--color-paper);
   --text-poster: clamp(3.5rem, 7.5vw, 8.5rem); --text-price: clamp(3rem, 6vw, 6rem);
+}
+/* Dark theme: picked from the header toggle and remembered in localStorage (ga_theme). Same brand hues, re-stepped for a dark surface. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-paper: oklch(19% 0.025 150); --color-paper-2: oklch(23% 0.030 150); --color-paper-3: oklch(28% 0.035 150);
+  --color-ink: oklch(93% 0.035 85); --color-ink-2: oklch(85% 0.035 85); --color-muted: oklch(75% 0.035 110);
+  --color-rule: oklch(74% 0.16 350); --color-accent: oklch(82% 0.20 130); --color-accent-2: oklch(74% 0.16 350);
+  --color-accent-ink: oklch(20% 0.070 145); --color-focus: oklch(82% 0.20 130);
+  --color-on-accent-2: oklch(18% 0.050 350); --color-scrim: oklch(12% 0.030 150 / 0.92);
+  --color-error: oklch(72% 0.17 27); --color-success: oklch(76% 0.14 150);
+  --shadow-card: 4px 4px 0 oklch(9% 0.020 150); --shadow-press: 1px 1px 0 oklch(9% 0.020 150);
+  --color-band: oklch(13% 0.025 150); --color-on-band: var(--color-ink);
 }
 /* Per-script font stacks: Big Shoulders Display and Golos Text cover Latin and Cyrillic body text; other scripts fall back glyph by glyph to a face loaded only on that locale. */
 :root:lang(ru) { --font-display: "Big Shoulders Display", "Oswald", Impact, sans-serif; }

@@ -240,12 +240,16 @@ const privacy = `<a class="link" href="${L('/privacy/')}">${t('footer.privacy')}
   .preview { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: start; gap: var(--space-xl); padding-top: var(--space-md); border-top: var(--rule-bar) solid var(--color-ink); }
   .pv-fields { display: grid; gap: var(--space-md); }
   .packs { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
-  .packs :global(th), .packs :global(td) { text-align: left; padding: var(--space-sm); border-bottom: var(--rule-hair) solid var(--color-ink); vertical-align: top; }
+  .packs :global(th), .packs :global(td) { text-align: left; padding: var(--space-sm) var(--space-xs); border-bottom: var(--rule-hair) solid var(--color-ink); vertical-align: top; }
   .packs th { font-weight: 500; color: var(--color-muted); }
   .packs :global(td.num) { font-variant-numeric: tabular-nums; }
-  .packs :global(.pk) { display: flex; gap: var(--space-sm); align-items: center; min-width: 12rem; }
+  .packs :global(.pk) { display: flex; gap: var(--space-sm); align-items: center; min-width: 0; }
+  .packs :global(.pk > div) { min-width: 0; overflow-wrap: anywhere; }
   .packs :global(.pk img) { width: 64px; aspect-ratio: 315 / 250; object-fit: cover; border: var(--rule-hair) solid var(--color-ink); }
-  .packs :global(.acts) { display: flex; flex-wrap: wrap; gap: var(--space-xs);  flex-wrap: nowrap;}
+  /* Desktop: actions stack in one narrow column so the table never needs a sideways scroll. */
+  .packs :global(.acts) { display: grid; gap: var(--space-2xs); justify-items: stretch; }
+  .packs :global(.acts .btn) { justify-content: center; padding-inline: var(--space-xs); }
+  .packs th { white-space: normal; }
   .packs :global(.edit-row td) { background: var(--color-paper-2); }
   .packs th .sort { padding: 0; border: 0; background: none; color: inherit; font: inherit; cursor: pointer; text-align: left; }
   .packs th .sort:hover { color: var(--color-ink); text-decoration: underline; }
@@ -256,7 +260,7 @@ const privacy = `<a class="link" href="${L('/privacy/')}">${t('footer.privacy')}
   .packs :global(.pick-btn) { padding: 0; border: 0; background: none; color: var(--color-ink); font: inherit; font-weight: 500; text-align: left; cursor: pointer; text-decoration: underline; text-decoration-color: var(--color-accent-2); text-decoration-thickness: 2px; }
   .packs :global(.pick-btn:hover) { color: var(--color-accent-2); }
   .packs :global(.pick-btn:focus-visible) { outline: 2px solid var(--color-focus); outline-offset: 2px; }
-  .packs :global(.spark) { display: block; width: 96px; height: 28px; color: var(--color-accent-2); }
+  .packs :global(.spark) { display: block; width: 72px; height: 28px; color: var(--color-accent-2); }
   .packs :global(.muted) { color: var(--color-muted); }
   .st-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-md); }
   .st-controls { display: flex; flex-wrap: wrap; gap: var(--space-sm); align-items: center; }
@@ -288,7 +292,7 @@ const privacy = `<a class="link" href="${L('/privacy/')}">${t('footer.privacy')}
   .chart-box :global(.hit) { fill: transparent; cursor: default; }
   .chart-tip { position: absolute; z-index: var(--z-raised); pointer-events: none; padding: var(--space-2xs) var(--space-sm); background: var(--color-ink); color: var(--color-paper); font-size: var(--text-xs); white-space: nowrap; translate: -50% -100%; }
   /* Phones: each pack becomes a card with its numbers in a 2 x 2 grid. */
-  @media (max-width: 50rem) {
+  @media (max-width: 64rem) {
     .packs thead { display: none; }
     .packs :global(tbody tr:not(.edit-row)) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-xs) var(--space-sm); padding-block: var(--space-md); border-bottom: var(--rule-hair) solid var(--color-ink); }
     .packs :global(tbody td) { padding: 0; border: 0; min-width: 0; }

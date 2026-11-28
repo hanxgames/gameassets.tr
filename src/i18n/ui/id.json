@@ -535,5 +535,7 @@
   "dash.houseNote": "Pack HanX Games ditambahkan otomatis dari sinkronisasi itch.io. Sembunyikan atau tampilkan di sini.",
   "dash.hiddenByPanel": "Disembunyikan dari panel admin",
   "dash.openStore": "Buka di itch.io",
-  "dash.viewPage": "Lihat halaman"
+  "dash.viewPage": "Lihat halaman",
+  "nav.themeDark": "Tema gelap",
+  "nav.themeLight": "Tema terang"
 }
