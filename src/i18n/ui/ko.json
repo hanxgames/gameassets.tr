@@ -537,5 +537,8 @@
   "dash.openStore": "itch.io에서 열기",
   "dash.viewPage": "페이지 보기",
   "nav.themeDark": "다크 테마",
-  "nav.themeLight": "라이트 테마"
+  "nav.themeLight": "라이트 테마",
+  "catg.games.name": "게임",
+  "catg.games.title": "에셋 제작자의 인디 게임",
+  "catg.games.lead": "Game Assets 제작자들이 만든 게임을 플레이하고, 게임에 쓰인 에셋도 확인해 보세요."
 }

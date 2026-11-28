@@ -30,7 +30,7 @@ const ld = {
         const tot = creatorTotals(c);
         return (
           <li class="creator-card">
-            <div class="covers" aria-hidden="true">
+            <div class={`covers covers-${Math.min(packs.length, 3)}`} aria-hidden="true">
               {packs.slice(0, 3).map((p) => <img src={p.cover.sm} alt="" width="630" height="500" loading="lazy" decoding="async" referrerpolicy="no-referrer" />)}
             </div>
             <div class="creator-body">
@@ -54,6 +54,11 @@ const ld = {
   .covers { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) minmax(0, 1fr); aspect-ratio: 16 / 9; gap: 2px; background: var(--color-ink); border-bottom: var(--rule-bar) solid var(--color-ink); overflow: hidden; }
   .covers img { width: 100%; height: 100%; object-fit: cover; background: var(--color-paper-3); }
   .covers img:first-child { grid-row: span 2; }
+  /* One or two packs: let the covers fill the frame instead of leaving empty cells. */
+  .covers-1 { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); }
+  .covers-1 img:first-child { grid-row: auto; }
+  .covers-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: minmax(0, 1fr); }
+  .covers-2 img:first-child { grid-row: auto; }
   .creator-body { display: flex; gap: var(--space-md); align-items: center; padding: var(--space-md); min-width: 0; }
   .avatar { width: 56px; height: 56px; object-fit: cover; border: var(--rule-bar) solid var(--color-ink); }
   .creator-body h2 { font-size: var(--text-xl); overflow-wrap: break-word; min-width: 0; }

@@ -16,6 +16,7 @@ export const CATEGORIES = [
   { key: 'shaders', slug: 'shaders-materials' },
   { key: 'fonts', slug: 'fonts' },
   { key: 'tools', slug: 'tools' },
+  { key: 'games', slug: 'games' },
 ] as const;
 export type CategoryKey = (typeof CATEGORIES)[number]['key'];
 export const categoryBySlug = (s: string) => CATEGORIES.find((c) => c.slug === s);

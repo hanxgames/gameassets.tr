@@ -101,7 +101,7 @@ service cloud.firestore {
         && changed().hasOnly(['title', 'category', 'tags', 'short', 'ownerHidden', 'updatedAt'])
         && str(request.resource.data.title, 80)
         && request.resource.data.title.size() >= 2
-        && request.resource.data.category in ['3d', '2d', 'ui', 'audio', 'vfx', 'shaders', 'fonts', 'tools']
+        && request.resource.data.category in ['3d', '2d', 'ui', 'audio', 'vfx', 'shaders', 'fonts', 'tools', 'games']
         && request.resource.data.tags is list
         && request.resource.data.tags.size() <= 12
         && str(request.resource.data.short, 200)

@@ -537,5 +537,8 @@
   "dash.openStore": "Open on itch.io",
   "dash.viewPage": "View page",
   "nav.themeDark": "Dark theme",
-  "nav.themeLight": "Light theme"
+  "nav.themeLight": "Light theme",
+  "catg.games.name": "Games",
+  "catg.games.title": "Indie Games from Asset Creators",
+  "catg.games.lead": "Games made by the creators on Game Assets: play them, then grab the assets they are built with."
 }

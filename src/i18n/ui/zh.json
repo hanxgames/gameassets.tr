@@ -537,5 +537,8 @@
   "dash.openStore": "在 itch.io 打开",
   "dash.viewPage": "查看页面",
   "nav.themeDark": "深色主题",
-  "nav.themeLight": "浅色主题"
+  "nav.themeLight": "浅色主题",
+  "catg.games.name": "游戏",
+  "catg.games.title": "资源创作者的独立游戏",
+  "catg.games.lead": "Game Assets 创作者制作的游戏：先玩一玩，再看看它们用到的资源。"
 }

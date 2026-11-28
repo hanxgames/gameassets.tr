@@ -138,6 +138,9 @@ export async function readPack(user, slug) {
   };
   const short = (meta(html, 'og:description') || meta(html, 'description') || strip(desc).slice(0, 180)).slice(0, 200);
   const title = decode(String(data.title || slug)).trim().slice(0, 80);
+  // itch.io's info table: asset and tool pages carry a "Category" row; game pages instead list genre / platforms.
+  const infoCategory = (html.match(/<td>Category<\/td>\s*<td>(?:<a[^>]*>)?([^<]+)/) || [])[1] || '';
+  const isGame = !infoCategory && /<td>(Genre|Platforms)<\/td>/.test(html);
   return {
     storeId: String(data.id),
     storeUser: user,
@@ -149,7 +152,7 @@ export async function readPack(user, slug) {
     short,
     descriptionHtml: cleanDescription(desc),
     tags,
-    suggestedCategory: guessCategory(tags, `${title} ${short}`),
+    suggestedCategory: isGame ? 'games' : /tool/i.test(infoCategory) ? 'tools' : guessCategory(tags, `${title} ${short}`),
     price: data.price || 'Free',
     priceValue: money(data.price),
     originalPrice: data.original_price || null,

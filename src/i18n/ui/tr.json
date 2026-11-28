@@ -537,5 +537,8 @@
   "dash.openStore": "itch.io’da aç",
   "dash.viewPage": "Sayfayı gör",
   "nav.themeDark": "Koyu tema",
-  "nav.themeLight": "Açık tema"
+  "nav.themeLight": "Açık tema",
+  "catg.games.name": "Oyunlar",
+  "catg.games.title": "Asset Üreticilerinden Bağımsız Oyunlar",
+  "catg.games.lead": "Game Assets üreticilerinin yaptığı oyunlar: oyna, sonra o oyunlarda kullanılan asset'lere göz at."
 }

@@ -537,5 +537,8 @@
   "dash.openStore": "Abrir en itch.io",
   "dash.viewPage": "Ver página",
   "nav.themeDark": "Tema oscuro",
-  "nav.themeLight": "Tema claro"
+  "nav.themeLight": "Tema claro",
+  "catg.games.name": "Juegos",
+  "catg.games.title": "Juegos indie de creadores de assets",
+  "catg.games.lead": "Juegos hechos por los creadores de Game Assets: juégalos y descubre los assets con los que están hechos."
 }

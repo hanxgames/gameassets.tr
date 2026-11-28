@@ -537,5 +537,8 @@
   "dash.openStore": "itch.io で開く",
   "dash.viewPage": "ページを見る",
   "nav.themeDark": "ダークテーマ",
-  "nav.themeLight": "ライトテーマ"
+  "nav.themeLight": "ライトテーマ",
+  "catg.games.name": "ゲーム",
+  "catg.games.title": "アセット制作者のインディーゲーム",
+  "catg.games.lead": "Game Assets のクリエイターが作ったゲーム。遊んでから、使われているアセットもチェックしよう。"
 }

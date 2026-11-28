@@ -537,5 +537,8 @@
   "dash.openStore": "Открыть на itch.io",
   "dash.viewPage": "Открыть страницу",
   "nav.themeDark": "Тёмная тема",
-  "nav.themeLight": "Светлая тема"
+  "nav.themeLight": "Светлая тема",
+  "catg.games.name": "Игры",
+  "catg.games.title": "Инди-игры от авторов ассетов",
+  "catg.games.lead": "Игры авторов Game Assets: сыграйте, а затем посмотрите ассеты, из которых они сделаны."
 }

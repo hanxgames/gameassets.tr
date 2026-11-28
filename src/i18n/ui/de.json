@@ -537,5 +537,8 @@
   "dash.openStore": "Auf itch.io öffnen",
   "dash.viewPage": "Seite ansehen",
   "nav.themeDark": "Dunkles Design",
-  "nav.themeLight": "Helles Design"
+  "nav.themeLight": "Helles Design",
+  "catg.games.name": "Spiele",
+  "catg.games.title": "Indie-Spiele von Asset-Erstellern",
+  "catg.games.lead": "Spiele der Ersteller auf Game Assets: spiel sie und sieh dir die Assets an, mit denen sie gebaut sind."
 }

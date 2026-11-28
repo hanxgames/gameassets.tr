@@ -537,5 +537,8 @@
   "dash.openStore": "Mở trên itch.io",
   "dash.viewPage": "Xem trang",
   "nav.themeDark": "Giao diện tối",
-  "nav.themeLight": "Giao diện sáng"
+  "nav.themeLight": "Giao diện sáng",
+  "catg.games.name": "Trò chơi",
+  "catg.games.title": "Game indie từ các nhà tạo asset",
+  "catg.games.lead": "Game do các nhà sáng tạo trên Game Assets làm ra: chơi thử, rồi xem các asset được dùng trong đó."
 }

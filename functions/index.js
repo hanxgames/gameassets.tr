@@ -25,7 +25,7 @@ initializeApp();
 const db = getFirestore();
 setGlobalOptions({ region: 'europe-west1', maxInstances: 10, memory: '256MiB' });
 
-const CATEGORIES = ['3d', '2d', 'ui', 'audio', 'vfx', 'shaders', 'fonts', 'tools'];
+const CATEGORIES = ['3d', '2d', 'ui', 'audio', 'vfx', 'shaders', 'fonts', 'tools', 'games'];
 const RESERVED_HANDLES = new Set([
   'hanx-games', 'hanx', 'admin', 'administrator', 'gameassets', 'game-assets', 'support', 'help', 'about', 'assets',
   'creators', 'creator', 'dashboard', 'join', 'login', 'signup', 'sell', 'search', 'category', 'categories', 'bundles',
@@ -258,6 +258,9 @@ export const onHouseOverrideWritten = onDocumentWritten('houseOverrides/{slug}',
   const after = event.data?.after?.data();
   if (Boolean(before?.hidden) !== Boolean(after?.hidden)) await touchSite('house');
 });
+
+// Site rebuild watcher: functions/deploy-watch.js. Re-export it here once the
+// GITHUB_DEPLOY_TOKEN secret is set:  export { deployWatch } from './deploy-watch.js';
 
 // ---------- schedule ----------
 export const nightly = onSchedule({ schedule: 'every 2 hours', timeZone: 'Europe/Istanbul', timeoutSeconds: 540 }, async () => {

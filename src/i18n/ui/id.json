@@ -537,5 +537,8 @@
   "dash.openStore": "Buka di itch.io",
   "dash.viewPage": "Lihat halaman",
   "nav.themeDark": "Tema gelap",
-  "nav.themeLight": "Tema terang"
+  "nav.themeLight": "Tema terang",
+  "catg.games.name": "Game",
+  "catg.games.title": "Game Indie dari Pembuat Aset",
+  "catg.games.lead": "Game buatan para kreator di Game Assets: mainkan, lalu lihat aset yang dipakai di dalamnya."
 }
