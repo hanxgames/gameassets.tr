@@ -1,5 +1,6 @@
 import catalog from './catalog.json';
 import hidden from './hidden.json';
+import market from './market.json';
 
 export type Asset = (typeof catalog.assets)[number];
 export type Bundle = (typeof catalog.bundles)[number];
@@ -17,8 +18,9 @@ export const SITE = {
     'Game assets from independent creators: 3D models, 2D art, UI, audio, VFX, shaders, fonts and tools for Unity, Godot, Unreal and Blender.',
 };
 
-/** Pack slugs hidden from the site from the admin panel (src/data/hidden.json). */
-const hiddenSlugs = new Set<string>(hidden as string[]);
+/** HanX pack slugs hidden from the admin panel (src/data/hidden.json) or from the HanX account's dashboard (Firestore). */
+export const panelHidden = new Set<string>(hidden as string[]);
+const hiddenSlugs = new Set<string>([...panelHidden, ...(((market as { houseHidden?: string[] }).houseHidden) ?? [])]);
 export const assets: Asset[] = catalog.assets.filter((a) => !hiddenSlugs.has(a.slug));
 export const bundles: Bundle[] = catalog.bundles
   .map((b) => ({ ...b, members: b.members.filter((s) => !hiddenSlugs.has(s)) }))

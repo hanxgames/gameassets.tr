@@ -45,7 +45,7 @@ async function list(collection) {
 }
 
 async function main() {
-  const [creators, packs, stats] = await Promise.all([list('creators'), list('packs'), list('stats')]);
+  const [creators, packs, stats, overrides] = await Promise.all([list('creators'), list('packs'), list('stats'), list('houseOverrides')]);
   const today = Math.floor(Date.now() / 864e5);
   const sumDays = (d = {}, days, key) =>
     Object.entries(d).reduce((n, [k, v]) => (Number(k) > today - days ? n + (Number(v?.[key]) || 0) : n), 0);
@@ -53,7 +53,7 @@ async function main() {
     stats.map((s) => [s.id, { v: s.v || 0, c: s.c || 0, v7: sumDays(s.d, 7, 'v'), c7: sumDays(s.d, 7, 'c'), c30: sumDays(s.d, 30, 'c') }]),
   );
   const publicCreators = creators
-    .filter((c) => c.handle && c.status !== 'banned' && c.status !== 'suspended')
+    .filter((c) => c.handle && !c.house && c.status !== 'banned' && c.status !== 'suspended')
     .map((c) => ({
       uid: c.id,
       handle: c.handle,
@@ -70,7 +70,8 @@ async function main() {
   const publicPacks = packs
     .filter((p) => p.status === 'published' && !p.ownerHidden && !p.storeMissing && live.has(p.ownerUid))
     .map(({ ownerUid, adminNote, refreshedAt, storeMissing, ownerHidden, status, ...p }) => ({ ...p, creatorUid: ownerUid }));
-  const data = { fetchedAt: new Date().toISOString(), creators: publicCreators, packs: publicPacks, stats: statMap };
+  const houseHidden = overrides.filter((o) => o.hidden === true).map((o) => o.id);
+  const data = { fetchedAt: new Date().toISOString(), creators: publicCreators, packs: publicPacks, stats: statMap, houseHidden };
   await writeFile(OUT, JSON.stringify(data, null, 1));
   console.log(`✔ market.json: ${publicCreators.length} creators, ${publicPacks.length} packs, ${stats.length} stat docs`);
 }
@@ -79,7 +80,7 @@ main().catch(async (e) => {
   console.error('✗ market fetch failed:', e.message);
   if (process.env.MARKET_OPTIONAL) {
     const prev = await readFile(OUT, 'utf8').catch(() => null);
-    if (!prev) await writeFile(OUT, JSON.stringify({ fetchedAt: null, creators: [], packs: [], stats: {} }));
+    if (!prev) await writeFile(OUT, JSON.stringify({ fetchedAt: null, creators: [], packs: [], stats: {}, houseHidden: [] }));
     process.exit(0);
   }
   process.exit(1);

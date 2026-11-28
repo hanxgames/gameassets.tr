@@ -3,8 +3,9 @@ import type { Asset } from '../data/site';
 import { creatorByHandle, statOf, type Listing } from '../data/market';
 import { useT, packText, href } from '../i18n';
 import BuyButton from './BuyButton.astro';
-interface Props { asset: Asset | Listing; lang?: string; eager?: boolean; headingLevel?: 'h2' | 'h3' }
-const { asset, lang = 'en', eager = false, headingLevel = 'h3' } = Astro.props;
+/** compact: market grid card (cover, price tag, title, creator), no description or button. */
+interface Props { asset: Asset | Listing; lang?: string; eager?: boolean; headingLevel?: 'h2' | 'h3'; compact?: boolean }
+const { asset, lang = 'en', eager = false, headingLevel = 'h3', compact = false } = Astro.props;
 const a = asset as Listing;
 const t = useT(lang);
 const H = headingLevel;
@@ -16,7 +17,7 @@ const price = a.priceValue ? a.price : t('price.free');
 const search = [a.title, a.shortDescription, short, a.series, creator?.name, ...((a.tags as string[]) || []), ...engines].filter(Boolean).join(' ').toLowerCase();
 ---
 <article
-  class="pack"
+  class:list={['pack', { 'pack--compact': compact }]}
   data-series={a.series ?? ''}
   data-category={a.category ?? '3d'}
   data-creator={a.creator ?? 'hanx-games'}
@@ -30,16 +31,28 @@ const search = [a.title, a.shortDescription, short, a.series, creator?.name, ...
   <div class="frame frame--cover">
     <img src={a.cover.sm} width="630" height="500" alt={t('card.coverAlt', { title: a.title })} loading={eager ? 'eager' : 'lazy'} decoding="async" fetchpriority={eager ? 'high' : 'auto'} referrerpolicy="no-referrer" />
     {onSale && <span class="stamp">-{a.sale?.rate ?? Math.round((1 - a.priceValue / a.originalPriceValue) * 100)}%</span>}
+    {compact && <span class:list={['price-tag', { free: !a.priceValue }]}>{price}{onSale && <s class="was">{a.originalPrice}</s>}</span>}
   </div>
   <H><a href={href(lang, `/assets/${a.slug}/`)}>{a.title}</a></H>
   {creator && <p class="by small"><a href={href(lang, `/creators/${creator.handle}/`)}>{t('card.by', { name: creator.name })}</a></p>}
-  <p>{short}</p>
-  <div class="pack-foot">
-    <span class="price"><span class="price-figure">{price}</span>{onSale && <span class="was small">{a.originalPrice}</span>}</span>
-    <BuyButton asset={a} lang={lang} size="sm" label={a.priceValue ? t('buy.short') : t('buy.free')} />
-  </div>
+  {!compact && (
+    <>
+      <p>{short}</p>
+      <div class="pack-foot">
+        <span class="price"><span class="price-figure">{price}</span>{onSale && <span class="was small">{a.originalPrice}</span>}</span>
+        <BuyButton asset={a} lang={lang} size="sm" label={a.priceValue ? t('buy.short') : t('buy.free')} />
+      </div>
+    </>
+  )}
 </article>
 <style>
+  .pack--compact { gap: var(--space-xs); }
+  .pack--compact :is(h2, h3) { font-size: var(--text-md); line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: break-word; min-width: 0; }
+  .pack--compact .by { margin-top: calc(-1 * var(--space-2xs)); }
+  .pack--compact:hover .frame { box-shadow: 5px 5px 0 var(--color-accent-2); }
+  .price-tag { position: absolute; left: var(--space-xs); bottom: var(--space-xs); z-index: var(--z-raised); display: inline-flex; gap: var(--space-2xs); align-items: baseline; padding: var(--space-2xs) var(--space-xs); background: var(--color-paper); color: var(--color-ink); border: var(--rule-bar) solid var(--color-ink); font-size: var(--text-sm); font-weight: 500; font-variant-numeric: tabular-nums; line-height: 1.1; }
+  .price-tag.free { background: var(--color-accent); color: var(--color-accent-ink); }
+  .price-tag .was { font-size: var(--text-xs); color: var(--color-muted); }
   .by { -webkit-line-clamp: 1; margin-top: calc(-1 * var(--space-xs)); }
   .by a { position: relative; z-index: var(--z-raised); color: var(--color-muted); text-decoration: none; font-weight: 500; }
   .by a:hover { color: var(--color-accent-2); text-decoration: underline; }

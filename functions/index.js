@@ -253,6 +253,12 @@ export const onCreatorWritten = onDocumentWritten('creators/{uid}', async (event
   if (!before || !after || visible.some((k) => JSON.stringify(before[k]) !== JSON.stringify(after[k]))) await touchSite('creator');
 });
 
+export const onHouseOverrideWritten = onDocumentWritten('houseOverrides/{slug}', async (event) => {
+  const before = event.data?.before?.data();
+  const after = event.data?.after?.data();
+  if (Boolean(before?.hidden) !== Boolean(after?.hidden)) await touchSite('house');
+});
+
 // ---------- schedule ----------
 export const nightly = onSchedule({ schedule: 'every 2 hours', timeZone: 'Europe/Istanbul', timeoutSeconds: 540 }, async () => {
   const started = Date.now();

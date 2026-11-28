@@ -59,6 +59,17 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    // HanX Games' own packs come from the itch.io catalog; the house account can hide or show them here.
+    match /houseOverrides/{slug} {
+      allow read: if true;
+      allow write: if signedIn()
+        && (isAdmin() || myCreator().get('house', false) == true)
+        && slug.matches('^[a-z0-9][a-z0-9-]{1,119}$')
+        && request.resource.data.keys().hasOnly(['hidden', 'updatedAt'])
+        && request.resource.data.hidden is bool
+        && request.resource.data.updatedAt == request.time;
+    }
+
     match /creators/{uid} {
       allow read: if true;
       // Profile text the creator may edit. Status, verification and handle are server-side.

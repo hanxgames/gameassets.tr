@@ -1,13 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
 import AssetCard from '../components/AssetCard.astro';
-import BuyButton from '../components/BuyButton.astro';
-import { SITE, seriesOrder, bundles, bySeries, absolute, bundleSavings } from '../data/site';
-import {
-  CATEGORIES, listings, inCategory, popular, mostClicked, freeListings, newest, assetOfWeek, creatorOfWeek,
-  activeCreators, creatorByHandle, creatorTotals, listingsBy, statOf, HOUSE, type Listing,
-} from '../data/market';
-import { useT, href, packText, bundleLabel, fmtNum } from '../i18n';
+import { SITE, bundles, absolute, bundleSavings } from '../data/site';
+import { CATEGORIES, listings, inCategory, popular, mostClicked, freeListings, newest, activeCreators } from '../data/market';
+import { useT, href, bundleLabel } from '../i18n';
 
 interface Props { lang: string }
 const { lang } = Astro.props;
@@ -15,25 +11,17 @@ const t = useT(lang);
 const L = (p: string) => href(lang, p);
 const nPacks = listings.length;
 const nCreators = activeCreators.length;
+const PER_TAB = 15;
+// Tab names reuse the section titles, minus their closing punctuation.
+const bare = (s: string) => s.replace(/[.。!！]+$/u, '');
 
-const week = assetOfWeek;
-const weekCreator = creatorByHandle(week.creator) ?? HOUSE;
-const weekImage = week.screenshots[0] ?? week.cover;
-const weekViews = statOf(week.slug).v7;
-const cow = creatorOfWeek;
-const cowPacks = listingsBy(cow.handle);
-const cowTotals = creatorTotals(cow);
-
-const cats = CATEGORIES.map((c) => ({ ...c, list: inCategory(c.key) }));
-const rails = [
-  { id: 'popular', title: t('home.popularH2'), list: popular.slice(0, 10), more: L('/assets/') },
-  { id: 'clicked', title: t('home.clickedH2'), list: mostClicked.slice(0, 10), more: L('/assets/') },
-  { id: 'free', title: t('home.freeH2'), list: freeListings.slice(0, 10), more: L('/assets/?price=free') },
-  { id: 'new', title: t('home.newH2'), list: newest.slice(0, 10), more: L('/assets/?sort=new') },
-].filter((r) => r.list.length >= 3);
-
-const minOf = (list: Listing[]) => `$${Math.min(...list.map((a) => a.priceValue).filter((v) => v > 0)).toFixed(2)}`;
-const tiles = seriesOrder.map((s) => ({ s, list: bySeries(s) })).filter((x) => x.list.length);
+const cats = CATEGORIES.map((c) => ({ ...c, n: inCategory(c.key).length }));
+const tabs = [
+  { id: 'popular', label: t('sort.popular'), list: popular, more: L('/assets/') },
+  { id: 'new', label: t('sort.new'), list: newest, more: L('/assets/?sort=new') },
+  { id: 'free', label: t('price.free'), list: freeListings, more: L('/assets/?price=free') },
+  { id: 'clicked', label: bare(t('home.clickedH2')), list: mostClicked, more: L('/assets/') },
+].filter((x) => x.list.length >= 3);
 
 const itemList = {
   '@context': 'https://schema.org',
@@ -50,48 +38,27 @@ const itemList = {
   description={t('home.description', { packs: nPacks, creators: nCreators })}
   jsonld={[itemList]}
 >
-  <Fragment slot="head"><link rel="preload" as="image" href={weekImage.src} fetchpriority="high" /></Fragment>
-
-  <section class="hero">
-    <div class="container hero-grid">
-      <div class="hero-copy">
-        <h1>{t('home.h1')}</h1>
-        <p class="lead">{nCreators > 1 ? t('home.lead', { packs: nPacks, creators: nCreators }) : t('home.leadOne', { packs: nPacks })}</p>
-        <form class="hero-search" action={L('/assets/')} method="get" role="search">
-          <label class="visually-hidden" for="home-q">{t('home.searchLabel')}</label>
-          <input id="home-q" type="search" name="q" placeholder={t('home.searchPh')} autocomplete="off" />
-          <button class="btn btn--primary" type="submit">{t('home.searchBtn')}</button>
-        </form>
-        <ul class="hero-cats">
-          {cats.map((c) => <li><a href={L(`/category/${c.slug}/`)}>{t(`catg.${c.key}.name`)}</a></li>)}
-        </ul>
-      </div>
-      <figure class="hero-offer">
-        <a class="frame hero-frame tilt-r" href={L(`/assets/${week.slug}/`)}>
-          <img src={weekImage.src} alt={`${week.title}: ${packText(lang, week).short}`} width="1600" height="1000" fetchpriority="high" decoding="async" referrerpolicy="no-referrer" />
-        </a>
-        <figcaption class="hero-stamp">
-          <span class="stamp-label">{t('home.weekAsset')}</span>
-          <a class="stamp-title" href={L(`/assets/${week.slug}/`)}>{week.title}</a>
-          <span class="small">{t('card.by', { name: weekCreator.name })}{weekViews > 0 && <>, {t('home.weekViews', { n: fmtNum(lang, weekViews) })}</>}</span>
-          <span class="stamp-buy"><span class="price-figure">{week.priceValue ? week.price : t('price.free')}</span><BuyButton asset={week} lang={lang} size="sm" /></span>
-        </figcaption>
-      </figure>
+  <section class="mk-top">
+    <div class="container mk-top-grid">
+      <h1>{t('home.h1')}</h1>
+      <form class="mk-search" action={L('/assets/')} method="get" role="search">
+        <label class="visually-hidden" for="home-q">{t('home.searchLabel')}</label>
+        <input id="home-q" type="search" name="q" placeholder={t('home.searchPh')} autocomplete="off" />
+        <button class="btn btn--primary" type="submit">{t('home.searchBtn')}</button>
+      </form>
     </div>
   </section>
 
-  <section class="section">
+  <section class="mk-cats" aria-labelledby="cats-h">
     <div class="container">
-      <div class="section-head">
-        <h2>{t('home.catsH2')}</h2>
-        <p><a class="link" href={L('/assets/')}>{t('home.seeAll', { packs: nPacks })}</a></p>
-      </div>
-      <ul class="cat-grid">
-        {cats.map((c, i) => (
+      <h2 id="cats-h" class="visually-hidden">{t('home.catsH2')}</h2>
+      <ul class="cat-row">
+        {cats.map((c) => (
           <li>
-            <a class={`cat-tile cat-${i % 4}`} href={L(`/category/${c.slug}/`)}>
-              <span class="cat-img"><img src={`/img/categories/${c.key}.webp`} alt="" width="630" height="500" loading="lazy" decoding="async" /></span>
-              <span class="cat-text"><span class="cat-name">{t(`catg.${c.key}.name`)}</span><span>{t('home.catN', { n: c.list.length })}</span></span>
+            <a class="cat" href={L(`/category/${c.slug}/`)}>
+              <span class="cat-img"><img src={`/img/categories/${c.key}.webp`} alt="" width="630" height="500" loading="eager" decoding="async" /></span>
+              <span class="cat-name">{t(`catg.${c.key}.name`)}</span>
+              {c.n > 0 && <span class="cat-n">{t('home.catN', { n: c.n })}</span>}
             </a>
           </li>
         ))}
@@ -99,77 +66,38 @@ const itemList = {
     </div>
   </section>
 
-  <section class="section">
-    <div class="container cow">
-      <div class="cow-card">
-        <div class="cow-head">
-          {cow.avatar && <img class="cow-avatar" src={cow.avatar} alt="" width="96" height="96" loading="lazy" referrerpolicy="no-referrer" />}
-          <div>
-            <h2><a href={L(`/creators/${cow.handle}/`)}>{cow.name}</a></h2>
-            <p class="small"><strong>{t('home.weekCreator')}</strong></p>
-            <p class="small">{t('home.creatorPacks', { n: cowTotals.packs })}{cowTotals.views > 0 && <>, {t('pack.views', { n: fmtNum(lang, cowTotals.views) })}</>}</p>
-          </div>
-        </div>
-        {cow.bio && <p class="cow-bio">{cow.bio}</p>}
-        <a class="btn" href={L(`/creators/${cow.handle}/`)}>{t('home.seeCreator')}</a>
-      </div>
-      <div class="cow-packs">
-        {cowPacks.slice(0, 3).map((a) => <AssetCard asset={a} lang={lang} />)}
-      </div>
-    </div>
-  </section>
-
-  {rails.map((r) => (
-    <section class="section">
-      <div class="container">
-        <div class="section-head">
-          <h2>{r.title}</h2>
-          <p><a class="link" href={r.more}>{t('home.seeAll', { packs: nPacks })}</a></p>
-        </div>
-        <div class="rail" tabindex="0" role="region" aria-label={t('home.railAriaGeneric', { title: r.title })}>
-          {r.list.map((a) => <AssetCard asset={a} lang={lang} />)}
-        </div>
-      </div>
-    </section>
-  ))}
-
-  <section class="band-paper sell-band">
-    <div class="container sell-grid">
-      <div>
-        <h2>{t('home.sellH2')}</h2>
-        <p class="lead">{t('home.sellLead')}</p>
-      </div>
-      <p><a class="btn btn--primary" href={L('/sell/')}>{t('home.sellCta')}</a></p>
-    </div>
-  </section>
-
-  <section class="section">
+  <section class="mk-packs" aria-labelledby="packs-h">
     <div class="container">
-      <div class="section-head">
-        <h2>{t('home.houseH2')}</h2>
-        <p class="lead">{t('home.houseLead')}</p>
+      <h2 id="packs-h" class="visually-hidden">{t('nav.allPacks')}</h2>
+      <div class="mk-bar">
+        <div class="mk-tabs" role="tablist" aria-label={t('nav.allPacks')}>
+          {tabs.map((x, i) => (
+            <button type="button" role="tab" id={`tab-${x.id}`} aria-controls={`panel-${x.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} data-more={x.more}>{x.label}</button>
+          ))}
+        </div>
+        <a class="link mk-all" id="mk-all" href={tabs[0]?.more ?? L('/assets/')}>{t('home.seeAll', { packs: nPacks })}</a>
       </div>
-      <div class="bento">
-        {tiles.map(({ s, list }, i) => (
-          <a class={`tile tile-${i}`} href={L(`/collections/${s}/`)}>
-            <span class="tile-img"><img src={list[0].cover.src} alt="" width="1200" height="952" loading="lazy" decoding="async" /></span>
-            <span class="tile-text">
-              <span class="tile-name">{t(`series.${s}.title`)}</span>
-              <span>{t('home.tile', { n: list.length, min: minOf(list as Listing[]) })}</span>
-            </span>
-          </a>
-        ))}
+      {tabs.map((x, i) => (
+        <div class="mk-grid" role="tabpanel" id={`panel-${x.id}`} aria-labelledby={`tab-${x.id}`} hidden={i !== 0}>
+          {x.list.slice(0, PER_TAB).map((a, j) => <AssetCard asset={a} lang={lang} compact eager={i === 0 && j < 5} />)}
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="mk-sell-wrap">
+    <div class="container">
+      <div class="mk-sell">
+        <p class="mk-sell-text">{t('home.sellH2')}</p>
+        <a class="btn btn--primary" href={L('/sell/')}>{t('home.sellCta')}</a>
       </div>
     </div>
   </section>
 
   {bundles.length > 0 && (
-    <section class="band-paper">
+    <section class="mk-bundles">
       <div class="container">
-        <div class="section-head">
-          <h2>{t('home.bundlesH2')}</h2>
-          <p class="lead">{t('home.bundlesLead')}</p>
-        </div>
+        <div class="section-head"><h2>{t('home.bundlesH2')}</h2></div>
         <div class="table-wrap">
           <table class="price-table">
             <thead><tr><th scope="col">{t('table.bundle')}</th><th scope="col">{t('table.packs')}</th><th scope="col">{t('table.oneByOne')}</th><th scope="col">{t('table.bundlePrice')}</th><th scope="col"><span class="visually-hidden">{t('table.buy')}</span></th></tr></thead>
@@ -191,83 +119,76 @@ const itemList = {
   )}
 </Base>
 
+<script>
+  // Market tabs: one grid visible at a time, arrow keys move between tabs.
+  const tabs = [...document.querySelectorAll<HTMLButtonElement>('.mk-tabs [role=tab]')];
+  const all = document.getElementById('mk-all') as HTMLAnchorElement | null;
+  const select = (tab: HTMLButtonElement, focus = false) => {
+    for (const t of tabs) {
+      const on = t === tab;
+      t.setAttribute('aria-selected', String(on));
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')!)!.hidden = !on;
+    }
+    if (all && tab.dataset.more) all.href = tab.dataset.more;
+    if (focus) tab.focus();
+  };
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => select(tab));
+    tab.addEventListener('keydown', (e) => {
+      const k = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (k) { e.preventDefault(); select(tabs[(i + k + tabs.length) % tabs.length], true); }
+      if (e.key === 'Home') { e.preventDefault(); select(tabs[0], true); }
+      if (e.key === 'End') { e.preventDefault(); select(tabs[tabs.length - 1], true); }
+    });
+  });
+</script>
+
 <style>
-  .hero { padding-block: var(--space-xl) var(--space-2xl); }
-  .hero-grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: var(--space-3xl); align-items: center; }
-  .hero-copy { display: grid; gap: var(--space-lg); justify-items: start; min-width: 0; }
-  .hero-copy h1 { font-size: clamp(2.75rem, 4.6vw, 5.25rem); max-width: 13ch; overflow-wrap: break-word; min-width: 0; text-wrap: balance; }
-  .hero-search { display: flex; gap: var(--space-xs); width: 100%; max-width: 36rem; }
-  .hero-search input { flex: 1; min-width: 0; min-height: 52px; padding: 0 var(--space-md); border: var(--rule-bar) solid var(--color-ink); border-radius: var(--radius-pill); background: var(--color-paper); color: var(--color-ink); font-size: var(--text-md); }
-  .hero-search input::placeholder { color: var(--color-muted); }
-  .hero-search input:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 0; }
-  .hero-cats { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-xs); }
-  .hero-cats a { display: inline-block; padding: var(--space-2xs) var(--space-sm); border: var(--rule-bar) solid var(--color-ink); border-radius: var(--radius-pill); font-size: var(--text-sm); font-weight: 500; text-decoration: none; transition: background-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out); }
-  .hero-cats a:hover { background: var(--color-ink); color: var(--color-paper); }
-  .hero-cats a:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
-  .hero-cats a:active { background: var(--color-ink-2); color: var(--color-paper); }
-  .hero-offer { position: relative; margin: 0; padding-bottom: var(--space-3xl); }
-  .hero-frame { display: block; aspect-ratio: 16 / 10; }
-  .hero-frame:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
-  .hero-stamp {
-    position: absolute; left: calc(-1 * var(--space-xl)); bottom: 0; z-index: var(--z-raised);
-    display: grid; gap: var(--space-2xs); max-width: 24rem; padding: var(--space-sm) var(--space-md);
-    background: var(--color-accent-2); color: var(--color-on-accent-2); border: var(--rule-bar) solid var(--color-ink); box-shadow: var(--shadow-card); rotate: -2deg;
-  }
-  .stamp-label { font-size: var(--text-sm); font-weight: 500; }
-  .stamp-title { font: var(--display-weight) var(--text-xl)/1.05 var(--font-display); text-transform: uppercase; letter-spacing: var(--tracking-display); color: inherit; text-decoration: none; }
-  .stamp-title:hover { text-decoration: underline; }
-  .stamp-title:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
-  .hero-stamp .small { color: inherit; }
-  .stamp-buy { display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); padding-top: var(--space-xs); }
-  .stamp-buy .price-figure { font-size: var(--text-2xl); }
-  @media (max-width: 60rem) {
-    .hero-grid { grid-template-columns: minmax(0, 1fr); gap: var(--space-xl); }
-    .hero-stamp { left: var(--space-sm); }
-  }
+  .mk-top { padding-block: var(--space-xl) var(--space-lg); }
+  .mk-top-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 32rem); gap: var(--space-lg) var(--space-2xl); align-items: end; }
+  .mk-top h1 { font-size: clamp(2rem, 3.4vw, 3.25rem); max-width: 20ch; overflow-wrap: break-word; min-width: 0; text-wrap: balance; }
+  .mk-search { display: flex; gap: var(--space-xs); width: 100%; }
+  .mk-search input { flex: 1; min-width: 0; min-height: 52px; padding: 0 var(--space-md); border: var(--rule-bar) solid var(--color-ink); border-radius: var(--radius-pill); background: var(--color-paper); color: var(--color-ink); font-size: var(--text-md); }
+  .mk-search input::placeholder { color: var(--color-muted); }
+  .mk-search input:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 0; }
+  @media (max-width: 60rem) { .mk-top-grid { grid-template-columns: minmax(0, 1fr); align-items: start; } }
 
-  .cat-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap-columns); }
-  .cat-tile { display: grid; grid-template-rows: 160px auto; border: var(--rule-bar) solid var(--color-ink); box-shadow: var(--shadow-card); background: var(--color-paper-2); text-decoration: none; overflow: hidden; transition: background-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out); }
-  .cat-img { position: relative; display: block; overflow: hidden; border-bottom: var(--rule-bar) solid var(--color-ink); background: var(--color-paper-3); }
-  .cat-1 .cat-img { background: var(--color-accent); }
-  .cat-2 .cat-img { background: var(--color-accent-2); }
+  .mk-cats { padding-bottom: var(--space-xl); }
+  .cat-row { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: var(--space-sm); }
+  .cat { display: grid; gap: var(--space-2xs); text-decoration: none; }
+  .cat-img { position: relative; display: block; aspect-ratio: 5 / 4; overflow: hidden; border: var(--rule-bar) solid var(--color-ink); background: var(--color-paper-3); transition: box-shadow var(--dur-micro) var(--ease-out); }
   .cat-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .cat-text { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-sm); flex-wrap: wrap; padding: var(--space-sm) var(--space-md); font-size: var(--text-sm); font-weight: 500; }
-  .cat-name { font: var(--display-weight) var(--text-lg)/1.1 var(--font-display); text-transform: uppercase; letter-spacing: var(--tracking-display); }
-  .cat-tile:hover .cat-text { background: var(--color-ink); color: var(--color-paper); }
-  .cat-tile:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
-  .cat-tile:active { box-shadow: var(--shadow-press); }
-  @media (max-width: 60rem) { .cat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .cat-tile { grid-template-rows: 120px auto; } }
+  .cat-name { font: var(--display-weight) var(--text-md)/1.1 var(--font-display); text-transform: uppercase; letter-spacing: var(--tracking-display); overflow-wrap: break-word; min-width: 0; }
+  .cat-n { font-size: var(--text-xs); color: var(--color-muted); }
+  .cat:hover .cat-img { box-shadow: 5px 5px 0 var(--color-accent-2); }
+  .cat:hover .cat-name { color: var(--color-accent-2); }
+  .cat:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
+  .cat:active .cat-img { box-shadow: none; }
+  @media (max-width: 75rem) {
+    .cat-row { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 8.5rem; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: var(--space-xs); }
+    .cat-row > li { scroll-snap-align: start; }
+  }
 
-  .cow { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--space-2xl); align-items: start; }
-  .cow-card { display: grid; gap: var(--space-md); justify-items: start; padding: var(--space-lg); background: var(--color-accent); color: var(--color-accent-ink); border: var(--rule-bar) solid var(--color-ink); box-shadow: var(--shadow-card); }
-  .cow-head { display: flex; gap: var(--space-md); align-items: center; min-width: 0; }
-  .cow-avatar { width: 72px; height: 72px; object-fit: cover; border: var(--rule-bar) solid var(--color-ink); background: var(--color-paper); }
-  .cow-card h2 { font-size: var(--text-section); overflow-wrap: break-word; min-width: 0; }
-  .cow-card h2 a { color: inherit; text-decoration: none; }
-  .cow-card h2 a:hover { text-decoration: underline; }
-  .cow-card h2 a:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
-  .cow-card .small { color: inherit; }
-  .cow-bio { max-width: 40ch; }
-  .cow-packs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap-columns); }
-  @media (max-width: 60rem) { .cow, .cow-packs { grid-template-columns: minmax(0, 1fr); } }
+  .mk-packs { padding-block: var(--space-md) var(--space-2xl); border-top: var(--rule-bar) solid var(--color-ink); }
+  .mk-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-md); margin-bottom: var(--space-lg); }
+  .mk-tabs { display: flex; flex-wrap: wrap; gap: var(--space-xs); }
+  .mk-tabs button { min-height: 44px; padding: 0 var(--space-md); border: var(--rule-bar) solid var(--color-ink); border-radius: var(--radius-pill); background: var(--color-paper); color: var(--color-ink); font: 500 var(--text-sm)/1 var(--font-body); white-space: nowrap; cursor: pointer; transition: background-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out); }
+  .mk-tabs button:hover { background: var(--color-paper-2); }
+  .mk-tabs button[aria-selected='true'] { background: var(--color-ink); color: var(--color-paper); }
+  .mk-tabs button:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
+  .mk-tabs button:active { background: var(--color-ink-2); color: var(--color-paper); }
+  .mk-all { font-weight: 500; }
+  .mk-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--space-xl) var(--space-md); }
+  .mk-grid[hidden] { display: none; }
+  @media (max-width: 80rem) { .mk-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  @media (max-width: 60rem) { .mk-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 40rem) { .mk-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-lg) var(--space-sm); } }
 
-  .sell-grid { display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: var(--space-2xl); align-items: center; }
-  .sell-grid h2 { overflow-wrap: break-word; min-width: 0; }
-  .sell-grid p:last-child { justify-self: end; }
-  @media (max-width: 60rem) { .sell-grid { grid-template-columns: minmax(0, 1fr); } .sell-grid p:last-child { justify-self: start; } }
+  .mk-sell-wrap { padding-bottom: var(--space-2xl); }
+  .mk-sell { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-md); padding: var(--space-md) var(--space-lg); background: var(--color-accent); color: var(--color-accent-ink); border: var(--rule-bar) solid var(--color-ink); box-shadow: var(--shadow-card); }
+  .mk-sell-text { font: var(--display-weight) var(--text-xl)/1.1 var(--font-display); text-transform: uppercase; letter-spacing: var(--tracking-display); max-width: 40ch; overflow-wrap: break-word; min-width: 0; }
 
-  .bento { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gap-columns); }
-  .tile { display: grid; grid-template-rows: minmax(0, 1fr) auto; border: var(--rule-bar) solid var(--color-ink); box-shadow: var(--shadow-card); text-decoration: none; background: var(--color-paper-2); height: 320px; overflow: hidden; transition: background-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out); }
-  .tile-0 { grid-column: span 8; } .tile-1 { grid-column: span 4; } .tile-2 { grid-column: span 4; } .tile-3 { grid-column: span 8; } .tile-4 { grid-column: span 12; }
-  .tile-0 .tile-text { background: var(--color-accent); color: var(--color-accent-ink); }
-  .tile-3 .tile-text { background: var(--color-accent-2); color: var(--color-on-accent-2); }
-  .tile-img { position: relative; display: block; min-height: 0; overflow: hidden; border-bottom: var(--rule-bar) solid var(--color-ink); }
-  .tile-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .tile-text { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-md); flex-wrap: wrap; padding: var(--space-md) var(--space-lg); font-size: var(--text-sm); font-weight: 500; }
-  .tile-name { font: var(--display-weight) var(--text-xl)/1.1 var(--font-display); text-transform: uppercase; letter-spacing: var(--tracking-display); }
-  .tile:hover .tile-text { background: var(--color-ink); color: var(--color-paper); }
-  .tile:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
-  .tile:active { box-shadow: var(--shadow-press); }
-  @media (max-width: 60rem) { .tile-0, .tile-1, .tile-2, .tile-3, .tile-4 { grid-column: 1 / -1; height: 280px; } }
-  .section-head h2 { overflow-wrap: break-word; min-width: 0; }
+  .mk-bundles { padding-bottom: var(--section-gap); }
+  .mk-bundles h2 { overflow-wrap: break-word; min-width: 0; }
 </style>

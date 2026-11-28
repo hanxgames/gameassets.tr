@@ -3,6 +3,8 @@ import Base from '../layouts/Base.astro';
 import { CATEGORIES } from '../data/market';
 import { useT, href, safeJson } from '../i18n';
 import en from '../i18n/ui/en.json';
+import catalog from '../data/catalog.json';
+import { panelHidden } from '../data/site';
 
 interface Props { lang: string }
 const { lang } = Astro.props;
@@ -13,7 +15,9 @@ const ROLES = ['creator', 'developer', 'both', 'player'];
 const keys = Object.keys(en).filter((k) => /^(dash|join|err)\./.test(k));
 const strings = Object.fromEntries(keys.map((k) => [k, t(k)]));
 const cats = CATEGORIES.map((c) => ({ key: c.key, name: t(`catg.${c.key}.name`) }));
-const cfg = { strings, cats, lang, creatorBase: L('/creators/'), assetBase: L('/assets/') };
+// HanX Games' own packs (every one, hidden included) for the house account's dashboard.
+const house = catalog.assets.map((a) => ({ id: a.slug, title: a.title, cover: a.cover.sm, url: a.url, panelHidden: panelHidden.has(a.slug) }));
+const cfg = { strings, cats, lang, creatorBase: L('/creators/'), assetBase: L('/assets/'), house };
 const terms = `<a class="link" href="${L('/terms/')}">${t('footer.terms')}</a>`;
 const privacy = `<a class="link" href="${L('/privacy/')}">${t('footer.privacy')}</a>`;
 ---
@@ -133,18 +137,55 @@ const privacy = `<a class="link" href="${L('/privacy/')}">${t('footer.privacy')}
         </form>
       </section>
 
+      <section class="panel stats" id="stats-panel" hidden>
+        <div class="st-head">
+          <h2>{t('dash.statsH2')}</h2>
+          <div class="st-controls">
+            <div class="seg" role="group" aria-label={t('dash.rangeLabel')}>
+              <button type="button" data-range="7" aria-pressed="true">{t('dash.range7')}</button>
+              <button type="button" data-range="30" aria-pressed="false">{t('dash.range30')}</button>
+            </div>
+            <label class="visually-hidden" for="st-pack">{t('dash.packFilter')}</label>
+            <select id="st-pack"><option value="">{t('dash.allPacks')}</option></select>
+          </div>
+        </div>
+        <div class="kpis">
+          <button class="kpi" type="button" data-metric="v" aria-pressed="true"><span class="k-label">{t('dash.kViews')}</span><span class="k-num" id="k-v">0</span><span class="k-sub" id="k-v-sub"></span></button>
+          <button class="kpi" type="button" data-metric="c" aria-pressed="false"><span class="k-label">{t('dash.kClicks')}</span><span class="k-num" id="k-c">0</span><span class="k-sub" id="k-c-sub"></span></button>
+          <div class="kpi"><span class="k-label">{t('dash.kRate')}</span><span class="k-num" id="k-r">0%</span><span class="k-sub" id="k-r-sub"></span></div>
+          <div class="kpi"><span class="k-label">{t('dash.kLikes')}</span><span class="k-num" id="k-l">0</span><span class="k-sub" id="k-l-sub"></span></div>
+        </div>
+        <figure class="chart">
+          <figcaption class="small" id="chart-cap"></figcaption>
+          <div class="chart-box" id="chart"></div>
+          <div class="chart-tip" id="chart-tip" role="status" hidden></div>
+          <table class="visually-hidden" id="chart-table"></table>
+        </figure>
+        <p class="small" id="st-empty" hidden>{t('dash.noData')}</p>
+      </section>
+
       <section class="panel">
         <h2>{t('dash.packsH2')}</h2>
+        <p class="small" id="house-note" hidden>{t('dash.houseNote')}</p>
         <p id="no-packs">{t('dash.noPacks')}</p>
         <div class="table-wrap" id="packs-wrap" hidden>
           <table class="packs">
-            <thead><tr><th scope="col">{t('dash.colPack')}</th><th scope="col">{t('dash.colViews')}</th><th scope="col">{t('dash.colWeek')}</th><th scope="col">{t('dash.colClicks')}</th><th scope="col">{t('dash.colStatus')}</th><th scope="col"><span class="visually-hidden">{t('dash.edit')}</span></th></tr></thead>
+            <thead><tr>
+              <th scope="col" aria-sort="none"><button type="button" class="sort" data-sort="title">{t('dash.colPack')}</button></th>
+              <th scope="col" aria-sort="descending"><button type="button" class="sort" data-sort="v">{t('dash.kViews')}</button></th>
+              <th scope="col">{t('dash.colTrend')}</th>
+              <th scope="col" aria-sort="none"><button type="button" class="sort" data-sort="c">{t('dash.kClicks')}</button></th>
+              <th scope="col" aria-sort="none"><button type="button" class="sort" data-sort="r">{t('dash.colRate')}</button></th>
+              <th scope="col" aria-sort="none"><button type="button" class="sort" data-sort="l">{t('dash.colLikes')}</button></th>
+              <th scope="col">{t('dash.colStatus')}</th>
+              <th scope="col"><span class="visually-hidden">{t('dash.edit')}</span></th>
+            </tr></thead>
             <tbody id="packs"></tbody>
           </table>
         </div>
       </section>
 
-      <section class="panel">
+      <section class="panel" id="profile-panel">
         <h2>{t('dash.profileH2')}</h2>
         <form id="profile-form" class="form" novalidate>
           <label>{t('join.displayName')}<input name="displayName" maxlength="60" required /></label>
@@ -162,7 +203,7 @@ const privacy = `<a class="link" href="${L('/privacy/')}">${t('footer.privacy')}
 </Base>
 
 <style>
-  .app { padding-block: var(--space-2xl) var(--section-gap); display: grid; gap: var(--space-2xl); max-width: 64rem; }
+  .app { padding-block: var(--space-2xl) var(--section-gap); display: grid; gap: var(--space-2xl); max-width: 76rem; }
   .loading { font-size: var(--text-lead); }
   .panel { display: grid; gap: var(--space-md); padding: var(--space-xl); border: var(--rule-bar) solid var(--color-ink); box-shadow: var(--shadow-card); background: var(--color-paper); }
   .panel h2 { font-size: var(--text-title); }
@@ -199,13 +240,66 @@ const privacy = `<a class="link" href="${L('/privacy/')}">${t('footer.privacy')}
   .preview { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: start; gap: var(--space-xl); padding-top: var(--space-md); border-top: var(--rule-bar) solid var(--color-ink); }
   .pv-fields { display: grid; gap: var(--space-md); }
   .packs { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
-  .packs th, .packs td { text-align: left; padding: var(--space-sm); border-bottom: var(--rule-hair) solid var(--color-ink); vertical-align: top; }
+  .packs :global(th), .packs :global(td) { text-align: left; padding: var(--space-sm); border-bottom: var(--rule-hair) solid var(--color-ink); vertical-align: top; }
   .packs th { font-weight: 500; color: var(--color-muted); }
-  .packs td.num { font-variant-numeric: tabular-nums; }
-  .packs .pk { display: flex; gap: var(--space-sm); align-items: center; min-width: 12rem; }
-  .packs .pk img { width: 64px; aspect-ratio: 315 / 250; object-fit: cover; border: var(--rule-hair) solid var(--color-ink); }
-  .packs .acts { display: flex; flex-wrap: wrap; gap: var(--space-xs); }
-  .packs .edit-row td { background: var(--color-paper-2); }
+  .packs :global(td.num) { font-variant-numeric: tabular-nums; }
+  .packs :global(.pk) { display: flex; gap: var(--space-sm); align-items: center; min-width: 12rem; }
+  .packs :global(.pk img) { width: 64px; aspect-ratio: 315 / 250; object-fit: cover; border: var(--rule-hair) solid var(--color-ink); }
+  .packs :global(.acts) { display: flex; flex-wrap: wrap; gap: var(--space-xs);  flex-wrap: nowrap;}
+  .packs :global(.edit-row td) { background: var(--color-paper-2); }
+  .packs th .sort { padding: 0; border: 0; background: none; color: inherit; font: inherit; cursor: pointer; text-align: left; }
+  .packs th .sort:hover { color: var(--color-ink); text-decoration: underline; }
+  .packs th .sort:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+  .packs th[aria-sort='descending'] .sort::after { content: ' ↓'; }
+  .packs th[aria-sort='ascending'] .sort::after { content: ' ↑'; }
+  .packs :global(tr.is-picked td) { background: var(--color-paper-2); }
+  .packs :global(.pick-btn) { padding: 0; border: 0; background: none; color: var(--color-ink); font: inherit; font-weight: 500; text-align: left; cursor: pointer; text-decoration: underline; text-decoration-color: var(--color-accent-2); text-decoration-thickness: 2px; }
+  .packs :global(.pick-btn:hover) { color: var(--color-accent-2); }
+  .packs :global(.pick-btn:focus-visible) { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+  .packs :global(.spark) { display: block; width: 96px; height: 28px; color: var(--color-accent-2); }
+  .packs :global(.muted) { color: var(--color-muted); }
+  .st-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-md); }
+  .st-controls { display: flex; flex-wrap: wrap; gap: var(--space-sm); align-items: center; }
+  .seg { display: inline-flex; border: var(--rule-bar) solid var(--color-ink); }
+  .seg button { min-height: 40px; padding: 0 var(--space-md); border: 0; background: var(--color-paper); color: var(--color-ink); font: 500 var(--text-sm)/1 var(--font-body); cursor: pointer; transition: background-color var(--dur-micro) var(--ease-out); }
+  .seg button + button { border-left: var(--rule-bar) solid var(--color-ink); }
+  .seg button[aria-pressed='true'] { background: var(--color-ink); color: var(--color-paper); }
+  .seg button:hover:not([aria-pressed='true']) { background: var(--color-paper-2); }
+  .seg button:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
+  #st-pack { min-height: 40px; max-width: 18rem; padding: 0 var(--space-sm); border: var(--rule-bar) solid var(--color-ink); background: var(--color-paper); color: var(--color-ink); font: inherit; font-size: var(--text-sm); }
+  #st-pack:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 0; }
+  .kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-sm); }
+  .kpi { display: grid; gap: var(--space-2xs); align-content: start; padding: var(--space-md); border: var(--rule-bar) solid var(--color-ink); background: var(--color-paper); color: var(--color-ink); font: inherit; text-align: left; min-width: 0; }
+  button.kpi { cursor: pointer; transition: background-color var(--dur-micro) var(--ease-out), box-shadow var(--dur-micro) var(--ease-out); }
+  button.kpi:hover { background: var(--color-paper-2); }
+  button.kpi[aria-pressed='true'] { box-shadow: inset 0 -6px 0 var(--color-accent-2); }
+  button.kpi:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
+  .k-label { font-size: var(--text-sm); font-weight: 500; color: var(--color-muted); }
+  .k-num { font: var(--display-weight) clamp(1.75rem, 3vw, 2.5rem)/1 var(--font-display); white-space: nowrap; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+  .k-sub { font-size: var(--text-xs); color: var(--color-muted); min-height: 1.2em; }
+  .k-sub.up { color: var(--color-ink); font-weight: 500; }
+  .chart { position: relative; margin: 0; display: grid; gap: var(--space-xs); }
+  .chart-box { position: relative; height: 220px; }
+  .chart-box :global(svg) { display: block; width: 100%; height: 100%; overflow: visible; }
+  .chart-box :global(.grid line) { stroke: var(--color-ink); stroke-opacity: 0.12; }
+  .chart-box :global(.axis text) { fill: var(--color-muted); font-size: 11px; font-variant-numeric: tabular-nums; }
+  .chart-box :global(.bar) { fill: var(--color-accent-2); }
+  .chart-box :global(.bar.on) { fill: var(--color-ink); }
+  .chart-box :global(.hit) { fill: transparent; cursor: default; }
+  .chart-tip { position: absolute; z-index: var(--z-raised); pointer-events: none; padding: var(--space-2xs) var(--space-sm); background: var(--color-ink); color: var(--color-paper); font-size: var(--text-xs); white-space: nowrap; translate: -50% -100%; }
+  /* Phones: each pack becomes a card with its numbers in a 2 x 2 grid. */
+  @media (max-width: 50rem) {
+    .packs thead { display: none; }
+    .packs :global(tbody tr:not(.edit-row)) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-xs) var(--space-sm); padding-block: var(--space-md); border-bottom: var(--rule-hair) solid var(--color-ink); }
+    .packs :global(tbody td) { padding: 0; border: 0; min-width: 0; }
+    .packs :global(td:first-child), .packs :global(td.state), .packs :global(td.act) { grid-column: 1 / -1; }
+    .packs :global(td.trend) { display: none; }
+    .packs :global(td[data-label])::before { content: attr(data-label); display: block; font-size: var(--text-xs); color: var(--color-muted); }
+    .packs :global(td.state) { font-size: var(--text-sm); }
+    .packs :global(.acts) { flex-wrap: wrap; }
+    .packs :global(.pk) { min-width: 0; }
+  }
+  @media (max-width: 50rem) { .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .chart-box { height: 180px; } }
   .toast { position: fixed; left: 50%; bottom: var(--space-xl); translate: -50% 0; z-index: var(--z-sticky); max-width: min(36rem, calc(100% - 2 * var(--gutter))); padding: var(--space-sm) var(--space-lg); background: var(--color-ink); color: var(--color-paper); border: var(--rule-bar) solid var(--color-ink); box-shadow: var(--shadow-card); }
   @media (max-width: 40rem) { .form.inline, .preview { grid-template-columns: minmax(0, 1fr); } .panel { padding: var(--space-lg); } }
 </style>
@@ -442,44 +536,260 @@ const privacy = `<a class="link" href="${L('/privacy/')}">${t('footer.privacy')}
     });
   });
 
-  // ---------- packs ----------
+  // ---------- packs and stats ----------
   const catName = (k: string) => (cfg.cats as { key: string; name: string }[]).find((c) => c.key === k)?.name ?? k;
-  const statCache = new Map<string, any>();
-  async function stat(id: string) {
-    if (!statCache.has(id)) statCache.set(id, getDoc(doc(db, 'stats', id)).then((s) => s.data() || {}).catch(() => ({})));
-    const s = await statCache.get(id);
-    const today = Math.floor(Date.now() / 864e5);
-    const v7 = Object.entries(s.d || {}).reduce((n, [k, v]: [string, any]) => (Number(k) > today - 7 ? n + (v?.v || 0) : n), 0);
-    return { v: s.v || 0, c: s.c || 0, v7 };
+  const nf = new Intl.NumberFormat(cfg.lang);
+  const pf = new Intl.NumberFormat(cfg.lang, { style: 'percent', maximumFractionDigits: 1 });
+  const DAY = 864e5;
+  type Raw = { v?: number; c?: number; l?: number; dl?: number; d?: Record<string, { v?: number; c?: number }> };
+  type Row = { id: string; title: string; cover: string; sub: string; status: string; actions: (box: HTMLElement, row: HTMLElement) => void; s: Raw };
+  const statCache = new Map<string, Promise<Raw>>();
+  const stat = (id: string) => {
+    if (!statCache.has(id)) statCache.set(id, getDoc(doc(db, 'stats', id)).then((s) => (s.data() as Raw) || {}).catch(() => ({})));
+    return statCache.get(id)!;
+  };
+  let rows: Row[] = [];
+  let range = 7;
+  let metric: 'v' | 'c' = 'v';
+  let picked = '';
+  let sortKey = 'v';
+  let sortDir = -1;
+  const today = () => Math.floor(Date.now() / DAY);
+  /** Sum of one counter over the days (end - n, end]. */
+  const sumDays = (s: Raw, key: 'v' | 'c', n: number, end = today()) =>
+    Object.entries(s.d || {}).reduce((t, [k, x]) => (Number(k) > end - n && Number(k) <= end ? t + (x?.[key] || 0) : t), 0);
+  const daily = (list: Row[], key: 'v' | 'c', n: number) => {
+    const end = today();
+    return Array.from({ length: n }, (_, i) => {
+      const day = end - n + 1 + i;
+      return { day, n: list.reduce((t, r) => t + (r.s.d?.[String(day)]?.[key] || 0), 0) };
+    });
+  };
+  const rate = (c: number, v: number) => (v > 0 ? c / v : 0);
+  const fmtDay = (day: number, opts: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'short' }) => new Date(day * DAY).toLocaleDateString(cfg.lang, { ...opts, timeZone: 'UTC' });
+
+  function setRows(next: Row[]) {
+    rows = next;
+    show('no-packs', rows.length === 0);
+    show('packs-wrap', rows.length > 0);
+    show('stats-panel', rows.length > 0);
+    const sel = $<HTMLSelectElement>('st-pack');
+    const keep = picked;
+    sel.replaceChildren(el('option', { value: '' }, tr('dash.allPacks')), ...rows.map((r) => el('option', { value: r.id }, r.title)));
+    picked = rows.some((r) => r.id === keep) ? keep : '';
+    sel.value = picked;
+    Promise.all(rows.map(async (r) => { r.s = await stat(r.id); })).then(renderStats);
+    renderStats();
   }
-  function renderPacks(list: any[], creator: any) {
+
+  function renderStats() {
+    const sel = picked ? rows.filter((r) => r.id === picked) : rows;
+    const tot = (k: 'v' | 'c') => sel.reduce((t, r) => t + (r.s[k] || 0), 0);
+    const cur = (k: 'v' | 'c') => sel.reduce((t, r) => t + sumDays(r.s, k, range), 0);
+    const prev = (k: 'v' | 'c') => sel.reduce((t, r) => t + sumDays(r.s, k, range, today() - range), 0);
+    const change = (k: 'v' | 'c') => {
+      if (range !== 7) return { text: tr('dash.allTime', { n: nf.format(tot(k)) }), up: false };
+      const a = cur(k), b = prev(k);
+      if (!a && !b) return { text: tr('dash.allTime', { n: nf.format(tot(k)) }), up: false };
+      if (!b) return { text: tr('dash.newData'), up: true };
+      const d = (a - b) / b;
+      if (Math.abs(d) < 0.005) return { text: tr('dash.noChange'), up: false };
+      return { text: tr('dash.vsPrev', { d: `${d > 0 ? '+' : '−'}${pf.format(Math.abs(d))}` }), up: d > 0 };
+    };
+    for (const k of ['v', 'c'] as const) {
+      $(`k-${k}`).textContent = nf.format(cur(k));
+      const ch = change(k);
+      const sub = $(`k-${k}-sub`);
+      sub.textContent = ch.text;
+      sub.classList.toggle('up', ch.up);
+    }
+    $('k-r').textContent = pf.format(rate(cur('c'), cur('v')));
+    $('k-r-sub').textContent = tr('dash.allTime', { n: pf.format(rate(tot('c'), tot('v'))) });
+    const likes = sel.reduce((t, r) => t + (r.s.l || 0), 0), dislikes = sel.reduce((t, r) => t + (r.s.dl || 0), 0);
+    $('k-l').textContent = nf.format(likes);
+    $('k-l-sub').textContent = tr('dash.dislikes', { n: nf.format(dislikes) });
+    for (const b of document.querySelectorAll<HTMLButtonElement>('.kpi[data-metric]')) b.setAttribute('aria-pressed', String(b.dataset.metric === metric));
+    for (const b of document.querySelectorAll<HTMLButtonElement>('.seg [data-range]')) b.setAttribute('aria-pressed', String(Number(b.dataset.range) === range));
+    const data = daily(sel, metric, range);
+    const name = picked ? sel[0]?.title || '' : tr('dash.allPacks');
+    $('chart-cap').textContent = `${tr(metric === 'v' ? 'dash.chartViews' : 'dash.chartClicks', { n: range })}: ${name}`;
+    show('st-empty', rows.length > 0 && data.every((x) => !x.n) && !tot('v'));
+    drawChart(data);
+    renderTable();
+  }
+
+  // Single-series daily bar chart: thin bars from a zero baseline, recessive grid, per-bar hover tooltip.
+  function drawChart(data: { day: number; n: number }[]) {
+    const box = $('chart');
+    const W = Math.max(box.clientWidth, 280), H = box.clientHeight || 220;
+    const padL = 36, padR = 4, padT = 8, padB = 22;
+    const max = Math.max(...data.map((d) => d.n), 0);
+    // Nice round top: the half-way tick lands on 1, 1.2, 1.5, 2, 2.5, 3, 4, 5, 6 or 8 x 10^k.
+    const half = Math.max(max / 2, 1);
+    const mag = Math.pow(10, Math.floor(Math.log10(half)));
+    const top = Math.max(2, 2 * Math.ceil(mag * ([1, 1.2, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10].find((m) => m * mag >= half) || 10)));
+    const ticks = [0, top / 2, top];
+    const iw = W - padL - padR, ih = H - padT - padB;
+    const band = iw / data.length;
+    const bw = Math.max(2, Math.min(28, band - Math.max(2, band * 0.3)));
+    const y = (v: number) => padT + ih - (v / top) * ih;
+    const NS = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    svg.setAttribute('role', 'img');
+    svg.setAttribute('aria-label', $('chart-cap').textContent || '');
+    const g = (cls: string) => { const n = document.createElementNS(NS, 'g'); n.setAttribute('class', cls); svg.append(n); return n; };
+    const grid = g('grid'), axis = g('axis axis-y'), xa = g('axis axis-x'), bars = g('bars'), hits = g('hits');
+    for (const v of ticks) {
+      const ln = document.createElementNS(NS, 'line');
+      ln.setAttribute('x1', String(padL)); ln.setAttribute('x2', String(W - padR));
+      ln.setAttribute('y1', String(y(v))); ln.setAttribute('y2', String(y(v)));
+      grid.append(ln);
+      const tx = document.createElementNS(NS, 'text');
+      tx.setAttribute('x', String(padL - 6)); tx.setAttribute('y', String(y(v) + 4)); tx.setAttribute('text-anchor', 'end');
+      tx.textContent = nf.format(v);
+      axis.append(tx);
+    }
+    const every = data.length <= 7 ? 1 : Math.ceil(data.length / 6);
+    const tip = $('chart-tip');
+    data.forEach((d, i) => {
+      const cx = padL + band * i + band / 2;
+      if (d.n > 0) {
+        const h = Math.max(1, y(0) - y(d.n)), x = cx - bw / 2, r = Math.min(4, bw / 2, h);
+        const p = document.createElementNS(NS, 'path');
+        p.setAttribute('class', 'bar');
+        p.setAttribute('d', `M${x},${y(0)} V${y(0) - h + r} Q${x},${y(0) - h} ${x + r},${y(0) - h} H${x + bw - r} Q${x + bw},${y(0) - h} ${x + bw},${y(0) - h + r} V${y(0)} Z`);
+        p.dataset.i = String(i);
+        bars.append(p);
+      }
+      if ((data.length - 1 - i) % every === 0) {
+        const tx = document.createElementNS(NS, 'text');
+        tx.setAttribute('x', String(cx)); tx.setAttribute('y', String(H - 6)); tx.setAttribute('text-anchor', 'middle');
+        tx.textContent = fmtDay(d.day);
+        xa.append(tx);
+      }
+      const hit = document.createElementNS(NS, 'rect');
+      hit.setAttribute('class', 'hit');
+      hit.setAttribute('x', String(padL + band * i)); hit.setAttribute('y', String(padT));
+      hit.setAttribute('width', String(band)); hit.setAttribute('height', String(ih));
+      const on = () => {
+        bars.querySelectorAll('.bar').forEach((b) => b.classList.toggle('on', (b as SVGElement).dataset.i === String(i)));
+        tip.textContent = tr('dash.tip', { date: fmtDay(d.day, { weekday: 'short', day: 'numeric', month: 'short' }), n: nf.format(d.n) });
+        tip.style.left = `${(cx / W) * 100}%`;
+        tip.style.top = `${Math.max(y(d.n) - 6, 14)}px`;
+        tip.hidden = false;
+      };
+      hit.addEventListener('mouseenter', on);
+      hit.addEventListener('touchstart', on, { passive: true });
+      hit.addEventListener('mouseleave', () => { tip.hidden = true; bars.querySelectorAll('.bar').forEach((b) => b.classList.remove('on')); });
+      hits.append(hit);
+    });
+    box.replaceChildren(svg);
+    // Screen readers get the same numbers as a table.
+    const t = $('chart-table');
+    t.replaceChildren(el('caption', {}, $('chart-cap').textContent || ''), ...data.map((d) => el('tr', {}, el('th', { scope: 'row' }, fmtDay(d.day)), el('td', {}, nf.format(d.n)))));
+  }
+  new ResizeObserver(() => { if (rows.length && !$('stats-panel').hidden) renderStats(); }).observe($('chart'));
+
+  function spark(s: Raw) {
+    const vals = Array.from({ length: range }, (_, i) => s.d?.[String(today() - range + 1 + i)]?.v || 0);
+    const max = Math.max(...vals, 1);
+    const pts = vals.map((v, i) => `${((i / (vals.length - 1)) * 94 + 1).toFixed(1)},${(26 - (v / max) * 24).toFixed(1)}`).join(' ');
+    const wrap = document.createElement('span');
+    wrap.innerHTML = `<svg class="spark" viewBox="0 0 96 28" aria-hidden="true" focusable="false"><polyline points="${pts}" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg>`;
+    return wrap.firstElementChild!;
+  }
+
+  function renderTable() {
     const body = $('packs');
     body.replaceChildren();
-    show('no-packs', list.length === 0);
-    show('packs-wrap', list.length > 0);
-    const canEdit = creator.status === 'active';
-    for (const p of list) {
-      const status = p.status !== 'published' ? tr('dash.hiddenByAdmin') : p.ownerHidden ? tr('dash.hiddenByYou') : tr('dash.live');
-      const nV = el('td', { class: 'num' }, '…'), nW = el('td', { class: 'num' }, '…'), nC = el('td', { class: 'num' }, '…');
-      stat(p.id).then((s) => { nV.textContent = String(s.v); nW.textContent = String(s.v7); nC.textContent = String(s.c); });
-      const link = el('a', { class: 'link', href: `${cfg.assetBase}${p.id}/`, target: '_blank', rel: 'noopener' }, p.title);
-      const img = el('img', { src: p.cover?.sm || '', alt: '', referrerpolicy: 'no-referrer', loading: 'lazy' });
-      const acts = el('div', { class: 'acts' });
-      const btn = (label: string, fn: (b: HTMLButtonElement) => Promise<void>) => {
-        const b = el('button', { class: 'btn btn--sm', type: 'button' }, label) as HTMLButtonElement;
-        b.addEventListener('click', () => busy(b, () => fn(b)));
-        acts.append(b);
-      };
-      const tr_ = el('tr', {}, el('td', {}, el('div', { class: 'pk' }, img, el('div', {}, link, el('div', { class: 'small' }, catName(p.category))))), nV, nW, nC, el('td', {}, status), el('td', {}, acts));
-      if (canEdit) {
-        btn(tr('dash.edit'), async () => toggleEdit(tr_, p));
-        btn(p.ownerHidden ? tr('dash.show') : tr('dash.hide'), async () => { await updateDoc(doc(db, 'packs', p.id), { ownerHidden: !p.ownerHidden, updatedAt: serverTimestamp() }); });
-        btn(tr('dash.refresh'), async () => { await call('refreshPack', { id: p.id }); toast(tr('dash.refreshed')); });
-      }
-      if (creator.status === 'active' || creator.status === 'restricted')
-        btn(tr('dash.delete'), async () => { if (confirm(tr('dash.confirmDelete', { title: p.title }))) await deleteDoc(doc(db, 'packs', p.id)); });
-      body.append(tr_);
+    const val = (r: Row) => {
+      const v = sumDays(r.s, 'v', range), c = sumDays(r.s, 'c', range);
+      return { v, c, r: rate(c, v), l: r.s.l || 0 };
+    };
+    const sorted = [...rows].sort((a, b) => {
+      if (sortKey === 'title') return sortDir * a.title.localeCompare(b.title, cfg.lang);
+      return sortDir * ((val(a) as any)[sortKey] - (val(b) as any)[sortKey]) || a.title.localeCompare(b.title, cfg.lang);
+    });
+    for (const th of document.querySelectorAll<HTMLElement>('.packs th[aria-sort]')) {
+      const k = th.querySelector<HTMLElement>('.sort')!.dataset.sort;
+      th.setAttribute('aria-sort', k === sortKey ? (sortDir < 0 ? 'descending' : 'ascending') : 'none');
     }
+    for (const r of sorted) {
+      const x = val(r);
+      const pick = el('button', { class: 'pick-btn', type: 'button', 'aria-pressed': String(picked === r.id) }, r.title);
+      pick.addEventListener('click', () => { picked = picked === r.id ? '' : r.id; $<HTMLSelectElement>('st-pack').value = picked; renderStats(); $('stats-panel').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+      const img = el('img', { src: r.cover, alt: '', referrerpolicy: 'no-referrer', loading: 'lazy' });
+      const open = el('a', { class: 'link small', href: `${cfg.assetBase}${r.id}/`, target: '_blank', rel: 'noopener' }, tr('dash.viewPage'));
+      const acts = el('div', { class: 'acts' });
+      const row = el('tr', { class: picked === r.id ? 'is-picked' : '' },
+        el('td', {}, el('div', { class: 'pk' }, img, el('div', {}, pick, el('div', { class: 'small muted' }, r.sub, ' ', open)))),
+        el('td', { class: 'num', 'data-label': tr('dash.kViews') }, nf.format(x.v), el('div', { class: 'small muted' }, tr('dash.allTime', { n: nf.format(r.s.v || 0) }))),
+        el('td', { class: 'trend' }, spark(r.s)),
+        el('td', { class: 'num', 'data-label': tr('dash.kClicks') }, nf.format(x.c)),
+        el('td', { class: 'num', 'data-label': tr('dash.colRate') }, x.v ? pf.format(x.r) : '–'),
+        el('td', { class: 'num', 'data-label': tr('dash.colLikes') }, nf.format(x.l)),
+        el('td', { class: 'state' }, r.status),
+        el('td', { class: 'act' }, acts),
+      );
+      r.actions(acts, row);
+      body.append(row);
+    }
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('.seg [data-range]').forEach((b) => b.addEventListener('click', () => { range = Number(b.dataset.range); renderStats(); }));
+  document.querySelectorAll<HTMLButtonElement>('.kpi[data-metric]').forEach((b) => b.addEventListener('click', () => { metric = b.dataset.metric as 'v' | 'c'; renderStats(); }));
+  $<HTMLSelectElement>('st-pack').addEventListener('change', (e) => { picked = (e.target as HTMLSelectElement).value; renderStats(); });
+  document.querySelectorAll<HTMLButtonElement>('.packs .sort').forEach((b) => b.addEventListener('click', () => {
+    const k = b.dataset.sort!;
+    sortDir = sortKey === k ? -sortDir : k === 'title' ? 1 : -1;
+    sortKey = k;
+    renderTable();
+  }));
+
+  const actionButton = (box: HTMLElement, label: string, fn: () => Promise<void>) => {
+    const b = el('button', { class: 'btn btn--sm', type: 'button' }, label) as HTMLButtonElement;
+    b.addEventListener('click', () => busy(b, fn));
+    box.append(b);
+  };
+  /** Rows for packs the creator listed through the dashboard. */
+  function packRows(list: any[], creator: any): Row[] {
+    const canEdit = creator.status === 'active';
+    return list.map((p) => ({
+      id: p.id,
+      title: p.title,
+      cover: p.cover?.sm || '',
+      sub: catName(p.category),
+      status: p.status !== 'published' ? tr('dash.hiddenByAdmin') : p.ownerHidden ? tr('dash.hiddenByYou') : tr('dash.live'),
+      s: {},
+      actions: (box, row) => {
+        if (canEdit) {
+          actionButton(box, tr('dash.edit'), async () => toggleEdit(row, p));
+          actionButton(box, p.ownerHidden ? tr('dash.show') : tr('dash.hide'), async () => { await updateDoc(doc(db, 'packs', p.id), { ownerHidden: !p.ownerHidden, updatedAt: serverTimestamp() }); });
+          actionButton(box, tr('dash.refresh'), async () => { await call('refreshPack', { id: p.id }); toast(tr('dash.refreshed')); });
+        }
+        if (creator.status === 'active' || creator.status === 'restricted')
+          actionButton(box, tr('dash.delete'), async () => { if (confirm(tr('dash.confirmDelete', { title: p.title }))) await deleteDoc(doc(db, 'packs', p.id)); });
+      },
+    }));
+  }
+  /** Rows for HanX Games' own packs (house account): hide or show them on the site. */
+  function houseRows(hidden: Set<string>): Row[] {
+    return (cfg.house as { id: string; title: string; cover: string; url: string; panelHidden: boolean }[]).map((h) => ({
+      id: h.id,
+      title: h.title,
+      cover: h.cover,
+      sub: 'HanX Games',
+      status: h.panelHidden ? tr('dash.hiddenByPanel') : hidden.has(h.id) ? tr('dash.hiddenByYou') : tr('dash.live'),
+      s: {},
+      actions: (box) => {
+        if (!h.panelHidden) actionButton(box, hidden.has(h.id) ? tr('dash.show') : tr('dash.hide'), async () => {
+          await setDoc(doc(db, 'houseOverrides', h.id), { hidden: !hidden.has(h.id), updatedAt: serverTimestamp() });
+          toast(tr('dash.saved'));
+        });
+        box.append(el('a', { class: 'btn btn--sm', href: h.url, target: '_blank', rel: 'noopener' }, tr('dash.openStore')));
+      },
+    }));
   }
   function toggleEdit(row: HTMLElement, p: any) {
     const next = row.nextElementSibling;
@@ -502,7 +812,7 @@ const privacy = `<a class="link" href="${L('/privacy/')}">${t('footer.privacy')}
         toast(tr('dash.saved'));
       });
     });
-    const td = el('td', { colspan: '6' }, form);
+    const td = el('td', { colspan: '8' }, form);
     row.after(el('tr', { class: 'edit-row' }, td));
   }
 
@@ -529,7 +839,9 @@ const privacy = `<a class="link" href="${L('/privacy/')}">${t('footer.privacy')}
     show('store-done', Boolean(c.verified));
     show('store-todo', !c.verified);
     if (c.verified) $('store-ok').textContent = tr('dash.verified', { user: c.storeUser });
-    show('add', Boolean(c.verified) && c.status === 'active');
+    show('add', Boolean(c.verified) && c.status === 'active' && !c.house);
+    show('house-note', Boolean(c.house));
+    show('profile-panel', !c.house);
     const pf = $<HTMLFormElement>('profile-form');
     for (const k of ['displayName', 'bio', 'website', 'twitter']) {
       const input = pf.elements.namedItem(k) as HTMLInputElement;
@@ -554,10 +866,24 @@ const privacy = `<a class="link" href="${L('/privacy/')}">${t('footer.privacy')}
       if (creator) renderCreator(user, creator);
       decide();
     }, fail));
+    let myPacks: any[] = [];
+    let houseHidden: Set<string> | null = null;
+    let houseSub = false;
+    const rebuild = () => {
+      if (!creator) return;
+      if (creator.house && !houseSub) {
+        houseSub = true;
+        unsubs.push(onSnapshot(collection(db, 'houseOverrides'), (snap) => {
+          houseHidden = new Set(snap.docs.filter((d) => d.data().hidden === true).map((d) => d.id));
+          rebuild();
+        }, fail));
+      }
+      setRows([...packRows(myPacks, creator), ...(creator.house && houseHidden ? houseRows(houseHidden) : [])]);
+    };
+    unsubs.push(onSnapshot(doc(db, 'creators', user.uid), () => setTimeout(rebuild, 0), () => {}));
     unsubs.push(onSnapshot(query(collection(db, 'packs'), where('ownerUid', '==', user.uid)), (snap) => {
-      const list = snap.docs.map((d) => ({ id: d.id, ...d.data() })).sort((a: any, b: any) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
-      const draw = () => (creator ? renderPacks(list, creator) : setTimeout(draw, 200));
-      draw();
+      myPacks = snap.docs.map((d) => ({ id: d.id, ...d.data() })).sort((a: any, b: any) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+      rebuild();
     }, fail));
   });
 </script>
