@@ -856,6 +856,7 @@ const privacy = `<a class="link" href="${L('/privacy/')}">${t('footer.privacy')}
   onAuthStateChanged(auth, (user) => {
     reset();
     try { localStorage.setItem('ga_signed_in', user ? '1' : '0'); } catch {}
+    window.dispatchEvent(new CustomEvent('ga:account', { detail: Boolean(user) }));
     if (!user) return view('auth');
     if (!user.emailVerified) user.reload().then(() => (user.emailVerified ? user.getIdToken(true) : null)).catch(() => {});
     let creator: any = null;

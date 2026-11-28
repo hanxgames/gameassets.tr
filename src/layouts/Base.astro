@@ -304,7 +304,13 @@ const campaignHref = campaign.link ? (campaign.link.startsWith('/') ? localePath
       if (viewed) setTimeout(() => track(viewed.dataset.trackView, 'v'), 1500);
 
       // Signed-in creators see "Dashboard" instead of "Sign in" (flag set by the dashboard).
-      try { if (localStorage.getItem('ga_signed_in') === '1') document.querySelectorAll<HTMLElement>('[data-account]').forEach((a) => (a.textContent = a.dataset.signedIn!)); } catch {}
+      // The dashboard announces sign-in / sign-out (ga:account); other tabs follow through the storage event.
+      const accountLinks = document.querySelectorAll<HTMLElement>('[data-account]');
+      accountLinks.forEach((a) => (a.dataset.signedOut = a.textContent || ''));
+      const setAccount = (signedIn: boolean) => accountLinks.forEach((a) => (a.textContent = signedIn ? a.dataset.signedIn! : a.dataset.signedOut!));
+      try { setAccount(localStorage.getItem('ga_signed_in') === '1'); } catch {}
+      window.addEventListener('ga:account', (e) => setAccount(Boolean((e as CustomEvent).detail)));
+      window.addEventListener('storage', (e) => { if (e.key === 'ga_signed_in') setAccount(e.newValue === '1'); });
 
       // Buy buttons open the creator's checkout in a centred popup on desktop,
       // and navigate normally on phones or when popups are blocked.
