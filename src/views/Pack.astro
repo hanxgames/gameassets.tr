@@ -5,7 +5,7 @@ import BuyButton from '../components/BuyButton.astro';
 import Countdown from '../components/Countdown.astro';
 import Social from '../components/Social.astro';
 import Comments from '../components/Comments.astro';
-import { SITE, ENGINES, assets, bundlesFor, bundleSavings, absolute, digitalShipping, type Asset, type EngineKey } from '../data/site';
+import { SITE, ENGINES, assets, bundlesFor, bundleSavings, absolute, digitalShipping, digitalReturns, validSince, type Asset, type EngineKey } from '../data/site';
 import { creatorByHandle, categoryByKey, listingsBy, inCategory, statOf, HOUSE, type Listing } from '../data/market';
 import { useT, href, safeJson, packText, packDescription, packSeoTitle, packSeoDescription, fmtDate, fmtNum, bundleLabel } from '../i18n';
 
@@ -51,7 +51,6 @@ const productLd = {
   inLanguage: lang,
   sku: String(a.id),
   ...(community ? {} : { mpn: `HANX-${a.id}` }),
-  category: `Game Assets > ${t(`catg.${cat.key}.name`)}`,
   image: gallery.slice(0, 6).map((g) => absolute(g.src)),
   brand: { '@type': 'Brand', name: creator.name },
   manufacturer: community ? { '@type': 'Organization', name: creator.name, url: absolute(L(`/creators/${creator.handle}/`)) } : { '@id': `${SITE.url}/#org` },
@@ -65,9 +64,10 @@ const productLd = {
     availability: 'https://schema.org/InStock',
     itemCondition: 'https://schema.org/NewCondition',
     priceValidUntil: (a.sale?.ends || new Date(Date.now() + 365 * 864e5).toISOString()).slice(0, 10),
-    // sale price: the store sale's start (synced from the sale page) and end
-    ...(onSale && (a.sale as any)?.starts ? { validFrom: (a.sale as any).starts } : {}),
+    // When this price took effect: the store sale's start, else the pack's last update or publish date.
+    validFrom: validSince(onSale ? (a.sale as any)?.starts : null, a.updated, a.published, (a as Listing).createdAt),
     shippingDetails: digitalShipping,
+    hasMerchantReturnPolicy: digitalReturns,
     seller: { '@type': 'Organization', name: creator.name, url: absolute(L(`/creators/${creator.handle}/`)) },
   },
 };

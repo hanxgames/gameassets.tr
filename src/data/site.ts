@@ -169,3 +169,18 @@ export const digitalShipping = {
   shippingDestination: DIGITAL_COUNTRIES.map((c) => ({ '@type': 'DefinedRegion', addressCountry: c })),
   deliveryTime: { '@type': 'ShippingDeliveryTime', handlingTime: zeroDays, transitTime: zeroDays },
 };
+/** Digital downloads: sales are final on the creators' stores (refunds only at the seller's discretion). */
+export const digitalReturns = {
+  '@type': 'MerchantReturnPolicy',
+  applicableCountry: DIGITAL_COUNTRIES,
+  returnPolicyCategory: 'https://schema.org/MerchantReturnNotPermitted',
+};
+/** The first usable date (ISO) that is not in the future, for Offer.validFrom. */
+export function validSince(...dates: (string | null | undefined)[]) {
+  const now = Date.now();
+  for (const d of dates) {
+    const ms = d ? Date.parse(d) : NaN;
+    if (Number.isFinite(ms) && ms <= now) return new Date(ms).toISOString();
+  }
+  return new Date(Date.parse(catalog.syncedAt) || now).toISOString();
+}
